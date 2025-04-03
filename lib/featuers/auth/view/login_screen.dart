@@ -17,8 +17,6 @@ import '../../../styling/app_font_anybody.dart';
 import '../../../widgets/components/bottom_sheet_bg.dart';
 import '../../../widgets/components/hi_wash_button.dart';
 import 'auth_widgets/bg_widget.dart';
-import 'auth_widgets/or_widget.dart';
-import 'auth_widgets/social_media.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -32,185 +30,51 @@ class LoginScreen extends StatelessWidget {
       body: AppBg(
         headingText: "kWelcomeBack".tr,
         subText: "kLogin".tr,
-      showBackButton: false,
+        showBackButton: false,
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              114.heightSizeBox,
-              HiWashTextField(
-                keyboardType: TextInputType.emailAddress,
+          child: Container(
+            height: Get.height*0.60,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                114.heightSizeBox,
+                HiWashTextField(
+                  keyboardType: TextInputType.emailAddress,
 
-                hintText: "kEmail".tr,
-                labelText: "kEmail".tr,
+                  hintText: "kEmail".tr,
+                  labelText: "kEmail".tr,
 
-                validator: (value) {
-                  return controller.validateEmail(value);
-                },
-              ),
-              24.heightSizeBox,
-              HiWashTextField(
-                keyboardType: TextInputType.visiblePassword,
-                hintText: "kPassword".tr,
-                labelText: "kPassword".tr,
-
-                validator: (value) {
-                  return controller.validatePassword(value);
-                },
-              ),
-              12.heightSizeBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(RouteStrings.forgotPasswordScreen);
-                    },
-                    child: Text(
-                      "kForgotPassword".tr,
-                      style: w500_14a(color: AppColor.red),
-                    ),
-                  ),
-                ],
-              ),
-              24.heightSizeBox,
-              HiWashButton(
-                text: "kLogIn".tr,
-                onTap: () {
-                  Get.offNamed(RouteStrings.dashboardScreen);
-                  /*  if (formKey.currentState?.validate() ?? false) {
-
-
-                  Get.offNamed(RouteStrings.dashboardScreen);
-*/
-                  // }
-                },
-              ),
-              54.heightSizeBox,
-
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: "kDontAaveAccount".tr,
-                        style: w400_12a(color: AppColor.c455A64),
-                      ),
-                      TextSpan(
-                        text: "SIGNUP".tr,
-                        style: w500_14a(color: AppColor.red),
-                        recognizer:
-                            TapGestureRecognizer()
-                              ..onTap = () {
-                                Get.offAllNamed(RouteStrings.signUpScreen);
-                                print("Sign Up tapped");
-                              },
-                      ),
-                    ],
-                  ),
+                  validator: (value) {
+                    return controller.validateEmail(value);
+                  },
                 ),
-              ),
-              18.heightSizeBox,
-              OrDivider(),
-              18.heightSizeBox,
-              SocialMedia(),
-              60.heightSizeBox,
-            ],
+                24.heightSizeBox,
+                HiWashTextField(
+                  keyboardType: TextInputType.visiblePassword,
+                  hintText: "kPassword".tr,
+                  labelText: "kPassword".tr,
+
+                  validator: (value) {
+                    return controller.validatePassword(value);
+                  },
+                ),
+                56.heightSizeBox,
+
+                HiWashButton(
+                  text: "kLogIn".tr,
+                  onTap: () {
+                    Get.offNamed(RouteStrings.dashboardScreen);
+                  },
+                ),
+                175.heightSizeBox,
+              ],
+            ),
           ),
         ),
       ),
-
-      /*Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          BgWidget(imagePath: Assets.assetsImagesWelcomeBg),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              child: BottomSheetBg(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        114.heightSizeBox,
-                        HiWashTextField(hintText: "kEmail".tr),
-                        24.heightSizeBox,
-                        HiWashTextField(hintText: "kPassword".tr,
-
-                          validator: (value) {
-                            return controller.validateEmail(value);
-                          },
-                        ),
-                        12.heightSizeBox,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                Get.toNamed(RouteStrings.forgotPasswordScreen);
-                              },
-                              child: Text(
-                                "kForgotPassword".tr,
-                                style: w500_14a(color: AppColor.red),
-                              ),
-                            ),
-                          ],
-                        ),
-                        24.heightSizeBox,
-                        HiWashButton(
-                          text: "kLogIn".tr,
-                          onTap: () {
-                            if (formKey.currentState?.validate() ?? false) {}
-                          },
-                        ),
-                        54.heightSizeBox,
-
-                        Center(
-                          child: RichText(
-                            text: TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "kDontAaveAccount".tr,
-                                  style: w400_12a(color: AppColor.c455A64),
-                                ),
-                                TextSpan(
-                                  text:  "SIGNUP".tr,
-                                  style: w500_14a(color: AppColor.red),
-                                  recognizer:
-                                      TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Get.offAllNamed(RouteStrings.signUpScreen);
-                                          print("Sign Up tapped");
-                                        },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        52.heightSizeBox,
-                        OrDivider(),
-                        25.heightSizeBox,
-                        SocialMedia(),
-                        60.heightSizeBox,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          //  Text("Skip"),
-        ],
-      ),*/
     );
   }
 }

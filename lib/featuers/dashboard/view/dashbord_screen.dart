@@ -7,8 +7,7 @@ import '../../../styling/app_font_anybody.dart';
 import '../../../styling/app_font_poppins.dart';
 import '../../../widgets/components/app_dialog.dart';
 import '../../notification/view/notification_screen.dart';
-import '../../profile/view/drawer_screen.dart';
-import '../../rewads/view/reward_screen.dart';
+
 import '../../wash_status/view/wash_status_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -23,11 +22,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   final List<Widget> _pages = [
     WashStatusScreen(),
-    RewardScreen(),
-    WashStatusScreen(),
+     WashStatusScreen(),
     NotificationScreen(),
-    DrawerScreen(),
-  ];
+   ];
 
   void _onItemTapped(int index) {
     setState(() {

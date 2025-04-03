@@ -90,13 +90,13 @@ class AppBg extends StatelessWidget {
                           topLeft: Radius.circular(30),
                         ),
                       ),
-                      margin: EdgeInsets.only(top: 60),
+                      margin: EdgeInsets.only(top: 75),
                       child: child,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 18),
-                      height: 120,
-                      width: 120,
+                      height: 155,
+                      width: 155,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(77.5),

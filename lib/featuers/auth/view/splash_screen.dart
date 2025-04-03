@@ -10,7 +10,7 @@ import 'package:hiwash_worker/widgets/components/image_view.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
 class SplashScreen extends StatefulWidget {
-   SplashScreen({super.key});
+  SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -20,8 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 2), () {
-     return Get.offNamed(RouteStrings.welcomeScreen);
-   });
+      return Get.offNamed(RouteStrings.welcomeScreen);
+    });
     super.initState();
   }
 
@@ -32,9 +32,8 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           ImageView(path: Assets.imagesSplashBg),
           Stack(
-           alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomCenter,
             children: [
-
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -64,7 +63,10 @@ class _SplashScreenState extends State<SplashScreen> {
                       Container(
                         padding: EdgeInsets.only(top: 115, left: 20, right: 20),
 
-                        child: ImageView(path: Assets.imagesAppLogo, height: 55),
+                        child: ImageView(
+                          path: Assets.imagesAppLogo,
+                          height: 55,
+                        ),
                       ),
 
                       30.heightSizeBox,
@@ -82,17 +84,20 @@ class _SplashScreenState extends State<SplashScreen> {
                           ),
                         ),
 
-                        child: Column(
-                          children: [
-                            Text(
-                              "kWelcomeToThe".tr,
-                              style: w400_22a(color: AppColor.c2C2A2A),
-                            ),
-                            Text(
-                              "kHiWASH".tr,
-                              style: w900_24a(color: AppColor.c2C2A2A),
-                            ),
-                          ],
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Welcome to the\nTeam! ",
+                                style: w400_22a(color: AppColor.c2C2A2A),
+                              ),
+                              TextSpan(
+                                text: "HI WASH",
+                                style: w900_24a(color: AppColor.c2C2A2A),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -101,10 +106,13 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
 
               Padding(
-                padding:  EdgeInsets.only(bottom: 60),
-                child: Text("kWeComeToYouTo".tr,style: w500_16a(color: AppColor.white.withOpacity(0.4)),textAlign: TextAlign.center,),
+                padding: EdgeInsets.only(bottom: 60),
+                child: Text(
+                  "Let's Make Every Car Shine!",
+                  style: w500_16a(color: AppColor.white.withOpacity(0.4)),
+                  textAlign: TextAlign.center,
+                ),
               ),
-
             ],
           ),
         ],

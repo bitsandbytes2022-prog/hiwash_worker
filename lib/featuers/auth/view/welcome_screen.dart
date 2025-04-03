@@ -19,61 +19,67 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
+          Stack(
+            children: [
+               BgWidget(imagePath: Assets.imagesWelcomeBg),
 
-          BgWidget(imagePath: Assets.imagesWelcomeBg),
+            ],
+          ),
 
           Positioned(
             bottom: 0,
             child: Container(
               child: BottomSheetBg(
-                child:
-                Column(
-                mainAxisSize: MainAxisSize.min,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
 
-                children: [
-                  110.heightSizeBox,
-                  Text(
-                    "kEcoCleanWalletGreen".tr,
-                    style: w700_22a(color: AppColor.c2C2A2A),
-                  ),
-                  15.heightSizeBox,
-                  Text(
-                    "kExclusiveDealsWithEvery".tr,
-                    textAlign: TextAlign.center,
-                    style: w400_16a(color: AppColor.c455A64),
-                  ),
-                  33.heightSizeBox,
-                  SmoothPageIndicator(
-                    controller: _pageController, // PageController
-                    count: 3, // Number of dots
-                    effect: ExpandingDotsEffect(
-                      activeDotColor: AppColor.red,
-                      dotColor: Colors.grey,
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      spacing: 4,
+                  children: [
+                    110.heightSizeBox,
+                    Text(
+                      "Elite car wash service",
+                      style: w700_22a(color: AppColor.c2C2A2A),
                     ),
-                  ),
-                  30.heightSizeBox,
-                  GetStartButton(width: 193, text: "kGetStarted".tr, onTap: () {
-                    Get.toNamed(RouteStrings.signUpScreen);
-
-                  }),
-                  15.heightSizeBox,
-                  Text(
-                    "kTermsAndConditions".tr,
-                    style: w500_14a(color: AppColor.red),
-                  ),
-                  60.heightSizeBox,
-                ],
-              ),
-
+                    15.heightSizeBox,
+                    Text(
+                      'Earn more, get rewards, and enjoy exclusive worker benefits!',
+                      textAlign: TextAlign.center,
+                      style: w400_16a(color: AppColor.c455A64),
+                    ),
+                    33.heightSizeBox,
+                    SmoothPageIndicator(
+                      controller: _pageController, // PageController
+                      count: 3, // Number of dots
+                      effect: ExpandingDotsEffect(
+                        activeDotColor: AppColor.red,
+                        dotColor: Colors.grey,
+                        dotHeight: 8,
+                        dotWidth: 8,
+                        spacing: 4,
+                      ),
+                    ),
+                    30.heightSizeBox,
+                    GetStartButton(
+                      width: 193,
+                      text: "kGetStarted".tr,
+                      onTap: () {
+                        Get.toNamed(RouteStrings.loginScreen);
+                      },
+                    ),
+                    15.heightSizeBox,
+                    Text(
+                      "kTermsAndConditions".tr,
+                      style: w500_14a(color: AppColor.red),
+                    ),
+                    60.heightSizeBox,
+                  ],
+                ),
               ),
             ),
-          )
+          ),
 
           //  Text("Skip"),
         ],

@@ -13,8 +13,7 @@ class Assets {
   static const String anybodyW900 = 'assets/fonts/anybody/w900.ttf';
   static const String iconsBlackForwardArrow = 'assets/icons/black_forward_arrow.png';
   static const String iconsIcAccount = 'assets/icons/ic_account.png';
-  static const String iconsIcApple = 'assets/icons/ic_apple.png';
-  static const String iconsIcArrow = 'assets/icons/ic_arrow.png';
+   static const String iconsIcArrow = 'assets/icons/ic_arrow.png';
   static const String iconsIcBook = 'assets/icons/ic_book.png';
   static const String iconsIcCheck = 'assets/icons/ic_check.png';
   static const String iconsIcClose = 'assets/icons/ic_close.png';
@@ -22,11 +21,9 @@ class Assets {
   static const String iconsIcDropDown = 'assets/icons/ic_drop_down.png';
   static const String iconsIcEdit = 'assets/icons/ic_edit.png';
   static const String iconsIcForward = 'assets/icons/ic_forward.png';
-  static const String iconsIcGoogle = 'assets/icons/ic_google.png';
-  static const String iconsIcLogout = 'assets/icons/ic_logout.png';
+   static const String iconsIcLogout = 'assets/icons/ic_logout.png';
   static const String iconsIcMessage = 'assets/icons/ic_message.png';
-  static const String iconsIcMeta = 'assets/icons/ic_meta.png';
-  static const String iconsIcPlaceMarker = 'assets/icons/ic_place_marker.png';
+   static const String iconsIcPlaceMarker = 'assets/icons/ic_place_marker.png';
   static const String iconsIcStar = 'assets/icons/ic_star.png';
   static const String iconsIcTAndC = 'assets/icons/ic_t_and_c.png';
   static const String iconsIcVerify = 'assets/icons/ic_verify.png';
