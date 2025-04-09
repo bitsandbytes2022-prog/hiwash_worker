@@ -11,6 +11,8 @@ class Assets {
   static const String anybodyW700 = 'assets/fonts/anybody/w700.ttf';
   static const String anybodyW800 = 'assets/fonts/anybody/w800.ttf';
   static const String anybodyW900 = 'assets/fonts/anybody/w900.ttf';
+  static const String demoNumberPlate = 'assets/demo/number_plate.png';
+  static const String demoWorkerLicense = 'assets/demo/worker_license.png';
   static const String iconsBlackForwardArrow = 'assets/icons/black_forward_arrow.png';
   static const String iconsIcAccount = 'assets/icons/ic_account.png';
   static const String iconsIcApple = 'assets/icons/ic_apple.png';
@@ -73,6 +75,7 @@ class Assets {
   static const String imagesImMap = 'assets/images/im_map.png';
   static const String imagesImOffer = 'assets/images/im_offer.png';
   static const String imagesImQr = 'assets/images/im_qr.png';
+  static const String imagesImSussess = 'assets/images/im_sussess.png';
   static const String imagesJackpot = 'assets/images/jackpot.png';
   static const String imagesMainQrBg = 'assets/images/main_qr_bg.png';
   static const String imagesMapImage = 'assets/images/map_image.png';
