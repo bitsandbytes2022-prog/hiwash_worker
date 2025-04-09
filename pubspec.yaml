@@ -109,6 +109,7 @@ flutter:
           weight: 800
         - asset: assets/fonts/anybody/w900.ttf
           weight: 900
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
