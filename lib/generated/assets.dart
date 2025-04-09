@@ -51,12 +51,14 @@ class Assets {
   static const String iconsIcUsers = 'assets/icons/ic_users.png';
   static const String iconsIcUsersFill = 'assets/icons/ic_users_fill.png';
   static const String iconsIcVerify = 'assets/icons/ic_verify.png';
+  static const String iconsImSucces = 'assets/icons/im_succes.png';
   static const String iconsMyLocation = 'assets/icons/my_location.png';
   static const String iconsPhone = 'assets/icons/Phone.png';
   static const String iconsTodayCar = 'assets/icons/today_car.png';
   static const String images1 = 'assets/images/1.svg';
   static const String imagesAppLogo = 'assets/images/app_logo.png';
   static const String imagesAuthBg = 'assets/images/auth_bg.png';
+  static const String imagesBackgroundComplete = 'assets/images/Background_Complete.png';
   static const String imagesCar = 'assets/images/car.png';
   static const String imagesCarWash = 'assets/images/car_wash.png';
   static const String imagesCard1 = 'assets/images/card_1.png';
