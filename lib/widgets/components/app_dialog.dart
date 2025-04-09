@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:hiwash_worker/widgets/components/image_view.dart';
-import 'package:hiwash_worker/widgets/sized_box_extension.dart';
+
 
 import '../../generated/assets.dart';
 import '../../styling/app_color.dart';
 import '../../styling/app_font_anybody.dart';
 import '../../styling/app_font_poppins.dart';
+import 'image_view.dart';
 
 class AppDialog extends StatelessWidget {
   Widget? child;
   String? remainingText;
-   AppDialog({super.key, this.child});
+  final EdgeInsets? margin;
+
+  AppDialog({super.key, this.child, this.margin});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +25,27 @@ class AppDialog extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
+          /*  Container(
+                padding: EdgeInsets.only(bottom: 0),
+                margin: EdgeInsets.only(left: 50,right: 50,top: 40),
+                *//*  decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage(Assets.imagesDialogBottom),
+                ),*//*
+
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset(Assets.imagesDiloagBgTop),
+                    Text(remainingText??''.tr,style:w500_14p(color: AppColor.c2C2A2A) ,)
+                  ],
+                )
+
+            ),*/
             Stack(
               alignment: Alignment.topRight,
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 16, right: 16,bottom: 11),
+                  margin:margin?? EdgeInsets.only(left: 16, right: 16,bottom: 11),
                   width: Get.width,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -52,12 +70,12 @@ class AppDialog extends StatelessWidget {
               ],
             ),
 
-            Container(
+          /*  Container(
                 padding: EdgeInsets.only(bottom: 0),
                 margin: EdgeInsets.only(left: 50,right: 50,top: 40),
-                /*  decoration: BoxDecoration(
+                *//*  decoration: BoxDecoration(
                   image: DecorationImage(image: AssetImage(Assets.imagesDialogBottom),
-                ),*/
+                ),*//*
 
                 child: Stack(
                   alignment: Alignment.center,
@@ -67,7 +85,7 @@ class AppDialog extends StatelessWidget {
                   ],
                 )
 
-            )
+            )*/
           ],
         ),
       ),
@@ -81,7 +99,7 @@ class AppDialog extends StatelessWidget {
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:hiwash_worker/widgets/sized_box_extension.dart';
+import 'package:hiwash_customer/widgets/sized_box_extension.dart';
 
 import '../../generated/assets.dart';
 import '../../styling/app_color.dart';

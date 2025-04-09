@@ -4,13 +4,53 @@ import 'package:get/get.dart';
 
 class AuthController extends GetxController {
 
+@override
+  void onInit() {
+  pageController.addListener(() {
+    onPageChanged(pageController.page!.round());
+  });
+    super.onInit();
+  }
+/// login controller
+  TextEditingController employeeIdController = TextEditingController(text: '12345678');
+  TextEditingController passwordController = TextEditingController(text:'Abcd@123');
 
-
-  TextEditingController emailPhoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
 
+  /// Welcome screen
+  final PageController pageController = PageController();
+
+
+var currentPage = 0.obs;
+
+
+void onPageChanged(int index) {
+  currentPage.value = index;
+}
+  final List<String> headingText = [
+    "kEcoCleanWalletGreen","Wash & Win!","kEcoCleanWalletGreen",
+
+
+  ]; final List<String> subText = [
+    "kExclusiveDealsWithEvery",
+    "Get your car washed weekly at 100+ locations with exclusive offers.Missed washes still deducted.",
+    "kExclusiveDealsWithEvery",
+
+  ];
+
+
+String? validateEmpID(String? value) {
+  if (value == null || value.isEmpty) {
+    return "Employee ID is required";
+  }
+  value = value.trim();
+  if (!RegExp(r'^\d{8,15}$').hasMatch(value)) {
+    return "Please enter a valid employee ID (8 to 15 digits)";
+  }
+
+  return null;
+}
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return "E-mail is required";

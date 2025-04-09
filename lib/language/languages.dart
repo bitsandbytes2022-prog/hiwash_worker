@@ -5,16 +5,15 @@ class Languages extends Translations {
   // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
     'en_US': {
-      "kDemoText":
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-      "kWelcomeToThe": "Welcome to the Team!",
-      "kHiWASH": "HI WASH",
-      "kWeComeToYouTo": "Let's Make Every Car Shine!",
+"kDemoText":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "kWelcomeToThe": "Welcome to the",
+      "kHiWASH":"HI WASH",
+      "kWeComeToYouTo":"We come to you to\nwash your car...!!",
 
       ///  welcome screen
-      "kEliteCarWashService": "Elite car wash service",
+      "kEcoCleanWalletGreen": "Eco Clean, Wallet Green!",
       "kExclusiveDealsWithEvery":
-          "Earn more, get rewards, and enjoy\nexclusive worker benefits!",
+          "Exclusive Deals with Every Shine Free\nCoupons, BOGO Offers, Discounts & Special Perks!",
       "kGetStarted": "Get Started",
       "kSkip": "Skip",
       "kTermsAndConditions": "Terms & Conditions",
@@ -75,7 +74,7 @@ class Languages extends Translations {
       "kSubscribe": "subscribe",
       "kCarRegistrationNumber": "Car Registration Number Required for",
       "kUnlimitedWashesPlan": "Unlimited Washes Plan",
-      "EnterCarNumber": "Enter car number",
+      "kEnterCarNumber": "Enter car number",
       "WashYourCarOnce":
           "Wash your car once a week. If the car is not washed within the week, it will not be compensated and will still be deducted.",
 
@@ -97,8 +96,8 @@ class Languages extends Translations {
       "kTotalWashes": "Total Washes",
       "kWash": "Wash",
       "kLocations": "Locations",
-      "kRemaining": "Remaining",
-      "kYourCurrentLocation": "Your current location",
+      "kRemaining":"Remaining",
+      "kYourCurrentLocation":"Your current location"
     },
 
     'hi_IN': {

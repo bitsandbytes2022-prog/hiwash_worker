@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:hiwash_worker/generated/assets.dart';
-import 'package:hiwash_worker/styling/app_color.dart';
-import 'package:hiwash_worker/styling/app_font_anybody.dart';
-import 'package:hiwash_worker/styling/app_font_poppins.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
+
+import '../../generated/assets.dart';
+import '../../styling/app_color.dart';
+import '../../styling/app_font_anybody.dart';
+import '../../styling/app_font_poppins.dart';
+
 
 class QrDialog extends StatelessWidget {
   const QrDialog({super.key});

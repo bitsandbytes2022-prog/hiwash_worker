@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hiwash_worker/styling/app_color.dart';
-import 'package:hiwash_worker/styling/app_font_poppins.dart';
+
+import '../../styling/app_color.dart';
+import '../../styling/app_font_poppins.dart';
 
 class HiWashTextField extends StatelessWidget {
   final String? labelText;
@@ -29,6 +30,9 @@ class HiWashTextField extends StatelessWidget {
   final EdgeInsets? padding;
   final bool? isVisible;
   final String obscuringCharacter;
+  final Color? fillColor;
+  final TextStyle? style;
+
 
   const HiWashTextField({
     super.key,
@@ -55,12 +59,16 @@ class HiWashTextField extends StatelessWidget {
     this.maxLength,
     this.textCapitalization,
     this.isVisible = true,
-    this.obscuringCharacter = '*'  });
+    this.obscuringCharacter = '*',
+    this.fillColor,
+    this.style,
+
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      style: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
+      style:style ?? w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
       focusNode: focusNode,
       textInputAction: TextInputAction.next,
       readOnly: readOnly,
@@ -84,12 +92,13 @@ class HiWashTextField extends StatelessWidget {
       decoration: InputDecoration(
 
         errorMaxLines: 3,
-        errorStyle: w400_14p(color: AppColor.c455A64),
+        errorStyle: w400_11p(color: AppColor.cC41948),
         hintText: hintText.tr,
         labelText: labelText?.tr,
 
         labelStyle: w400_14p(color: AppColor.c455A64),
         hintMaxLines: 2,
+        fillColor: fillColor??AppColor.cF6F7FF,
         hintStyle: w400_14p(color: AppColor.c455A64),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,

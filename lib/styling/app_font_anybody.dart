@@ -247,6 +247,15 @@ TextStyle w600_14a({Color? color = AppColor.c455A64}) {
       fontFamily: fontName);
 }
 
+
+TextStyle w500_24a({Color? color = AppColor.c455A64}) {
+  return TextStyle(
+      fontSize: 25,
+      fontWeight: FontWeight.w500,
+      color: color,
+      fontFamily: fontName);
+}
+
 TextStyle w600_16a({Color? color = AppColor.c455A64}) {
   return TextStyle(
       fontSize: 16,

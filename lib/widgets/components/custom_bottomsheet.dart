@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:hiwash_worker/styling/app_color.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
+
+import '../../styling/app_color.dart';
+
 
 class CustomBottomSheet extends StatelessWidget {
   final Widget child;

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hiwash_worker/generated/assets.dart';
-import 'package:hiwash_worker/styling/app_color.dart';
-import 'package:hiwash_worker/styling/app_font_anybody.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
+
+import '../../generated/assets.dart';
+import '../../styling/app_color.dart';
+import '../../styling/app_font_anybody.dart';
 import 'image_view.dart';
 
 class AppBg extends StatelessWidget {
@@ -66,7 +67,7 @@ class AppBg extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // Text(headingText, style: w400_22a(color: AppColor.white)),
+                         Text(headingText, style: w400_22a(color: AppColor.white)),
                         Text(subText, style: w800_24a(color: AppColor.white)),
                       ],
                     ),
@@ -90,13 +91,13 @@ class AppBg extends StatelessWidget {
                           topLeft: Radius.circular(30),
                         ),
                       ),
-                      margin: EdgeInsets.only(top: 75),
+                      margin: EdgeInsets.only(top: 60),
                       child: child,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 18),
-                      height: 155,
-                      width: 155,
+                      height: 120,
+                      width: 120,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(77.5),

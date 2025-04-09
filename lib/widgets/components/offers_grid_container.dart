@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
 import '../../generated/assets.dart';
 import '../../styling/app_color.dart';

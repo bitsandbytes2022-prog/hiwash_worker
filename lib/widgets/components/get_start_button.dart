@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hiwash_worker/generated/assets.dart';
-import 'package:hiwash_worker/styling/app_color.dart';
-import 'package:hiwash_worker/styling/app_font_anybody.dart';
-import 'package:hiwash_worker/widgets/components/image_view.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
+
+import '../../generated/assets.dart';
+import '../../styling/app_color.dart';
+import '../../styling/app_font_anybody.dart';
+import 'image_view.dart';
+
 
 class GetStartButton extends StatelessWidget {
   final Color? color;
@@ -19,6 +21,7 @@ class GetStartButton extends StatelessWidget {
   final bool isLoading;
   final TextStyle? textStyle;
   final Color? borderColor;
+  final Color? boxShadowColor;
   final Color? textColor;
   final bool? isIconSuffix;
 
@@ -36,7 +39,7 @@ class GetStartButton extends StatelessWidget {
     this.isLoading = false,
     required this.text,
     this.width,
-    this.isIconSuffix = false,
+    this.isIconSuffix = false, this.boxShadowColor,
   });
 
   @override
@@ -52,7 +55,7 @@ class GetStartButton extends StatelessWidget {
           color: color ?? AppColor.blue,
           boxShadow: [
             BoxShadow(
-              color: AppColor.blue.withOpacity(0.35),
+              color: boxShadowColor??AppColor.blue.withOpacity(0.35),
               blurRadius: 15,
               spreadRadius: 10,
               offset: Offset(0, 3),
