@@ -19,7 +19,6 @@ class AppHomeBg extends StatelessWidget {
   final Widget?iconLeft;
   final EdgeInsets?padding;
 
-
    AppHomeBg({super.key,  this.headingText, this.child, this.iconRight, this.iconLeft, this.padding, this.childAppBar, });
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
