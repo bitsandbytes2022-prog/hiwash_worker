@@ -1,11 +1,7 @@
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import 'package:get/get.dart';
-import 'package:hiwash_worker/widgets/components/app_home_bg.dart';
 import 'package:hiwash_worker/widgets/components/doted_vertical_line.dart';
-import 'package:hiwash_worker/widgets/components/hi_wash_button.dart';
-import 'package:hiwash_worker/widgets/components/hi_wash_text_field.dart';
+
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../generated/assets.dart';
@@ -15,7 +11,6 @@ import '../../../styling/app_font_poppins.dart';
 import '../../../widgets/components/app_dialog.dart';
 import '../../../widgets/components/custom_swipe_button.dart';
 import '../../../widgets/components/doted_horizontal_line.dart';
-import '../../../widgets/components/get_start_button.dart';
 import '../../../widgets/components/image_view.dart';
 import '../../../widgets/components/is_select_button.dart';
 import '../../../widgets/components/profile_image_container.dart';
@@ -58,14 +53,14 @@ class TodayWashScreen extends StatelessWidget {
                         21.heightSizeBox,
 
                         ListView.separated(
-                          padding: EdgeInsets.only(top: 0, bottom: 60),
+                          padding: EdgeInsets.only(top: 0, bottom: 40),
                           physics: NeverScrollableScrollPhysics(),
                           separatorBuilder:
-                              (context, index) => 10.heightSizeBox,
+                              (context, index) => 15.heightSizeBox,
                           shrinkWrap: true,
                           itemCount: 10,
                           itemBuilder: (context, index) {
-                            return servicesContainer();
+                            return servicesContainer(index);
                           },
                         ),
                       ],
@@ -219,7 +214,7 @@ class TodayWashScreen extends StatelessWidget {
     return monthNames[month - 1];
   }
 
-  Widget servicesContainer() {
+  Widget servicesContainer(int index) {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -237,7 +232,7 @@ class TodayWashScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ProfileImageView(radius: 25, radiusStack: 6),
+          ProfileImageView(radius: 25, radiusStack: 6,isVisibleStack:index%2==0? true:false,),
           15.widthSizeBox,
 
           Expanded(
@@ -267,7 +262,7 @@ class TodayWashScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, bottom: 5),
-                      child: DotedVerticalLine(height: 10),
+                      child: DotedVerticalLine(height: 8.1),
                     ),
 
                     Row(
@@ -336,7 +331,7 @@ class TodayWashScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      "53",
+                      "10",
                       style: w700_27a(
                         color: AppColor.white,
                       ).copyWith(fontSize: 47),
@@ -372,7 +367,7 @@ class TodayWashScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 19, top: 10),
                       child: Column(
                         children: [
-                          Text("29", style: w500_24a(color: AppColor.white)),
+                          Text("4", style: w500_24a(color: AppColor.white)),
                           Text(
                             "Complete",
                             style: w500_12p(
@@ -392,7 +387,7 @@ class TodayWashScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 19, bottom: 10),
                       child: Column(
                         children: [
-                          Text("19", style: w500_24a(color: AppColor.white)),
+                          Text("6", style: w500_24a(color: AppColor.white)),
                           Text(
                             "kRemaining".tr,
                             style: w500_12p(
@@ -414,6 +409,8 @@ class TodayWashScreen extends StatelessWidget {
 
   Widget washLogRow() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         15.widthSizeBox,
         ProfileImageView(radius: 20, radiusStack: 4),
@@ -440,7 +437,6 @@ class TodayWashScreen extends StatelessWidget {
             ],
           ),
         ),
-        10.widthSizeBox,
       ],
     );
   }

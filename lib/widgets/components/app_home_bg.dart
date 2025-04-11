@@ -24,227 +24,234 @@ class AppHomeBg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: Drawer(
-        backgroundColor: AppColor.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            48.heightSizeBox,
-            GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 7),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: ImageView(
-                    path: Assets.iconsIcClose,
-                    height: 28,
-                    width: 32,
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+          backgroundColor: AppColor.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              48.heightSizeBox,
+              GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 7),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: ImageView(
+                      path: Assets.iconsIcClose,
+                      height: 28,
+                      width: 32,
+                    ),
                   ),
                 ),
               ),
-            ),
-            ImageView(path: Assets.imagesHelpSupport, height: 180),
-            31.heightSizeBox,
-            Text("Get Help?", style: w700_22a()),
+              ImageView(path: Assets.imagesHelpSupport, height: 180),
+              31.heightSizeBox,
+              Text("Get Help?", style: w700_22a()),
 
-            40.heightSizeBox,
+              40.heightSizeBox,
 
-            /// **Drawer Options**
-            drawerRowWidget(onTap: () => {
+              /// **Drawer Options**
+              drawerRowWidget(onTap: () => {
 
-              Get.to(ChatScreen())
-            }, title: 'Chat with Support', image: Assets.iconsIcChat),
-            drawerRowWidget(onTap: () => {}, title: 'Help Desk Ticket', image: Assets.iconsIcTicket),
-            drawerRowWidget(onTap: () => {}, title: 'FAQ’s', image: Assets.iconsIcFaq),
-            drawerRowWidget(
-              onTap: () => {},
-              title: 'Step-by-Step Guide',
-              dashedLineWidget: false, image: Assets.iconsIcGuideBook,
-            ),
+                Get.to(ChatScreen())
+              }, title: 'Chat with Support', image: Assets.iconsIcChat),
+              drawerRowWidget(onTap: () => {}, title: 'Help Desk Ticket', image: Assets.iconsIcTicket),
+              drawerRowWidget(onTap: () => {}, title: 'FAQ’s', image: Assets.iconsIcFaq),
+              drawerRowWidget(
+                onTap: () => {},
+                title: 'Step-by-Step Guide',
+                dashedLineWidget: false, image: Assets.iconsIcGuideBook,
+              ),
 
-            Spacer(),
-            DotedHorizontalLine(),
-            Container(
-              // padding: EdgeInsets.only(bottom: 20),
-              color: AppColor.cF6F7FF,
-              alignment: Alignment.center,
-              height: 86,
-              child: Row(
+              Spacer(),
+              DotedHorizontalLine(),
+              Container(
+                // padding: EdgeInsets.only(bottom: 20),
+                color: AppColor.cF6F7FF,
+                alignment: Alignment.center,
+                height: 86,
+                child: Row(
 
-                children: [
-                  Expanded(
-                    child: Column(
+                  children: [
+                    Expanded(
+                      child: Column(
 
-                      mainAxisAlignment:MainAxisAlignment.center ,
-                      children: [
-                        ImageView(height: 23, width: 23, path: Assets.iconsPhone),
-                        Text("+974 7048 7070", style: w500_12a()),
-                      ],
+                        mainAxisAlignment:MainAxisAlignment.center ,
+                        children: [
+                          ImageView(height: 23, width: 23, path: Assets.iconsPhone),
+                          Text("+974 7048 7070", style: w500_12a()),
+                        ],
+                      ),
+                    ),
+                    DotedVerticalLine(),
+                    // Container(height: Get.height, width: 1, color: AppColor.c142293.withOpacity(0.10)),
+
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment:MainAxisAlignment.center ,
+                        children: [
+                          ImageView(height: 23, width: 23, path: Assets.iconsIcAtSign),
+                          Text("info@hiwash.com", style: w500_12a()),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            ],
+          ),
+        ),
+        body: Column(
+          children: [
+         /*   Stack(
+              alignment: Alignment.bottomCenter,
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: AppColor.c142293,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25),
                     ),
                   ),
-                  DotedVerticalLine(),
-                  // Container(height: Get.height, width: 1, color: AppColor.c142293.withOpacity(0.10)),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      iconLeft??  GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: ImageView(
+                          path: Assets.iconsIcArrow,
 
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment:MainAxisAlignment.center ,
-                      children: [
-                        ImageView(height: 23, width: 23, path: Assets.iconsIcAtSign),
-                        Text("info@hiwash.com", style: w500_12a()),
-                      ],
+                          height: 15,
+                          width: 15,
+                        ),
+                      ),
+                      Text(
+                        headingText??'',
+                        style: w700_16a(color: AppColor.white),
+                      ),
+                      iconRight?? GestureDetector(
+                        onTap: () {
+                          _scaffoldKey.currentState?.openDrawer();
+                        },
+                        child: ImageView(
+                          height: 23,
+                          width: 23,
+                          path: Assets.iconsIcMessage,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),*/
+
+
+
+
+             Stack(
+              alignment: Alignment.bottomCenter,
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: AppColor.blue,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25),
                     ),
                   ),
-                ],
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 40,
+                    bottom: 20,
+                  ),
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      iconLeft??  GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: ImageView(
+                            path: Assets.iconsIcArrow,
+
+                            height: 15,
+                            width: 15,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        headingText??'',
+                        style: w700_16a(color: AppColor.white),
+                      ),
+                      iconRight?? GestureDetector(
+                        onTap: () {
+                          _scaffoldKey.currentState?.openDrawer();
+                        },
+                        child: ImageView(
+                          height: 23,
+                          width: 23,
+                          path: Assets.iconsIcMessage,
+                        ),
+                      ),
+                    ],
+                  ), /*Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(""),
+                      Text(
+                        "Hello, Ibrahim",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: ImageView(
+                          path: Assets.iconsIcMessage,
+                          height: 23,
+                          width: 23,
+                        ),
+                      ),
+                    ],
+                  ),*/
+                ), childAppBar??SizedBox()
+              ],
+            ),
+
+            5.heightSizeBox,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: padding??EdgeInsets.symmetric(horizontal: 16),
+                  child: child
+                ),
               ),
             ),
-
           ],
         ),
-      ),
-      body: Column(
-        children: [
-       /*   Stack(
-            alignment: Alignment.bottomCenter,
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  color: AppColor.c142293,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25),
-                  ),
-                ),
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    iconLeft??  GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: ImageView(
-                        path: Assets.iconsIcArrow,
-
-                        height: 15,
-                        width: 15,
-                      ),
-                    ),
-                    Text(
-                      headingText??'',
-                      style: w700_16a(color: AppColor.white),
-                    ),
-                    iconRight?? GestureDetector(
-                      onTap: () {
-                        _scaffoldKey.currentState?.openDrawer();
-                      },
-                      child: ImageView(
-                        height: 23,
-                        width: 23,
-                        path: Assets.iconsIcMessage,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),*/
-
-
-
-
-           Stack(
-            alignment: Alignment.bottomCenter,
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  color: AppColor.blue,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25),
-                  ),
-                ),
-                padding: EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  top: 40,
-                  bottom: 20,
-                ),
-                child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    iconLeft??  GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: ImageView(
-                        path: Assets.iconsIcArrow,
-
-                        height: 15,
-                        width: 15,
-                      ),
-                    ),
-                    Text(
-                      headingText??'',
-                      style: w700_16a(color: AppColor.white),
-                    ),
-                    iconRight?? GestureDetector(
-                      onTap: () {
-                        _scaffoldKey.currentState?.openDrawer();
-                      },
-                      child: ImageView(
-                        height: 23,
-                        width: 23,
-                        path: Assets.iconsIcMessage,
-                      ),
-                    ),
-                  ],
-                ), /*Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(""),
-                    Text(
-                      "Hello, Ibrahim",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: ImageView(
-                        path: Assets.iconsIcMessage,
-                        height: 23,
-                        width: 23,
-                      ),
-                    ),
-                  ],
-                ),*/
-              ), childAppBar??SizedBox()
-            ],
-          ),
-
-          15.heightSizeBox,
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: padding??EdgeInsets.symmetric(horizontal: 16),
-                child: child
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

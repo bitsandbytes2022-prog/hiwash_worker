@@ -55,7 +55,7 @@ class AppDialog extends StatelessWidget {
                         Get.back();
                       },
                       child: Container(
-                        padding: EdgeInsets.only(right: 18, top: 10),
+                        padding: EdgeInsets.only(right: 21, top: 18),
                         child: ImageView(
                           path: Assets.iconsIcClose,
                           height: 28,

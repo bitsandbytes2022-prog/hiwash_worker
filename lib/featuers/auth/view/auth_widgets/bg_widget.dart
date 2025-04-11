@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hiwash_worker/route/route_strings.dart';
 
 import '../../../../styling/app_color.dart';
 import '../../../../styling/app_font_anybody.dart';
@@ -27,7 +28,7 @@ class BgWidget extends StatelessWidget {
                 right: 16,
                 child: GestureDetector(
                   onTap: () {
-                   // Get.offAllNamed(RouteStrings.signUpScreen);
+                    Get.toNamed(RouteStrings.loginScreen);
                   },
                   child: Text("skip", style: w400_16a(color: AppColor.white)),
                 ),

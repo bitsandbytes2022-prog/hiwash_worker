@@ -76,14 +76,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final List<Widget> filledImages = [
       fillNavigationImage(image: Assets.iconsIcHomeFill),
-      fillNavigationImage(image: Assets.iconsIcUsersFill),
+      fillNavigationImage(image: Assets.iconsIcRewardFill),
       fillNavigationImage(image: Assets.iconsIcNotificationFill),
       ProfileImageView(isVisibleStack: false),
     ];
 
     final List<Widget> outlineImages = [
       ImageView(path: Assets.iconsIcHome, height: 23, width: 23),
-      ImageView(path: Assets.iconsIcUsers, height: 23, width: 23),
+      ImageView(path: Assets.iconsTrophy, height: 23, width: 23),
       ImageView(path: Assets.iconsIcNotification, height: 23, width: 23),
       ProfileImageView(isVisibleStack: false),
     ];
@@ -146,7 +146,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                      decoration: BoxDecoration(
                        color:
                        !controller.isWashSelected.value
-                           ? Colors.white
+                           ?AppColor.cF6F7FF
                            : Colors.transparent,
                        borderRadius: BorderRadius.only(
                          topLeft: Radius.circular(10),

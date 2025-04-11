@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                 onTap: () {
                   //Get.offNamed(RouteStrings.dashboardScreen);
                   if (formKey.currentState?.validate() ?? false) {
-                    Get.offNamed(RouteStrings.dashboardScreen);
+                    Get.offAllNamed(RouteStrings.dashboardScreen);
                   }
                 },
               ),

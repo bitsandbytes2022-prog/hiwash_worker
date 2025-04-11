@@ -42,6 +42,7 @@ class Assets {
   static const String iconsIcQr = 'assets/icons/ic_qr.png';
   static const String iconsIcQrScanner = 'assets/icons/ic_qr_scanner.png';
   static const String iconsIcReward = 'assets/icons/ic_reward.png';
+  static const String iconsIcRewardFill = 'assets/icons/ic_reward_fill.png';
   static const String iconsIcRewardWithoutColor = 'assets/icons/ic_reward_without_color.png';
   static const String iconsIcSent = 'assets/icons/ic_sent.png';
   static const String iconsIcStar = 'assets/icons/ic_star.png';
@@ -57,6 +58,7 @@ class Assets {
   static const String iconsMyLocation = 'assets/icons/my_location.png';
   static const String iconsPhone = 'assets/icons/Phone.png';
   static const String iconsTodayCar = 'assets/icons/today_car.png';
+  static const String iconsTrophy = 'assets/icons/Trophy.png';
   static const String images1 = 'assets/images/1.svg';
   static const String imagesAppLogo = 'assets/images/app_logo.png';
   static const String imagesAuthBg = 'assets/images/auth_bg.png';
@@ -86,5 +88,14 @@ class Assets {
   static const String imagesSubscriptionBg = 'assets/images/subscription_bg.png';
   static const String imagesTimeView = 'assets/images/time_view.png';
   static const String imagesWelcomeBg = 'assets/images/welcome_bg.png';
+  static const String poppinsW100 = 'assets/fonts/poppins/w100.ttf';
+  static const String poppinsW200 = 'assets/fonts/poppins/w200.ttf';
+  static const String poppinsW300 = 'assets/fonts/poppins/w300.ttf';
+  static const String poppinsW400 = 'assets/fonts/poppins/w400.ttf';
+  static const String poppinsW500 = 'assets/fonts/poppins/w500.ttf';
+  static const String poppinsW600 = 'assets/fonts/poppins/w600.ttf';
+  static const String poppinsW700 = 'assets/fonts/poppins/w700.ttf';
+  static const String poppinsW800 = 'assets/fonts/poppins/w800.ttf';
+  static const String poppinsW900 = 'assets/fonts/poppins/w900.ttf';
 
 }

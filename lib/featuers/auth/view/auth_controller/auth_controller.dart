@@ -28,7 +28,7 @@ var currentPage = 0.obs;
 void onPageChanged(int index) {
   currentPage.value = index;
 }
-  final List<String> headingText = [
+ /* final List<String> headingText = [
     "kEcoCleanWalletGreen","Wash & Win!","kEcoCleanWalletGreen",
 
 
@@ -37,7 +37,7 @@ void onPageChanged(int index) {
     "Get your car washed weekly at 100+ locations with exclusive offers.Missed washes still deducted.",
     "kExclusiveDealsWithEvery",
 
-  ];
+  ];*/
 
 
 String? validateEmpID(String? value) {
