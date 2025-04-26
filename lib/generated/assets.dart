@@ -44,6 +44,7 @@ class Assets {
   static const String iconsIcReward = 'assets/icons/ic_reward.png';
   static const String iconsIcRewardFill = 'assets/icons/ic_reward_fill.png';
   static const String iconsIcRewardWithoutColor = 'assets/icons/ic_reward_without_color.png';
+  static const String iconsIcSearch = 'assets/icons/ic_search.png';
   static const String iconsIcSent = 'assets/icons/ic_sent.png';
   static const String iconsIcStar = 'assets/icons/ic_star.png';
   static const String iconsIcSubscriptionPlan = 'assets/icons/ic_subscription_plan.png';
@@ -51,6 +52,7 @@ class Assets {
   static const String iconsIcTermscondition = 'assets/icons/ic_termscondition.png';
   static const String iconsIcTheme = 'assets/icons/ic_theme.png';
   static const String iconsIcTicket = 'assets/icons/ic_ticket.png';
+  static const String iconsIcUpWardArrow = 'assets/icons/ic_up_ward_arrow.png';
   static const String iconsIcUsers = 'assets/icons/ic_users.png';
   static const String iconsIcUsersFill = 'assets/icons/ic_users_fill.png';
   static const String iconsIcVerify = 'assets/icons/ic_verify.png';

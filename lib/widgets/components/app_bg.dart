@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hiwash_worker/generated/assets.dart';
-import 'package:hiwash_worker/styling/app_color.dart';
-import 'package:hiwash_worker/styling/app_font_anybody.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
 
+import '../../generated/assets.dart';
+import '../../styling/app_color.dart';
+import '../../styling/app_font_anybody.dart';
 import 'image_view.dart';
 
 class AppBg extends StatelessWidget {
@@ -50,45 +50,49 @@ class AppBg extends StatelessWidget {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: (){
-                  Get.back();
-                  print("kshdjkfh");
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 11, top: 50),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      if (showBackButton)Padding(
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 13,
+              Container(
+                //color: Colors.red,
+                child: GestureDetector(
+                  onTap: (){
+                    Get.back();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 11, top: 50),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        if (showBackButton)Padding(
+                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 13,
+                          ),
                         ),
-                      ),
-                      12.widthSizeBox,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if(heading)Text(headingText, style: w400_22a(color: AppColor.white)),
-                          Text(subText, style: w800_24a(color: AppColor.white)),
-                        ],
-                      ),
-                    ],
+                        12.widthSizeBox,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            if(heading)Text(headingText, style: w400_22a(color: AppColor.white)),
+                            Text(subText, style: w800_24a(color: AppColor.white)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
               SingleChildScrollView(
                 child: Container(
+                  //color: Colors.red,
                   margin: EdgeInsets.only(top: 90),
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: [
                       Container(
+
                         width: Get.width,
                         padding: EdgeInsets.symmetric(horizontal: 30),
                         decoration: BoxDecoration(

@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:hiwash_worker/featuers/dashboard/second_drawer/help_desk_ticket_screen.dart';
 import 'package:hiwash_worker/featuers/today_wash/view/today_wash_screen.dart';
 
 
+import '../featuers/auth/view/login_otp_screen.dart';
 import '../featuers/auth/view/login_screen.dart';
 import '../featuers/auth/view/splash_screen.dart';
 import '../featuers/auth/view/welcome_screen.dart';
+import '../featuers/dashboard/second_drawer/faq_screen.dart';
+import '../featuers/dashboard/second_drawer/step_by_step_guide_detail_screen.dart';
+import '../featuers/dashboard/second_drawer/step_by_step_guide_screen.dart';
 import '../featuers/dashboard/view/dashbord_screen.dart';
 import '../featuers/subscription/view/enter_card_detail_screen.dart';
 import '../featuers/subscription/view/payment_success_screen.dart';
@@ -34,6 +39,10 @@ class Routes {
   name: RouteStrings.loginScreen,
   page: () => LoginScreen(),
  ),
+    GetPage(
+  name: RouteStrings.loginOtpScreen,
+  page: () => LoginOtpScreen(),
+ ),
 
 
 
@@ -53,6 +62,25 @@ class Routes {
     GetPage(
   name: RouteStrings.dashboardScreen,
   page: () => DashboardScreen(),
+ ),
+
+    GetPage(
+  name: RouteStrings.faqScreen,
+  page: () => FaqScreen(),
+ ),
+
+    GetPage(
+  name: RouteStrings.helpDeskTicketScreen,
+  page: () => HelpDeskTicketScreen(),
+ ),
+    GetPage(
+  name: RouteStrings.stepByStepGuideScreen,
+  page: () => StepByStepGuideScreen(),
+ ),
+
+  GetPage(
+  name: RouteStrings.stepByStepGuideDetailScreen,
+  page: () => StepByStepGuideDetailScreen(),
  ),
 
 
