@@ -87,8 +87,8 @@ class QrScreen extends StatelessWidget {
           Obx(() => Column(
             children: [
               Text(
-                controller.scanUrl.value.isNotEmpty
-                    ? 'Scanned URL: ${controller.scanUrl.value}'
+                controller.customerId.value.isNotEmpty
+                    ? 'Customer ID: ${controller.customerId.value}'
                     : 'Scan a QR code',
                 textAlign: TextAlign.center,
                 style: TextStyle(

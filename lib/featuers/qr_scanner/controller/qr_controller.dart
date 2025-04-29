@@ -1,3 +1,129 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hiwash_worker/route/route_strings.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
+
+import '../../../network_manager/local_storage.dart';
+import '../../../network_manager/repository.dart';
+
+class QrController extends GetxController with GetTickerProviderStateMixin {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  QRViewController? qrController;
+
+  RxString scanUrl = ''.obs;
+  RxString customerId = ''.obs;
+  RxString internetStatus = ''.obs;
+  RxBool hasScanned = false.obs;
+
+  late AnimationController animationController;
+  late Animation<double> animation;
+  final LocalStorage localStorage = LocalStorage();
+
+  var isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkInternetConnection();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat(reverse: true);
+
+    animation = Tween<double>(begin: 0, end: 150).animate(animationController);
+
+    // Resume camera if controller is available
+    qrController?.resumeCamera();
+  }
+
+  void checkInternetConnection() {
+    Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      if (result.contains(ConnectivityResult.mobile) || result.contains(ConnectivityResult.wifi)) {
+        internetStatus.value = "";
+      } else {
+        internetStatus.value = "Internet is not available";
+      }
+    });
+  }
+
+  void onQRViewCreated(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScanned.value) {
+        final scannedCode = scanData.code ?? '';
+        scanUrl.value = scannedCode;
+        hasScanned.value = true;
+
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            String id = decodedToken['CustomerId'];
+            customerId.value = id;
+
+            print("Extracted CustomerId: $id");
+
+            await localStorage.saveCustomerId(id);
+
+            await validateWashQr(id).then((value) {
+              clearScan(); // 🧹 Reset everything
+              Get.offAllNamed(RouteStrings.dashboardScreen);
+            });
+          } catch (e) {
+            Get.snackbar("Error", "Failed to decode JWT: $e");
+          }
+        } else {
+          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
+        }
+      }
+    });
+  }
+
+  void clearScan() {
+    scanUrl.value = '';
+    customerId.value = '';
+    hasScanned.value = false;
+
+    qrController?.resumeCamera();
+    animationController.repeat(reverse: true);
+  }
+
+  Future<dynamic> validateWashQr(String customerId) async {
+    Map<String, dynamic> requestBody = {"customerId": customerId};
+    try {
+      isLoading.value = true;
+      var response = await Repository().validateWashQrRepo(requestBody);
+      print("Value received in controller validateWashQr: $response");
+      return response;
+    } catch (e) {
+      print("Error in controller while validating QR: $e");
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  @override
+  void onClose() {
+    qrController?.dispose();
+    animationController.dispose();
+    super.onClose();
+  }
+}
+
+
+/*
 // qr_controller.dart
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +210,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   }
 
 
+*/
 /*  void onQRViewCreated(QRViewController controller) {
     qrController = controller;
 
@@ -98,7 +225,8 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
         controller.pauseCamera();
       }
     });
-  }*/
+  }*//*
+
 
   void clearScan() {
     scanUrl.value = '';
@@ -136,3 +264,4 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
 
 }
+*/
