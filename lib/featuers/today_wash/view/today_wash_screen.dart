@@ -24,6 +24,8 @@ class TodayWashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var todayWashListData =
+        controller.todayWashSummaryModel.value?.data?.summary;
     return Stack(
       children: [
         Obx(
@@ -35,20 +37,11 @@ class TodayWashScreen extends StatelessWidget {
                       children: [
                         15.heightSizeBox,
                         GestureDetector(
-                      /*    onTap: () {
-                            showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AppDialog(
-                                  padding: EdgeInsets.zero,
-                                  // margin: EdgeInsets.symmetric(horizontal: 16),
-                                  child: scanDialog(),
-                                );
-                              },
-                            );
-                          },*/
-                          child: todayWashes(),
+                          child: todayWashes(
+                            todayWashListData?.totalWashes.toString(),
+                            todayWashListData?.remaining.toString(),
+                            todayWashListData?.completed.toString(),
+                          ),
                         ),
                         21.heightSizeBox,
 
@@ -232,7 +225,11 @@ class TodayWashScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ProfileImageView(radius: 25, radiusStack: 6,isVisibleStack:index%2==0? true:false,),
+          ProfileImageView(
+            radius: 25,
+            radiusStack: 6,
+            isVisibleStack: index % 2 == 0 ? true : false,
+          ),
           15.widthSizeBox,
 
           Expanded(
@@ -300,7 +297,11 @@ class TodayWashScreen extends StatelessWidget {
     );
   }
 
-  Widget todayWashes() {
+  Widget todayWashes(
+    String? totalWashTest,
+    String? remainingWashTest,
+    String? completedWashTest,
+  ) {
     return Container(
       height: 151,
       decoration: BoxDecoration(
@@ -331,7 +332,7 @@ class TodayWashScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      "10",
+                      totalWashTest ?? ''.tr,
                       style: w700_27a(
                         color: AppColor.white,
                       ).copyWith(fontSize: 47),
@@ -367,7 +368,10 @@ class TodayWashScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 19, top: 10),
                       child: Column(
                         children: [
-                          Text("4", style: w500_24a(color: AppColor.white)),
+                          Text(
+                            completedWashTest ?? "".tr,
+                            style: w500_24a(color: AppColor.white),
+                          ),
                           Text(
                             "Complete",
                             style: w500_12p(
@@ -387,7 +391,10 @@ class TodayWashScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 19, bottom: 10),
                       child: Column(
                         children: [
-                          Text("6", style: w500_24a(color: AppColor.white)),
+                          Text(
+                            remainingWashTest ?? "".tr,
+                            style: w500_24a(color: AppColor.white),
+                          ),
                           Text(
                             "kRemaining".tr,
                             style: w500_12p(
@@ -503,6 +510,4 @@ class TodayWashScreen extends StatelessWidget {
       ],
     );
   }
-
-
 }

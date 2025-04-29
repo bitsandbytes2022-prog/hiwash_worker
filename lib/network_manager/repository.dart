@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-
+import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
 
 import '../featuers/auth/model/get_token_model.dart';
 import '../featuers/auth/model/send_otp_model.dart';
 import '../featuers/auth/model/sign_up_model.dart';
-import '../featuers/dashboard/model/get_customer_data_model.dart';
+import '../featuers/dashboard/model/get_worker_model.dart';
 
 import '../featuers/dashboard/view/widget/second_drawer/model/faq_response_model.dart';
 import '../featuers/dashboard/view/widget/second_drawer/model/guides_response_model.dart';
@@ -16,7 +16,8 @@ import 'local_storage.dart';
 class Repository {
   final DioHelper dioHelper = DioHelper();
   final LocalStorage localStorage = LocalStorage();
-    Future<SendOtpModel> sendOtpRepo(Object requestBody) async {
+
+  Future<SendOtpModel> sendOtpRepo(Object requestBody) async {
     print(" sendOtp body--->: $requestBody");
     print(" sendOtp url--->: ${ApiConstant.sendOtp}");
 
@@ -27,7 +28,6 @@ class Repository {
     print("SendOtp Response--->: $response");
     return SendOtpModel.fromJson(response);
   }
-
 
   Future<GetTokenModel> getTokens(Object requestBody) async {
     print("body--->: $requestBody");
@@ -42,8 +42,7 @@ class Repository {
     return GetTokenModel.fromJson(response);
   }
 
-
-  Future<GetWorkerModel> getCustomerData(int id) async {
+  Future<GetWorkerModel> getWorkerData(int id) async {
     print(" GetWorkerModel url--->:${ApiConstant.getCustomerId(id)}");
     var response = await dioHelper.get(
       url: ApiConstant.getCustomerId(id),
@@ -55,6 +54,19 @@ class Repository {
   }
 
 
+
+/*
+  Future<GetCustomerData> getCustomerData(int id) async {
+    print("url dss--->:${ApiConstant.getCustomerId(id)}");
+    var response = await dioHelper.get(
+      url: ApiConstant.getCustomerId(id),
+      isAuthRequired: true,
+    );
+    print("getCustomerData--->${response.toString()}");
+
+    return GetCustomerData.fromJson(response);
+  }
+*/
 
   Future<FaqResponseModel> getFaq(int entityType) async {
     Map<String, dynamic> response = await dioHelper.get(
@@ -84,7 +96,7 @@ class Repository {
     return TermsAndConditionsResponseModel.fromJson(response);
   }
 
-  Future<void> uploadProfilePicture( requestBody) async {
+  Future<void> uploadProfilePicture(requestBody) async {
     try {
       final response = await dioHelper.post(
         url: ApiConstant.uploadProfileImage,
@@ -110,8 +122,7 @@ class Repository {
     }
   }
 
-
-  Future<dynamic> validateWashQrRepo( Object requestBody) async {
+  Future<dynamic> validateWashQrRepo(Object requestBody) async {
     try {
       final response = await dioHelper.post(
         url: ApiConstant.validateWashQr,
@@ -124,4 +135,12 @@ class Repository {
     }
   }
 
+  Future<TodayWashSummaryModel> todayWashSummaryRepo() async {
+    var response = await dioHelper.get(
+      url: ApiConstant.todayWashSummary,
+      isAuthRequired: true,
+    );
+
+    return TodayWashSummaryModel.fromJson(response);
+  }
 }

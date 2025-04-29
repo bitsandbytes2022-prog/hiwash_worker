@@ -13,6 +13,7 @@ static  getTermsAndConditions(int entityType)=>"/content/termsandconditions?enti
 static const uploadProfileImage="$baseUrl/worker/upload-profile-picture";
 static const uploadProfile="$baseUrl/worker/update-profile";
 static const validateWashQr="$baseUrl/worker/validate-wash-qr";
+static const todayWashSummary="$baseUrl/worker/wash-summary";
 
 
 

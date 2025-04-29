@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
 import '../../../network_manager/utils/api_response.dart';
-import '../model/get_customer_data_model.dart';
+import '../model/get_worker_model.dart';
 
 class DashboardController extends GetxController {
   RxBool loading = false.obs;
@@ -33,7 +33,7 @@ class DashboardController extends GetxController {
   Future<GetWorkerModel?> getCustomerDataById(int id) async {
     // loading = true;\
     try {
-      getWorkerModel.value = await Repository().getCustomerData(id);
+      getWorkerModel.value = await Repository().getWorkerData(id);
       // loading = false;
 
       getWorkerModel.value;
