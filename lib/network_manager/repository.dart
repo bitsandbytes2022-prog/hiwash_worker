@@ -4,6 +4,7 @@ import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model
 import '../featuers/auth/model/get_token_model.dart';
 import '../featuers/auth/model/send_otp_model.dart';
 import '../featuers/auth/model/sign_up_model.dart';
+import '../featuers/dashboard/model/get_customer_data_model.dart';
 import '../featuers/dashboard/model/get_worker_model.dart';
 
 import '../featuers/dashboard/view/widget/second_drawer/model/faq_response_model.dart';
@@ -55,7 +56,6 @@ class Repository {
 
 
 
-/*
   Future<GetCustomerData> getCustomerData(int id) async {
     print("url dss--->:${ApiConstant.getCustomerId(id)}");
     var response = await dioHelper.get(
@@ -66,7 +66,6 @@ class Repository {
 
     return GetCustomerData.fromJson(response);
   }
-*/
 
   Future<FaqResponseModel> getFaq(int entityType) async {
     Map<String, dynamic> response = await dioHelper.get(

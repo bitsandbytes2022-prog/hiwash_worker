@@ -21,7 +21,7 @@ class DashboardController extends GetxController {
     if (userId != null) {
       final int? parsedId = int.tryParse(userId!);
       if (parsedId != null && parsedId > 0) {
-        getCustomerDataById(parsedId);
+        getWorkerDataById(parsedId);
       } else {
         print("Invalid or unparsable user ID: $userId");
       }
@@ -30,16 +30,13 @@ class DashboardController extends GetxController {
     }
   }
 
-  Future<GetWorkerModel?> getCustomerDataById(int id) async {
-    // loading = true;\
+  Future<GetWorkerModel?> getWorkerDataById(int id) async {
     try {
       getWorkerModel.value = await Repository().getWorkerData(id);
-      // loading = false;
 
       getWorkerModel.value;
       update();
     } catch (error) {
-      // loading = false;
       print("Error fetching customer data: $error");
       return null;
     }
@@ -48,20 +45,7 @@ class DashboardController extends GetxController {
 
   var isLoading = false.obs;
 
-  Future<dynamic> sendOtp(String phoneNumber) async {
-    Map<String, dynamic> requestBody = {"customerId": phoneNumber};
-    try {
-      isLoading.value = true;
-      var response = await Repository().validateWashQrRepo(requestBody);
-      print("Value received in controller sendOtp: $response");
-      return response;
-    } catch (e) {
-      print("Error in controller while sending OTP: $e");
-      return null;
-    } finally {
-      isLoading.value = false;
-    }
-  }
+
 
   /*
   Future<ApiResponse?> getRating(
