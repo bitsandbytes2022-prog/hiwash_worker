@@ -2,6 +2,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hiwash_worker/route/route_strings.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 import '../../../network_manager/local_storage.dart';
@@ -46,8 +48,43 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       }
     });
   }
-
   void onQRViewCreated(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScanned.value) {
+        final scannedCode = scanData.code ?? '';
+        scanUrl.value = scannedCode;
+        hasScanned.value = true;
+
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            String customerId = decodedToken['CustomerId'];
+
+            print("Extracted CustomerId: $customerId");
+
+            final localStorage = LocalStorage();
+            await localStorage.saveCustomerId(customerId);
+
+            await validateWashQr(customerId).then((value){
+              Get.offAllNamed(RouteStrings.dashboardScreen);
+            });
+          } catch (e) {
+            Get.snackbar("Error", "Failed to decode JWT: $e");
+          }
+        } else {
+          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
+        }
+      }
+    });
+  }
+
+
+/*  void onQRViewCreated(QRViewController controller) {
     qrController = controller;
 
     controller.scannedDataStream.listen((scanData) {
@@ -61,7 +98,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
         controller.pauseCamera();
       }
     });
-  }
+  }*/
 
   void clearScan() {
     scanUrl.value = '';
