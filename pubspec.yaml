@@ -58,6 +58,8 @@ dependencies:
   webview_flutter: ^4.11.0
   intl: ^0.20.2
   cached_network_image: ^3.4.1
+  scanning_effect: ^1.0.7
+  jwt_decoder: ^2.0.1
 
 
 dev_dependencies:

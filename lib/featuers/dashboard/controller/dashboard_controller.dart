@@ -11,8 +11,8 @@ class DashboardController extends GetxController {
   Rxn<ApiResponse> apiResponse = Rxn<ApiResponse>();
   int userRating = 0;
   final TextEditingController commentController = TextEditingController();
-Rxn<GetWorkerModel> getWorkerModel=Rxn();
-  final String? userId =  LocalStorage().getUserId();
+  Rxn<GetWorkerModel> getWorkerModel = Rxn();
+  final String? userId = LocalStorage().getUserId();
 
   @override
   void onInit() {
@@ -33,11 +33,11 @@ Rxn<GetWorkerModel> getWorkerModel=Rxn();
   Future<GetWorkerModel?> getCustomerDataById(int id) async {
     // loading = true;\
     try {
-       getWorkerModel.value= await Repository().getCustomerData(id);
+      getWorkerModel.value = await Repository().getCustomerData(id);
       // loading = false;
 
-       getWorkerModel.value;
-       update();
+      getWorkerModel.value;
+      update();
     } catch (error) {
       // loading = false;
       print("Error fetching customer data: $error");
@@ -46,7 +46,24 @@ Rxn<GetWorkerModel> getWorkerModel=Rxn();
     return null;
   }
 
-/*
+  var isLoading = false.obs;
+
+  Future<dynamic> sendOtp(String phoneNumber) async {
+    Map<String, dynamic> requestBody = {"customerId": phoneNumber};
+    try {
+      isLoading.value = true;
+      var response = await Repository().validateWashQrRepo(requestBody);
+      print("Value received in controller sendOtp: $response");
+      return response;
+    } catch (e) {
+      print("Error in controller while sending OTP: $e");
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /*
   Future<ApiResponse?> getRating(
     String rating,
     String workerId,

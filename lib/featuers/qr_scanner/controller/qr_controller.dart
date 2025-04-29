@@ -1,0 +1,101 @@
+// qr_controller.dart
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
+
+import '../../../network_manager/local_storage.dart';
+import '../../../network_manager/repository.dart';
+
+class QrController extends GetxController with GetTickerProviderStateMixin {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  QRViewController? qrController;
+  RxString scanUrl = RxString('');
+  RxString internetStatus = ''.obs;
+  RxBool hasScanned = false.obs;
+
+  late AnimationController animationController;
+  late Animation<double> animation;
+  final LocalStorage localStorage = LocalStorage();
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkInternetConnection();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat(reverse: true);
+
+    animation = Tween<double>(begin: 0, end: 150).animate(animationController);
+  }
+
+  void checkInternetConnection() {
+    Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      if (result.contains(ConnectivityResult.mobile) || result.contains(ConnectivityResult.wifi)) {
+        internetStatus.value = "";
+      } else {
+        internetStatus.value = "Internet is not available";
+      }
+    });
+  }
+
+  void onQRViewCreated(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) {
+      if (!hasScanned.value) {
+        print("Scanned QR Data: ${scanData.code}");
+
+        scanUrl.value = scanData.code ?? '';
+        hasScanned.value = true;
+
+        animationController.stop();
+        controller.pauseCamera();
+      }
+    });
+  }
+
+  void clearScan() {
+    scanUrl.value = '';
+    hasScanned.value = false;
+
+    qrController?.resumeCamera();
+    animationController.repeat(reverse: true);
+  }
+
+  @override
+  void onClose() {
+    qrController?.dispose();
+    animationController.dispose();
+    super.onClose();
+  }
+  var isLoading = false.obs;
+
+
+
+  Future<dynamic> validateWashQr(String customerId) async {
+    Map<String, dynamic> requestBody = {"customerId": customerId};
+    try {
+      isLoading.value = true;
+      var response = await Repository().validateWashQrRepo(requestBody);
+      print("Value received in controller sendOtp: $response");
+      return response;
+    } catch (e) {
+      print("Error in controller while sending OTP: $e");
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
+
+}

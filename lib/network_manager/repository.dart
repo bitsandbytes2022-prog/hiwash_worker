@@ -42,14 +42,6 @@ class Repository {
     return GetTokenModel.fromJson(response);
   }
 
-  Future<SignUpModel> signUp(Object requestBody) async {
-    var response = await dioHelper.post(
-      url: ApiConstant.signUp,
-      requestBody: requestBody,
-    );
-    print("Sign Response--->: $response");
-    return SignUpModel.fromJson(response);
-  }
 
   Future<GetWorkerModel> getCustomerData(int id) async {
     print(" GetWorkerModel url--->:${ApiConstant.getCustomerId(id)}");
@@ -62,22 +54,7 @@ class Repository {
     return GetWorkerModel.fromJson(response);
   }
 
-/*  Future<GetSubscriptionModel> getSubscription() async {
-    Map<String, dynamic> response = await dioHelper.get(
-      url: ApiConstant.getSubscription,
-      isAuthRequired: true,
-    );
-    return GetSubscriptionModel.fromJson(response);
-  }
 
-  Future<ApiResponse> getSubscriptionMembership(Object requestBody) async {
-    Map<String, dynamic> response = await dioHelper.post(
-      url: ApiConstant.baseUrl + ApiConstant.getSubscriptionMembership,
-      isAuthRequired: true,
-      requestBody: requestBody,
-    );
-    return ApiResponse.fromJson(response);
-  }*/
 
   Future<FaqResponseModel> getFaq(int entityType) async {
     Map<String, dynamic> response = await dioHelper.get(
@@ -107,58 +84,6 @@ class Repository {
     return TermsAndConditionsResponseModel.fromJson(response);
   }
 
-
-  /*Future<GetOfferResponseModel> getAllOffer() async {
-    print("url--->:${ApiConstant.getOffers}");
-    Map<String, dynamic> response = await dioHelper.get(
-      url: ApiConstant.getOffers,
-      isAuthRequired: true,
-    );
-    print("Response--->: $response");
-    return GetOfferResponseModel.fromJson(response);
-  }
-
-  Future<GetOffersByIdModel> getOfferById(int id) async {
-    print("url--->:${ApiConstant.getOffersById}");
-    Map<String, dynamic> response = await dioHelper.get(
-      url: ApiConstant.getOffersById(id),
-      isAuthRequired: true,
-    );
-    print("Response--->: $response");
-    return GetOffersByIdModel.fromJson(response);
-  }
-
-  Future<ApiResponse> rating(Object requestBody) async {
-    print("Rating body--->: $requestBody");
-    Map<String, dynamic> response = await dioHelper.post(
-      url: ApiConstant.rating,
-      requestBody: requestBody,
-      isAuthRequired: true,
-    );
-    print("Rating Response--->: $response");
-    return ApiResponse.fromJson(response);
-  }
-
-  Future<GetOfferCategoriesModel> getOfferCategories() async {
-    print("url--->:${ApiConstant.offerCategories}");
-    Map<String, dynamic> response = await dioHelper.get(
-      url: ApiConstant.getOffers,
-      isAuthRequired: true,
-    );
-    print("Response--->: $response");
-    return GetOfferCategoriesModel.fromJson(response);
-  }
-
-  Future<WashSummaryModel> washSummary() async {
-    print("washSummary url--->:${ApiConstant.washSummary}");
-    Map<String, dynamic> response = await dioHelper.get(
-      url: ApiConstant.washSummary,
-      isAuthRequired: true,
-    );
-    print("Response--->: $response");
-    return WashSummaryModel.fromJson(response);
-  }*/
-
   Future<void> uploadProfilePicture( requestBody) async {
     try {
       final response = await dioHelper.post(
@@ -182,6 +107,20 @@ class Repository {
       print("Save profile success: $response");
     } catch (e) {
       print("Save profile failed: $e");
+    }
+  }
+
+
+  Future<dynamic> validateWashQrRepo( Object requestBody) async {
+    try {
+      final response = await dioHelper.post(
+        url: ApiConstant.validateWashQr,
+        requestBody: requestBody,
+        isAuthRequired: true,
+      );
+      print("validateWashQr success: $response");
+    } catch (e) {
+      print("validateWashQr failed: $e");
     }
   }
 
