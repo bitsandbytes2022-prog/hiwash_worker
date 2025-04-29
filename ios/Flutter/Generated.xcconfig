@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/amitkumar/Documents/flutter 2
-FLUTTER_APPLICATION_PATH=/Users/amitkumar/StudioProjects/hiwash_worker
+FLUTTER_ROOT=/Users/amitkumar/Desktop/flutter projects/flutter
+FLUTTER_APPLICATION_PATH=/Users/amitkumar/AndroidStudioProjects/hiwash_worker
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build

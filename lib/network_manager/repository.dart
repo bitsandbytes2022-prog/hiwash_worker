@@ -5,8 +5,9 @@ import '../featuers/auth/model/get_token_model.dart';
 import '../featuers/auth/model/send_otp_model.dart';
 import '../featuers/auth/model/sign_up_model.dart';
 import '../featuers/dashboard/model/get_customer_data_model.dart';
-import '../featuers/dashboard/second_drawer/model/faq_response_model.dart';
-import '../featuers/dashboard/second_drawer/model/guides_response_model.dart';
+
+import '../featuers/dashboard/view/widget/second_drawer/model/faq_response_model.dart';
+import '../featuers/dashboard/view/widget/second_drawer/model/guides_response_model.dart';
 import '../featuers/profile/model/terms_and_conditions_response_model.dart';
 import 'api_constant.dart';
 import 'dio_helper.dart';
@@ -26,50 +27,7 @@ class Repository {
     print("SendOtp Response--->: $response");
     return SendOtpModel.fromJson(response);
   }
-/*
-  Future<SendOtpModel?> sendOtpRepo(Map<String, dynamic> requestBody) async {
-    final dio = Dio();
 
-    try {
-      final response = await dio.post(ApiConstant.sendOtp, data: requestBody);
-
-      if (response.statusCode == 200) {
-        return SendOtpModel.fromJson(response.data);
-      } else {
-        // Handle unexpected status codes (non-200)
-        throw Exception('Failed to send OTP: ${response.statusCode}');
-      }
-    } on DioError catch (e) {
-      if (e.response != null) {
-        // Extract error data from the response
-        final errorData = e.response?.data['error'];
-
-        if (errorData != null) {
-          int errorCode = errorData['code']; // Get error code (e.g., 404)
-          String errorMessage = errorData['message']; // Get error message
-
-          if (errorCode == 404 && errorMessage == "Your account not found.") {
-            // Handle 'User not found' error
-            print("Error 404: $errorMessage");
-            throw Exception('User not found (404): $errorMessage');
-          } else {
-            // Handle other errors
-            print("Error: $errorMessage");
-            throw Exception('Failed to send OTP: $errorMessage');
-          }
-        }
-        // If no error data is found in the response, handle it
-        print("Unexpected error response: ${e.response?.data}");
-      } else {
-        print("Error sending request: ${e.message}");
-      }
-      throw Exception('Failed to send OTP: ${e.message}');
-    } catch (e) {
-      print("Error: $e");
-      throw Exception('Failed to send OTP: $e');
-    }
-  }
-*/
 
   Future<GetTokenModel> getTokens(Object requestBody) async {
     print("body--->: $requestBody");
@@ -93,15 +51,15 @@ class Repository {
     return SignUpModel.fromJson(response);
   }
 
-  Future<GetCustomerData> getCustomerData(int id) async {
-    print("url--->:${ApiConstant.getCustomerId(id)}");
+  Future<GetWorkerModel> getCustomerData(int id) async {
+    print(" GetWorkerModel url--->:${ApiConstant.getCustomerId(id)}");
     var response = await dioHelper.get(
       url: ApiConstant.getCustomerId(id),
       isAuthRequired: true,
     );
-    print("---->getCustomerData--->${response.toString()}");
+    print("---->GetWorkerModel--->${response.toString()}");
 
-    return GetCustomerData.fromJson(response);
+    return GetWorkerModel.fromJson(response);
   }
 
 /*  Future<GetSubscriptionModel> getSubscription() async {
@@ -201,15 +159,14 @@ class Repository {
     return WashSummaryModel.fromJson(response);
   }*/
 
-
   Future<void> uploadProfilePicture( requestBody) async {
     try {
-      final response = await dioHelper.uploadFile(
+      final response = await dioHelper.post(
         url: ApiConstant.uploadProfileImage,
         requestBody: requestBody,
         isAuthRequired: true,
       );
-     print("Upload success: $response");
+      print("Upload success: $response");
     } catch (e) {
       print("Upload failed: $e");
     }

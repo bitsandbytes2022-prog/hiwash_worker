@@ -1,14 +1,21 @@
-class GetCustomerData {
+import '../../../network_manager/api_constant.dart';
+
+class GetWorkerModel {
   bool? success;
   String? message;
-  Data? data;
+  List<Data>? data;
 
-  GetCustomerData({this.success, this.message, this.data});
+  GetWorkerModel({this.success, this.message, this.data});
 
-  GetCustomerData.fromJson(Map<String, dynamic> json) {
+  GetWorkerModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(new Data.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -16,129 +23,57 @@ class GetCustomerData {
     data['success'] = this.success;
     data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Data {
-  CustomerDetails? customerDetails;
-  SubscriptionDetails? subscriptionDetails;
+  int? id;
+  int? employeeId;
+  String? fullName;
+  int? locationId;
+  String? mobileNumber;
+  String? email;
+  String? address;
+  String? profilePicUrl;
 
-  Data({this.customerDetails, this.subscriptionDetails});
+  Data({
+    this.id,
+    this.employeeId,
+    this.fullName,
+    this.locationId,
+    this.mobileNumber,
+    this.email,
+    this.address,
+    this.profilePicUrl,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
-    customerDetails = json['customerDetails'] != null
-        ? new CustomerDetails.fromJson(json['customerDetails'])
-        : null;
-    subscriptionDetails = json['subscriptionDetails'] != null
-        ? new SubscriptionDetails.fromJson(json['subscriptionDetails'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.customerDetails != null) {
-      data['customerDetails'] = this.customerDetails!.toJson();
-    }
-    if (this.subscriptionDetails != null) {
-      data['subscriptionDetails'] = this.subscriptionDetails!.toJson();
-    }
-    return data;
-  }
-}
-
-class CustomerDetails {
-  int? id;
-  String? fullName;
-  String? email;
-  String? mobileNumber;
-  String? street;
-  String? zone;
-  String? building;
-  String? unit;
-  String? qrCodeUrl;
-
-  CustomerDetails(
-      {this.id,
-        this.fullName,
-        this.email,
-        this.mobileNumber,
-        this.street,
-        this.zone,
-        this.building,
-        this.unit,
-        this.qrCodeUrl});
-
-  CustomerDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    employeeId = json['employeeId'];
     fullName = json['fullName'];
-    email = json['email'];
+    locationId = json['locationId'];
     mobileNumber = json['mobileNumber'];
-    street = json['street'];
-    zone = json['zone'];
-    building = json['building'];
-    unit = json['unit'];
-    qrCodeUrl = json['qrCodeUrl'];
+    email = json['email'];
+    address = json['address'];
+    profilePicUrl =
+        json['profilePicUrl'] != null
+            ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}"
+            : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['employeeId'] = this.employeeId;
     data['fullName'] = this.fullName;
-    data['email'] = this.email;
+    data['locationId'] = this.locationId;
     data['mobileNumber'] = this.mobileNumber;
-    data['street'] = this.street;
-    data['zone'] = this.zone;
-    data['building'] = this.building;
-    data['unit'] = this.unit;
-    data['qrCodeUrl'] = this.qrCodeUrl;
-    return data;
-  }
-}
-
-class SubscriptionDetails {
-  int? subscriptionId;
-  String? startDate;
-  String? endDate;
-  String? subscriptionName;
-  int? duration;
-  bool? isPremium;
-  double? price;
-  String? currency;
-
-  SubscriptionDetails(
-      {this.subscriptionId,
-        this.startDate,
-        this.endDate,
-        this.subscriptionName,
-        this.duration,
-        this.isPremium,
-        this.price,
-        this.currency});
-
-  SubscriptionDetails.fromJson(Map<String, dynamic> json) {
-    subscriptionId = json['subscriptionId'];
-    startDate = json['startDate'];
-    endDate = json['endDate'];
-    subscriptionName = json['subscriptionName'];
-    duration = json['duration'];
-    isPremium = json['isPremium'];
-    price = json['price'];
-    currency = json['currency'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['subscriptionId'] = this.subscriptionId;
-    data['startDate'] = this.startDate.toString();
-    data['endDate'] = this.endDate.toString();
-    data['subscriptionName'] = this.subscriptionName;
-    data['duration'] = this.duration.toString();
-    data['isPremium'] = this.isPremium;
-    data['price'] = this.price.toString();
-    data['currency'] = this.currency;
+    data['email'] = this.email;
+    data['address'] = this.address;
+    data['profilePicUrl'] = this.profilePicUrl;
     return data;
   }
 }

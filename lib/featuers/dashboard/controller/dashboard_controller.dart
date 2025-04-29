@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
 import '../../../network_manager/utils/api_response.dart';
 import '../model/get_customer_data_model.dart';
@@ -10,38 +11,39 @@ class DashboardController extends GetxController {
   Rxn<ApiResponse> apiResponse = Rxn<ApiResponse>();
   int userRating = 0;
   final TextEditingController commentController = TextEditingController();
-Rxn<GetCustomerData> getCustomerData=Rxn();
-  //bool  loading=true;
+Rxn<GetWorkerModel> getWorkerModel=Rxn();
+  final String? userId =  LocalStorage().getUserId();
+
   @override
   void onInit() {
-    var customerId = Get.arguments;
-    if (customerId is int ) {
-      getCustomerDataById(customerId);
-    }/* else if (customerId is String) {
-    getCustomerDataById(customerId.toString());
-  }*/ else {
-      print("No valid customer ID provided");
+    super.onInit();
+
+    if (userId != null) {
+      final int? parsedId = int.tryParse(userId!);
+      if (parsedId != null && parsedId > 0) {
+        getCustomerDataById(parsedId);
+      } else {
+        print("Invalid or unparsable user ID: $userId");
+      }
+    } else {
+      print("User ID not found in local storage");
     }
   }
 
-
-  Future<GetCustomerData?> getCustomerDataById(int id) async {
+  Future<GetWorkerModel?> getCustomerDataById(int id) async {
     // loading = true;\
     try {
-       getCustomerData.value= await Repository().getCustomerData(id);
+       getWorkerModel.value= await Repository().getCustomerData(id);
       // loading = false;
 
-      if (getCustomerData.value?.data != null) {
-        int? customerId = getCustomerData.value?.data!.customerDetails?.id;
-        print("Customer ID: $customerId");
-      }
-
-      return getCustomerData.value;
+       getWorkerModel.value;
+       update();
     } catch (error) {
       // loading = false;
       print("Error fetching customer data: $error");
       return null;
     }
+    return null;
   }
 
 /*

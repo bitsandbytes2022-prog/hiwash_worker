@@ -4,11 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../generated/assets.dart';
 import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
 import '../../../route/route_strings.dart';
-import '../../../styling/app_color.dart';
 import '../model/get_token_model.dart';
 import '../model/send_otp_model.dart';
 import '../model/sign_up_model.dart';
@@ -21,6 +19,7 @@ class AuthController extends GetxController {
     pageController.addListener(() {
       onPageChanged(pageController.page!.round());
     });
+    checkLoginStatus();
     super.onInit();
   }
 
@@ -88,7 +87,16 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
-
+  void checkLoginStatus() {
+    String? token = LocalStorage().getToken();
+    if (token != null && token.isNotEmpty) {
+      isLoggedIn.value = true;
+      print("User already logged in ");
+    } else {
+      isLoggedIn.value = false;
+      print("User not logged in ");
+    }
+  }
   Future<SendOtpModel?> sendOtp(String phoneNumber) async {
     Map<String, dynamic> requestBody = {
       "mobileNumber": phoneNumber,
@@ -118,10 +126,15 @@ class AuthController extends GetxController {
     try {
       final value = await Repository().getTokens(requestBody);
       print(" Value received in controller token: $value");
-      getTokenModel = value;
-      LocalStorage token = LocalStorage();
-      token.saveToken(value.data?.token ?? '');
+      if (value.data?.token != null && value.data!.token!.isNotEmpty) {
+        LocalStorage tokenStorage = LocalStorage();
+        await tokenStorage.saveToken(value.data!.token!);
+        await tokenStorage.saveUserId(value.data!.id.toString());
 
+        isLoggedIn.value = true;
+      }
+
+      getTokenModel = value;
       return value;
     } catch (error) {
       print(" Error in controller send otp: $error");
@@ -130,39 +143,10 @@ class AuthController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  Future<SignUpModel?> signUp(
-      String fullName,
-      String phoneNumber,
-      String email,
-      String zone,
-      String street,
-      String building,
-      String unit,
-      ) async {
-    Map<String, dynamic> requestBody = {
-      "fullName": fullName,
-      "email": email,
-      "mobileNumber": phoneNumber,
-      "zone": zone,
-      "street": street,
-      "building": building,
-      "unit": unit,
-      "userType": "1",
-    };
-    print("Calling getToken with $phoneNumber");
-    isLoading.value = true;
-
-    try {
-      signUpModel = await Repository().signUp(requestBody);
-      print(" Value received in controller: $signUpModel");
-
-      return signUpModel;
-    } catch (error) {
-      print(" Error in controller send otp: $error");
-      return null;
-    } finally {
-      isLoading.value = false;
-    }
+  Future<void> logout() async {
+    await LocalStorage().removeToken();
+    isLoggedIn.value = false;
+    Get.offAllNamed(RouteStrings.welcomeScreen);
   }
+
 }

@@ -24,27 +24,48 @@ class GetTokenModel {
 
 class Data {
   int? id;
+  int? employeeId;
   String? fullName;
-  String? email;
+  int? locationId;
   String? mobileNumber;
+  String? email;
+  String? address;
+  String? profilePicUrl;
   String? token;
 
-  Data({this.id, this.fullName, this.email, this.mobileNumber, this.token});
+  Data(
+      {this.id,
+        this.employeeId,
+        this.fullName,
+        this.locationId,
+        this.mobileNumber,
+        this.email,
+        this.address,
+        this.profilePicUrl,
+        this.token});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    employeeId = json['employeeId'];
     fullName = json['fullName'];
-    email = json['email'];
+    locationId = json['locationId'];
     mobileNumber = json['mobileNumber'];
+    email = json['email'];
+    address = json['address'];
+    profilePicUrl = json['profilePicUrl'];
     token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['employeeId'] = this.employeeId;
     data['fullName'] = this.fullName;
+    data['locationId'] = this.locationId;
+    data['mobileNumber'] = this.mobileNumber;
     data['email'] = this.email;
-    data['mobileNumber'] = this.mobileNumber.toString();
+    data['address'] = this.address;
+    data['profilePicUrl'] = this.profilePicUrl;
     data['token'] = this.token;
     return data;
   }
