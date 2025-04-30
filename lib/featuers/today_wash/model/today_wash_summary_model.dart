@@ -1,3 +1,5 @@
+import '../../../network_manager/api_constant.dart';
+
 class TodayWashSummaryModel {
   bool? success;
   String? message;
@@ -30,7 +32,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     summary =
-    json['summary'] != null ? new Summary.fromJson(json['summary']) : null;
+        json['summary'] != null ? new Summary.fromJson(json['summary']) : null;
     if (json['washes'] != null) {
       washes = <Washes>[];
       json['washes'].forEach((v) {
@@ -78,25 +80,30 @@ class Washes {
   String? customerName;
   String? redeemedAt;
   bool? isCompleted;
-  Null? profilePicUrl;
+  String? profilePicUrl;
   int? rating;
   bool? isPremium;
 
-  Washes(
-      {this.id,
-        this.customerName,
-        this.redeemedAt,
-        this.isCompleted,
-        this.profilePicUrl,
-        this.rating,
-        this.isPremium});
+  Washes({
+    this.id,
+    this.customerName,
+    this.redeemedAt,
+    this.isCompleted,
+    this.profilePicUrl,
+    this.rating,
+    this.isPremium,
+  });
 
   Washes.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     customerName = json['customerName'];
     redeemedAt = json['redeemedAt'];
     isCompleted = json['isCompleted'];
-    profilePicUrl = json['profilePicUrl'];
+    profilePicUrl =
+        json['profilePicUrl'] != null
+            ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}"
+            : null;
+
     rating = json['rating'];
     isPremium = json['isPremium'];
   }

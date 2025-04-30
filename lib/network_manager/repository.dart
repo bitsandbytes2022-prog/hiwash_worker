@@ -56,7 +56,7 @@ class Repository {
 
 
 
-  Future<GetCustomerData> getCustomerData(int id) async {
+/*  Future<GetCustomerData> getCustomerData(int id) async {
     print("url dss--->:${ApiConstant.getCustomerId(id)}");
     var response = await dioHelper.get(
       url: ApiConstant.getCustomerId(id),
@@ -65,6 +65,24 @@ class Repository {
     print("getCustomerData--->${response.toString()}");
 
     return GetCustomerData.fromJson(response);
+  }*/
+  Future<GetCustomerData> getCustomerData(int id ) async {
+    print("url dss--->:${ApiConstant.getCustomerId(id)}");
+
+    final dio = Dio();
+String? local=LocalStorage().getScannedQrCode();
+    final String? accessToken = local;
+    dio.options.headers['Authorization'] = 'Bearer $accessToken';
+
+    try {
+      var response = await dio.get(ApiConstant.getCustomerId(id));
+      print("getCustomerData--->${response.toString()}");
+
+      return GetCustomerData.fromJson(response.data);
+    } catch (e) {
+      print("Error fetching customer data: $e");
+      rethrow;
+    }
   }
 
   Future<FaqResponseModel> getFaq(int entityType) async {

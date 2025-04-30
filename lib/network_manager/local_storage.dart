@@ -6,6 +6,7 @@ class LocalStorage {
   final String _tokenKey = 'auth_token';
   final String _userIdKey = 'user_id';
   final String _customerIdKey = 'customer_id';
+  final String _scannedQrCodeKey = 'scanned_qr_code';
 
 
   Future<void> saveToken(String token) async {
@@ -23,7 +24,11 @@ class LocalStorage {
   Future<void> saveCustomerId(String id) async {
     await _storage.write(_customerIdKey, id);
   }
+  Future<void> saveScannedQrCode(String qrCode) async {
+    await _storage.write(_scannedQrCodeKey, qrCode);
+  }
 
+  String? getScannedQrCode() => _storage.read(_scannedQrCodeKey);
   String? getCustomerId() => _storage.read(_customerIdKey);
   String? getUserId() => _storage.read(_userIdKey);
 

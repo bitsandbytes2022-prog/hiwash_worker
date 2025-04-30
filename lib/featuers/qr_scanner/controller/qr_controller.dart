@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
 import 'package:hiwash_worker/route/route_strings.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
@@ -20,12 +21,14 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
   final LocalStorage localStorage = LocalStorage();
+  WashStatusController washStatusController =Get.find();
 
   var isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+
     checkInternetConnection();
   }
 
@@ -40,7 +43,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
     animation = Tween<double>(begin: 0, end: 150).animate(animationController);
 
-    // Resume camera if controller is available
     qrController?.resumeCamera();
   }
 
@@ -69,6 +71,50 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
         if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
           try {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            print("ScanData----->${scanData.code}");
+            String id = decodedToken['CustomerId'];
+            customerId.value = id;
+
+            print("Extracted CustomerId: $id");
+
+            await localStorage.saveCustomerId(id);
+            await localStorage.saveScannedQrCode(scannedCode);
+
+            await validateWashQr(id).then((value) {
+
+              clearScan();
+              Get.offAllNamed(RouteStrings.dashboardScreen)?.then((val){
+                washStatusController.getTodayWashSummary();
+
+              });
+            });
+          } catch (e) {
+            Get.snackbar("Error", "Failed to decode JWT: $e");
+          }
+        } else {
+          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
+        }
+      }
+    });
+  }
+
+
+
+  void onQRViewCreated1(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScanned.value) {
+        final scannedCode = scanData.code ?? '';
+        scanUrl.value = scannedCode;
+        hasScanned.value = true;
+
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
             String id = decodedToken['CustomerId'];
             customerId.value = id;
 
@@ -76,10 +122,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
             await localStorage.saveCustomerId(id);
 
-            await validateWashQr(id).then((value) {
-              clearScan(); // 🧹 Reset everything
-              Get.offAllNamed(RouteStrings.dashboardScreen);
-            });
+
           } catch (e) {
             Get.snackbar("Error", "Failed to decode JWT: $e");
           }
