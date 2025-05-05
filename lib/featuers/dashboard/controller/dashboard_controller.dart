@@ -13,9 +13,10 @@ class DashboardController extends GetxController {
   int userRating = 0;
   final TextEditingController commentController = TextEditingController();
   Rxn<GetWorkerModel> getWorkerModel = Rxn();
-  Rxn<GetCustomerData> getCustomerData = Rxn();
+
   final String? userId = LocalStorage().getUserId();
-  final String?customerId=LocalStorage().getCustomerId();
+
+  //final String?customerId=LocalStorage().getCustomerId();
 
   @override
   void onInit() {
@@ -30,15 +31,6 @@ class DashboardController extends GetxController {
       }
     } else {
       print("User ID not found in local storage");
-    }
-
-    final String? customerId = LocalStorage().getCustomerId();
-    final String? scannedQrCode = LocalStorage().getScannedQrCode();
-
-    if (customerId != null) {
-      getCustomerDataById(int.parse(customerId),);
-    } else {
-      print("Customer ID not found in local storage");
     }
   }
 
@@ -57,22 +49,6 @@ class DashboardController extends GetxController {
 
   var isLoading = false.obs;
 
-
-  Future<GetCustomerData?> getCustomerDataById(int id,) async {
-    try {
-      getCustomerData.value = await Repository().getCustomerData(id);
-
-      if (getCustomerData.value?.data != null) {
-        int? customerId = getCustomerData.value?.data!.customerDetails?.id;
-        print("Customer ID: $customerId");
-      }
-
-      return getCustomerData.value;
-    } catch (error) {
-      print("Error fetching customer data: $error");
-      return null;
-    }
-  }
   /*
   Future<ApiResponse?> getRating(
     String rating,

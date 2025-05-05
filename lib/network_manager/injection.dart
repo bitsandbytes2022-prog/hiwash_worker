@@ -16,7 +16,7 @@ Dio getDio() {
         String apiEndPoint = options.path.split('/').last;
         printValue(tag: 'API URL:', '${options.uri}');
         printValue(tag: 'HEADER:$apiEndPoint-->', options.headers);
-       // printValue(tag: 'METHOD:$apiEndPoint-->', options.data);
+        printValue(tag: 'METHOD:$apiEndPoint-->', options.data);
 
         try {
           printValue(

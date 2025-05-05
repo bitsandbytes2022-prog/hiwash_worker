@@ -1,5 +1,3 @@
-
-
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -36,21 +34,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _currentDrawer = 'first';
-  final WashStatusController controller = Get.isRegistered<WashStatusController>()?Get.find():Get.put(WashStatusController());
+  final WashStatusController controller =
+      Get.isRegistered<WashStatusController>()
+          ? Get.find()
+          : Get.put(WashStatusController());
 
-  DashboardController dashboardController = Get.isRegistered<DashboardController>()?Get.find():Get.put(DashboardController());
+  DashboardController dashboardController =
+      Get.isRegistered<DashboardController>()
+          ? Get.find()
+          : Get.put(DashboardController());
   final List<Widget> _pages = [
     TodayWashScreen(),
     RewardScreen(),
     NotificationScreen(),
-
   ];
 
-  final List<String> _headings = [
-    "",
-    "Rewarded Customers",
-    "Notification’s",
-  ];
+  final List<String> _headings = ["", "Rewarded Customers", "Notification’s"];
 
   void _onItemTapped(int index) {
     if (index == 3) {
@@ -61,7 +60,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
     }
   }
-
 
   void _openDrawer(String drawerType) {
     setState(() {
@@ -81,43 +79,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
       fillNavigationImage(image: Assets.iconsIcRewardFill),
       fillNavigationImage(image: Assets.iconsIcNotificationFill),
       Container(
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           border: Border.all(color: AppColor.blue.withOpacity(0.2)),
         ),
         child: Obx(() {
-          final profilePicUrl = dashboardController
-              .getWorkerModel.value?.data?.first.profilePicUrl;
-
-          final hasValidUrl = profilePicUrl?.isNotEmpty ?? false;
-
+          final profilePicUrl = dashboardController.getWorkerModel.value?.data?.first.profilePicUrl ?? '';
+          final hasImage = profilePicUrl.isNotEmpty;
           return CircleAvatar(
-            radius: 22,
-            backgroundColor: Colors.grey[200],
-            child: ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: hasValidUrl ? profilePicUrl! : '',
-                fit: BoxFit.cover,
-
-                placeholder: (context, url) => Center(
-                  child: SizedBox(
-                    height: 16,
-                    width: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                ),
-                errorWidget: (context, url, error) => Image.asset(
-                  Assets.imagesDemoProfile,
-                  fit: BoxFit.cover,
-
-                ),
-              ),
-            ),
+            radius: 20,
+            backgroundImage: hasImage
+                ? CachedNetworkImageProvider(
+              profilePicUrl,
+              headers: {'Cache-Control': 'no-cache'},
+            )
+                : AssetImage(Assets.imagesImMap),
           );
         }),
-
-
       ),
     ];
 
@@ -126,43 +105,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ImageView(path: Assets.iconsTrophy, height: 23, width: 23),
       ImageView(path: Assets.iconsIcNotification, height: 23, width: 23),
       Container(
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           border: Border.all(color: AppColor.blue.withOpacity(0.2)),
         ),
         child: Obx(() {
-          final profilePicUrl = dashboardController
-              .getWorkerModel.value?.data?.first.profilePicUrl;
-
-          final hasValidUrl = profilePicUrl?.isNotEmpty ?? false;
-
+          final profilePicUrl = dashboardController.getWorkerModel.value?.data?.first.profilePicUrl ?? '';
+          final hasImage = profilePicUrl.isNotEmpty;
           return CircleAvatar(
-            radius: 22,
-            backgroundColor: Colors.grey[200],
-            child: ClipOval(
-              child: CachedNetworkImage(
-                imageUrl: hasValidUrl ? profilePicUrl! : '',
-                fit: BoxFit.cover,
-
-                placeholder: (context, url) => Center(
-                  child: SizedBox(
-                    height: 16,
-                    width: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                ),
-                errorWidget: (context, url, error) => Image.asset(
-                  Assets.imagesDemoProfile,
-                  fit: BoxFit.cover,
-
-                ),
-              ),
-            ),
+            radius: 20,
+            backgroundImage: hasImage
+                ? CachedNetworkImageProvider(
+              profilePicUrl,
+              headers: {'Cache-Control': 'no-cache'},
+            )
+                : AssetImage(Assets.imagesImMap),
           );
         }),
-
-
       ),
     ];
 
@@ -171,90 +131,93 @@ class _DashboardScreenState extends State<DashboardScreen> {
       top: false,
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: _currentDrawer == 'first'
-            ? DrawerScreen()
-            : SecondDrawer(),
+        drawer: _currentDrawer == 'first' ? DrawerScreen() : SecondDrawer(),
         drawerEnableOpenDragGesture: false,
 
         body: AppHomeBg(
           buttonPadding:
-          _currentIndex == 0
-              ? EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 30)
-              : EdgeInsets.only(left: 16, right: 16, top: 40),
+              _currentIndex == 0
+                  ? EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 30)
+                  : EdgeInsets.only(left: 16, right: 16, top: 40),
           iconLeft: SizedBox(),
           headingText: _headings[_currentIndex],
-          padding: _currentIndex == 2 ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 16),
-         childAppBar: _currentIndex==0?Obx(
-               () => Container(
-             margin: EdgeInsets.only(left: 25, right: 30),
-             child: Row(
-               children: [
-                 Expanded(
-                   child: GestureDetector(
-                     onTap: () {
-                       controller.isWashSelected.value = true;
-                     },
-                     child: Container(
-                       alignment: Alignment.center,
-                       height: 30,
-                       decoration: BoxDecoration(
-                         color:
-                         controller.isWashSelected.value
-                             ? AppColor.cF6F7FF
-                             : Colors.transparent,
-                         borderRadius: BorderRadius.only(
-                           topLeft: Radius.circular(10),
-                           topRight: Radius.circular(10),
-                         ),
-                       ),
-                       child: Text(
-                         "Today".tr,
-                         style: w700_16a(
-                           color:
-                           controller.isWashSelected.value
-                               ? AppColor.c2C2A2A
-                               : AppColor.white,
-                         ),
-                       ),
-                     ),
-                   ),
-                 ),
-                 20.widthSizeBox,
-                 Expanded(
-                   child: GestureDetector(
-                     onTap: () {
-                       controller.isWashSelected.value = false;
-                     },
-                     child: Container(
-                       alignment: Alignment.center,
-                       height: 30,
-                       decoration: BoxDecoration(
-                         color:
-                         !controller.isWashSelected.value
-                             ?AppColor.cF6F7FF
-                             : Colors.transparent,
-                         borderRadius: BorderRadius.only(
-                           topLeft: Radius.circular(10),
-                           topRight: Radius.circular(10),
-                         ),
-                       ),
-                       child: Text(
-                         "Wash Log".tr,
-                         style: w700_16a(
-                           color:
-                           !controller.isWashSelected.value
-                               ? AppColor.c2C2A2A
-                               : AppColor.white,
-                         ),
-                       ),
-                     ),
-                   ),
-                 ),
-               ],
-             ),
-           ),
-         ) :SizedBox(),
-
+          padding:
+              _currentIndex == 2
+                  ? EdgeInsets.zero
+                  : EdgeInsets.symmetric(horizontal: 16),
+          childAppBar:
+              _currentIndex == 0
+                  ? Obx(
+                    () => Container(
+                      margin: EdgeInsets.only(left: 25, right: 30),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.isWashSelected.value = true;
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color:
+                                      controller.isWashSelected.value
+                                          ? AppColor.cF6F7FF
+                                          : Colors.transparent,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Today".tr,
+                                  style: w700_16a(
+                                    color:
+                                        controller.isWashSelected.value
+                                            ? AppColor.c2C2A2A
+                                            : AppColor.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          20.widthSizeBox,
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.isWashSelected.value = false;
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color:
+                                      !controller.isWashSelected.value
+                                          ? AppColor.cF6F7FF
+                                          : Colors.transparent,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Wash Log".tr,
+                                  style: w700_16a(
+                                    color:
+                                        !controller.isWashSelected.value
+                                            ? AppColor.c2C2A2A
+                                            : AppColor.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                  : SizedBox(),
 
           iconRight: GestureDetector(
             onTap: () {
@@ -277,9 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                isActive ? filledImages[index] : outlineImages[index],
-              ],
+              children: [isActive ? filledImages[index] : outlineImages[index]],
             );
           },
           activeIndex: _currentIndex,
@@ -343,4 +304,3 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 }
-

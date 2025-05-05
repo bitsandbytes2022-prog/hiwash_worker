@@ -152,7 +152,7 @@ class SubscriptionDetails {
     data['startDate'] = this.startDate;
     data['endDate'] = this.endDate;
     data['subscriptionName'] = this.subscriptionName;
-    data['duration'] = this.duration;
+    data['duration'] = this.duration.toString();
     data['isPremium'] = this.isPremium;
     data['price'] = this.price;
     data['currency'] = this.currency;

@@ -18,9 +18,7 @@ class LocalStorage {
   }
 
 
-  Future<void> saveUserId(String id) async {
-    await _storage.write(_userIdKey, id);
-  }
+
   Future<void> saveCustomerId(String id) async {
     await _storage.write(_customerIdKey, id);
   }
@@ -30,8 +28,11 @@ class LocalStorage {
 
   String? getScannedQrCode() => _storage.read(_scannedQrCodeKey);
   String? getCustomerId() => _storage.read(_customerIdKey);
-  String? getUserId() => _storage.read(_userIdKey);
+  Future<void> saveUserId(String id) async {
+    await _storage.write(_userIdKey, id);
+  }
 
+  String? getUserId() => _storage.read(_userIdKey);
   Future<void> removeToken() async {
     await _storage.remove(_tokenKey);
     await _storage.remove(_userIdKey);

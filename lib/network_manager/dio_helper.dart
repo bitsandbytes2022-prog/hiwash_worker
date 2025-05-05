@@ -13,7 +13,7 @@ class DioHelper {
     if (isAuthRequired && token != null) {
       return {
         'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
+       // 'Content-Type': 'application/json',
       };
     } else {
       return {
@@ -26,7 +26,7 @@ class DioHelper {
     final headers = await _getHeaders(isAuthRequired);
     return Options(
       receiveDataWhenStatusError: true,
-      sendTimeout: const Duration(seconds: 10),
+      sendTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: headers,
     );

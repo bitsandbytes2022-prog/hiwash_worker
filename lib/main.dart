@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
          locale:Locale('en','US'),
           translations: Languages(),
+          
           debugShowCheckedModeBanner: false,
           title: 'Hiwash worker',
           theme: LightTheme.theme(),

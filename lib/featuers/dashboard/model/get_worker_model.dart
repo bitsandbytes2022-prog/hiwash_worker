@@ -60,7 +60,7 @@ class Data {
     address = json['address'];
     profilePicUrl =
         json['profilePicUrl'] != null
-            ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}"
+            ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}?timestamp=${DateTime.now().millisecondsSinceEpoch}"
             : null;
   }
 
@@ -68,7 +68,6 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['employeeId'] = this.employeeId;
-    data['fullName'] = this.fullName;
     data['locationId'] = this.locationId;
     data['mobileNumber'] = this.mobileNumber;
     data['email'] = this.email;

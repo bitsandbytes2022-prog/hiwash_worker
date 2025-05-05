@@ -10,6 +10,8 @@ import '../featuers/dashboard/model/get_worker_model.dart';
 import '../featuers/dashboard/view/widget/second_drawer/model/faq_response_model.dart';
 import '../featuers/dashboard/view/widget/second_drawer/model/guides_response_model.dart';
 import '../featuers/profile/model/terms_and_conditions_response_model.dart';
+import '../featuers/qr_scanner/model/get_offers_by_id_model.dart';
+import '../featuers/today_wash/model/wash_log_model.dart';
 import 'api_constant.dart';
 import 'dio_helper.dart';
 import 'local_storage.dart';
@@ -44,9 +46,9 @@ class Repository {
   }
 
   Future<GetWorkerModel> getWorkerData(int id) async {
-    print(" GetWorkerModel url--->:${ApiConstant.getCustomerId(id)}");
+    print(" GetWorkerModel url--->:${ApiConstant.getWorkerId(id)}");
     var response = await dioHelper.get(
-      url: ApiConstant.getCustomerId(id),
+      url: ApiConstant.getWorkerId(id),
       isAuthRequired: true,
     );
     print("---->GetWorkerModel--->${response.toString()}");
@@ -56,7 +58,7 @@ class Repository {
 
 
 
-/*  Future<GetCustomerData> getCustomerData(int id) async {
+  Future<GetCustomerData> getCustomerData(int id) async {
     print("url dss--->:${ApiConstant.getCustomerId(id)}");
     var response = await dioHelper.get(
       url: ApiConstant.getCustomerId(id),
@@ -65,25 +67,8 @@ class Repository {
     print("getCustomerData--->${response.toString()}");
 
     return GetCustomerData.fromJson(response);
-  }*/
-  Future<GetCustomerData> getCustomerData(int id ) async {
-    print("url dss--->:${ApiConstant.getCustomerId(id)}");
-
-    final dio = Dio();
-String? local=LocalStorage().getScannedQrCode();
-    final String? accessToken = local;
-    dio.options.headers['Authorization'] = 'Bearer $accessToken';
-
-    try {
-      var response = await dio.get(ApiConstant.getCustomerId(id));
-      print("getCustomerData--->${response.toString()}");
-
-      return GetCustomerData.fromJson(response.data);
-    } catch (e) {
-      print("Error fetching customer data: $e");
-      rethrow;
-    }
   }
+
 
   Future<FaqResponseModel> getFaq(int entityType) async {
     Map<String, dynamic> response = await dioHelper.get(
@@ -159,5 +144,40 @@ String? local=LocalStorage().getScannedQrCode();
     );
 
     return TodayWashSummaryModel.fromJson(response);
+  }
+
+
+  Future<void> completeWashRepo(requestBody) async {
+    try {
+      final response = await dioHelper.post(
+        url: ApiConstant.completeWash,
+        requestBody: requestBody,
+        isAuthRequired: true,
+      );
+      print("Upload response: ${response.toString()}");
+    } catch (e) {
+      print("Upload complete success: $e");
+    } catch (e) {
+      print("Upload complete failed: $e");
+    }
+  }
+  Future<WashLogModel> washLogRepo(Object requestBody) async {
+    Map<String, dynamic> response = await dioHelper.post(
+      requestBody: requestBody,
+      url: ApiConstant.washLog,
+      isAuthRequired: true,
+    );
+    print("---->${response.toString()}");
+    return WashLogModel.fromJson(response);
+  }
+
+  Future<GetOffersByIdModel> getOfferById(int id) async {
+    // print("url--->:${ApiConstant.getOffersById}");
+    Map<String, dynamic> response = await dioHelper.get(
+      url: ApiConstant.getOffersById(id),
+      isAuthRequired: true,
+    );
+    print("Response--->: $response");
+    return GetOffersByIdModel.fromJson(response);
   }
 }

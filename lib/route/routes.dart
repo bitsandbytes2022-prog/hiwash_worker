@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:hiwash_worker/featuers/qr_scanner/view/reward_qr.dart';
 import 'package:hiwash_worker/featuers/today_wash/view/today_wash_screen.dart';
 
 
@@ -87,6 +88,11 @@ class Routes {
  GetPage(
   name: RouteStrings.qrScreen,
   page: () => QrScreen(),
+ ),
+
+    GetPage(
+  name: RouteStrings.rewardQrScreen,
+  page: () => RewardQrScreen(),
  ),
 
 

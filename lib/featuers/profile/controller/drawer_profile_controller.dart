@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:hiwash_worker/widgets/components/loader.dart';
 import '../../../network_manager/repository.dart';
 import '../model/terms_and_conditions_response_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,10 +51,6 @@ class DrawerProfileController extends GetxController {
   }
 
   Future<dio.FormData> getFormDataForUpload() async {
-    if (imageFile == null) {}
-
-
-
     final fileName = imageFile.value?.path.split('/').last;
     var file = await dio.MultipartFile.fromFile(
       imageFile.value!.path,
@@ -64,8 +61,10 @@ class DrawerProfileController extends GetxController {
 
   Future<dynamic> uploadProfileImage() async {
     try {
+      showLoader();
       final formData = await getFormDataForUpload();
       final response = await Repository().uploadProfilePicture(formData);
+      hideLoader();
       return response;
     } catch (e) {
       print("Upload error: $e");
@@ -85,20 +84,20 @@ class DrawerProfileController extends GetxController {
   }
 
   Future<dynamic> uploadProfile(
-      String fullName,
-      String email,
-      String address,
-      ) async {
-    isLoading.value = true;
+    String fullName,
+    String email,
+    String address,
+  ) async {
+
     try {
       Map<String, dynamic> requestBody = {
         "fullName": fullName,
         "email": email,
         "address": address,
       };
-
+showLoader();
       final response = await Repository().uploadProfile(requestBody);
-
+hideLoader();
       return response;
     } catch (e) {
       print("Update profile error: $e");
@@ -112,53 +111,8 @@ class DrawerProfileController extends GetxController {
       );
       return null;
     } finally {
-      isLoading.value = false;
+     // isLoading.value = false;
     }
-/*
-  Future<dynamic> uploadProfile(
-      String fullName,
-      String email,
-      String mobileNumber,
-      String zone,
-      String street,
-      String building,
-      String unit,
-      String profilePic,
-      String carNumber,
-      ) async {
-    isLoading.value = true;
-    try {
-      Map<String, dynamic> requestBody = {
-        "fullName": fullName,
-        "email": email,
-        "mobileNumber": mobileNumber,
-        "zone": zone,
-        "street": street,
-        "building": building,
-        "unit": unit,
-        "profilePic": profilePic,
-        "carNumber": carNumber,
-      };
 
-      final response = await Repository().uploadProfile(requestBody);
-
-      return response;
-    } catch (e) {
-      print("Update profile error: $e");
-
-      Get.snackbar(
-        "Error",
-        "Something went wrong while updating profile",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return null;
-    } finally {
-      isLoading.value = false;
-    }
   }
-*/
-
-
-  }}
+}

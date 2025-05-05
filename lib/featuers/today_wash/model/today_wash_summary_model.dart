@@ -99,10 +99,15 @@ class Washes {
     customerName = json['customerName'];
     redeemedAt = json['redeemedAt'];
     isCompleted = json['isCompleted'];
+    profilePicUrl = json['profilePicUrl'] != null
+        ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}"
+        : null;
+/*
     profilePicUrl =
         json['profilePicUrl'] != null
             ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}"
             : null;
+*/
 
     rating = json['rating'];
     isPremium = json['isPremium'];
@@ -110,7 +115,7 @@ class Washes {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    data['id'] = this.id.toString();
     data['customerName'] = this.customerName;
     data['redeemedAt'] = this.redeemedAt;
     data['isCompleted'] = this.isCompleted;

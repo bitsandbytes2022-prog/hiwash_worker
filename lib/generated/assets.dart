@@ -11,9 +11,11 @@ class Assets {
   static const String anybodyW700 = 'assets/fonts/anybody/w700.ttf';
   static const String anybodyW800 = 'assets/fonts/anybody/w800.ttf';
   static const String anybodyW900 = 'assets/fonts/anybody/w900.ttf';
+  static const String assetsIconsIcVerify = 'assets/icons/ic_verify.svg';
   static const String demoNumberPlate = 'assets/demo/number_plate.png';
   static const String demoWorkerLicense = 'assets/demo/worker_license.png';
   static const String iconsBlackForwardArrow = 'assets/icons/black_forward_arrow.png';
+  static const String iconsDownArrow = 'assets/icons/down_arrow.svg';
   static const String iconsIcAccount = 'assets/icons/ic_account.png';
   static const String iconsIcApple = 'assets/icons/ic_apple.png';
   static const String iconsIcArrow = 'assets/icons/ic_arrow.png';

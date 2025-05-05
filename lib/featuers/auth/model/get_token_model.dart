@@ -1,3 +1,5 @@
+import 'package:hiwash_worker/network_manager/api_constant.dart';
+
 class GetTokenModel {
   bool? success;
   String? message;
@@ -52,7 +54,14 @@ class Data {
     mobileNumber = json['mobileNumber'];
     email = json['email'];
     address = json['address'];
-    profilePicUrl = json['profilePicUrl'];
+    profilePicUrl = json['profilePicUrl']!=null?"${ApiConstant.baseImageUrl}${json['profilePicUrl']}":null;
+
+    /* profilePicUrl =
+        json['profilePicUrl'] != null
+            ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}"
+            : null;
+*/
+
     token = json['token'];
   }
 
