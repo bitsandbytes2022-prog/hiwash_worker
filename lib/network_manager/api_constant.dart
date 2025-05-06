@@ -18,6 +18,7 @@ static const todayWashSummary="$baseUrl/worker/wash-summary";
 static const completeWash="$baseUrl/worker/complete-wash";
 static const washLog="$baseUrl/worker/wash-log";
 static  getOffersById(int id)=>"$baseUrl/offer/$id";
+static const validateOfferQr="$baseUrl/offer/validate-offer-qr";
 
 
 

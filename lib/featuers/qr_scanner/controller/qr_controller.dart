@@ -17,6 +17,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
   RxString scanUrl = ''.obs;
   RxString customerId = ''.obs;
+  RxString offerIdForReward = ''.obs;
   RxString internetStatus = ''.obs;
   RxBool hasScanned = false.obs;
 
@@ -77,10 +78,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
             String id = decodedToken['CustomerId'];
             customerId.value = id;
 
-            print("Extracted CustomerId: $id");
-
-            await localStorage.saveCustomerId(id);
-            await localStorage.saveScannedQrCode(scannedCode);
 
             await validateWashQr(id).then((value) async {
 
@@ -118,8 +115,19 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
           try {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
             String offerId = decodedToken['OfferId'];
+            String id = decodedToken['CustomerId'];
+
             print("Extracted OfferId: $offerId");
-            await getOffersById(int.parse(offerId));
+            offerIdForReward.value = offerId;
+
+
+            await validateOfferQr(id, offerId).then((value) async {
+
+              clearScan();
+              await getOffersById(int.parse(offerId));
+              Get.back();
+
+            });
 
           } catch (e) {
             print("Error decoding JWT: $e");
@@ -186,6 +194,25 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     try {
       isLoading.value = true;
       var response = await Repository().validateWashQrRepo(requestBody);
+      print("Value received in controller validateWashQr: $response");
+      return response;
+    } catch (e) {
+      print("Error in controller while validating QR: $e");
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<dynamic> validateOfferQr(String customerId,String offerId) async {
+    Map<String, dynamic> requestBody = {"customerId": customerId,
+      "offerId":offerId
+
+
+    };
+    try {
+      isLoading.value = true;
+      var response = await Repository().validateOfferQrRepo(requestBody);
       print("Value received in controller validateWashQr: $response");
       return response;
     } catch (e) {

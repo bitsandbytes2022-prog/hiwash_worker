@@ -474,23 +474,7 @@ class TodayWashScreen extends StatelessWidget {
     return "$startDate – $endDate";
   }
 
-/*  String _getMonthName(int month) {
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    return monthNames[month - 1];
-  }*/
+
 
   Widget servicesContainer(int index, VoidCallback onTap) {
     var customerData = controller.todayWashSummaryModel.value?.data?.washes;
@@ -739,18 +723,17 @@ class TodayWashScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Reward", style: w400_12p(color: AppColor.c455A64)),
-                    GestureDetector(
+
+                    (qrController.getOffersByIdModel.value?.data?.first.discountValue == null ||
+                        qrController.getOffersByIdModel.value!.data!.first.discountValue.toString().isEmpty)
+                        ? GestureDetector(
                       onTap: () {
                         Get.toNamed(RouteStrings.rewardQrScreen);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 5,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
                         decoration: BoxDecoration(
                           border: Border.all(color: AppColor.cD83030),
-
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: Row(
@@ -768,10 +751,15 @@ class TodayWashScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                    )
+                        : Text(
+                      qrController.getOffersByIdModel.value?.data?.first.discountValue.toString() ?? "",
+                      style: w500_14a(color: AppColor.c1F9D70),
                     ),
-                    Text(qrController.getOffersByIdModel.value?.data?.first.discountValue.toString()??"")
                   ],
                 ),
+
+
 
                 32.heightSizeBox,
               ],

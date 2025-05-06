@@ -74,29 +74,7 @@ class RewardQrScreen extends StatelessWidget {
                     }
                   }),
 
-                  /*   Obx(() {
-                    if (controller.scanUrl.value.isEmpty &&
-                        controller.animationController.isAnimating) {
-                      return AnimatedBuilder(
-                        animation: controller.animationController,
-                        builder: (context, child) {
-                          return Positioned(
-                            top: controller.animation.value,
-                            child: Container(
-                              width: 280,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                color: AppColor.cFFC727,
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }),*/
+
 
 
                 ],
@@ -109,8 +87,8 @@ class RewardQrScreen extends StatelessWidget {
                 () => Column(
               children: [
                 Text(
-                  controller.customerId.value.isNotEmpty
-                      ? 'Reward ID: ${controller.customerId.value}'
+                  controller.offerIdForReward.value.isNotEmpty
+                      ? 'Reward ID: ${controller.offerIdForReward.value}'
                       : 'Scan a QR code',
                   textAlign: TextAlign.center,
                   style: TextStyle(
