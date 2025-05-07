@@ -105,6 +105,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     controller.scannedDataStream.listen((scanData) async {
       if (!hasScanned.value) {
         final scannedCode = scanData.code ?? '';
+        print("ScanData----->${scanData.code}");
         scanUrl.value = scannedCode;
         hasScanned.value = true;
 
@@ -141,44 +142,24 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   }
 
 
- /* void onQRViewCreatedOffer(QRViewController controller) {
+/*  void onQRViewCreatedOffer(QRViewController controller) {
     qrController = controller;
 
-    controller.scannedDataStream.listen((scanData) async {
-      if (!hasScanned.value) {
-        final scannedCode = scanData.code ?? '';
-        scanUrl.value = scannedCode;
+    controller.scannedDataStream.listen((scanData) {
+      final scannedCode = scanData.code ?? '';
 
-        print("Scanned URL: $scannedCode");
+      if (scannedCode.isNotEmpty) {
+        print("Scanned Code String: $scannedCode");
 
-        hasScanned.value = true;
-
-        animationController.stop();
         controller.pauseCamera();
-
-        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
-          try {
-
-            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
-
-
-            String offerId = decodedToken['OfferId'];
-            print("Extracted OfferId: $offerId");
-            Get.back(result: offerId);
-
-
-
-
-          } catch (e) {
-            print("Error decoding JWT: $e");
-            Get.snackbar("Error", "Failed to decode JWT: $e");
-          }
-        } else {
-          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
-        }
+        Get.back();
+      } else {
+        Get.snackbar("Error", "No data found in QR code.");
       }
     });
   }*/
+
+
 
   void clearScan() {
     scanUrl.value = '';
@@ -244,5 +225,11 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       print("Error fetching Offers by Di: $error");
     }
     return null;
+  }
+
+/// format discount value to string
+  String formatDiscount(double? value) {
+    if (value == null) return "";
+    return value % 1 == 0 ? value.toInt().toString() : value.toString();
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/styling/app_color.dart';
@@ -13,7 +12,6 @@ class RewardQrScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColor.cF6F7FF.withOpacity(0.2),
       body: Column(
@@ -73,18 +71,13 @@ class RewardQrScreen extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                   }),
-
-
-
-
                 ],
               ),
             ),
           ),
           const SizedBox(height: 20),
-
           Obx(
-                () => Column(
+            () => Column(
               children: [
                 Text(
                   controller.offerIdForReward.value.isNotEmpty
@@ -127,6 +120,4 @@ class RewardQrScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

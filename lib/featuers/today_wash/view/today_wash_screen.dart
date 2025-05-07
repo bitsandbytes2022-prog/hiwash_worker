@@ -81,7 +81,7 @@ class TodayWashScreen extends StatelessWidget {
                               padding: EdgeInsets.only(top: 0, bottom: 40),
                               physics: NeverScrollableScrollPhysics(),
                               separatorBuilder:
-                                  (context, index) => SizedBox(height: 15),
+                                  (context, i) => SizedBox(height: 15),
                               shrinkWrap: true,
                               itemCount:
                                   controller
@@ -90,8 +90,8 @@ class TodayWashScreen extends StatelessWidget {
                                       .data!
                                       .washes!
                                       .length,
-                              itemBuilder: (context, index) {
-                                return servicesContainer(index, () async {
+                              itemBuilder: (context, i) {
+                                return servicesContainer(i, () async {
                                   /*    final QrController qrController =Get.isRegistered<QrController>() ? Get.find() : Get.put(QrController());;
                                   final String scannedCustomerId = qrController.customerId.value;
 */
@@ -100,8 +100,8 @@ class TodayWashScreen extends StatelessWidget {
                                           .todayWashSummaryModel
                                           .value!
                                           .data!
-                                          .washes![index]
-                                          .id
+                                          .washes![i]
+                                          .customerId
                                           .toString();
 
                                   var customerData = await controller
@@ -116,7 +116,7 @@ class TodayWashScreen extends StatelessWidget {
                                       builder: (BuildContext context) {
                                         return AppDialog(
                                           padding: EdgeInsets.zero,
-                                          child: scanDialog(index),
+                                          child: scanDialog(i),
                                         );
                                       },
                                     );
@@ -133,127 +133,143 @@ class TodayWashScreen extends StatelessWidget {
                       ],
                     ),
                   )
-                  : Obx(
-                     () {
-                      return SingleChildScrollView(
-                        child: Stack(
-                          children: [
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    controller.isCalenderSelected.value =
-                                        !controller.isCalenderSelected.value;
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 12,
+                  : Obx(() {
+                    return SingleChildScrollView(
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  controller.isCalenderSelected.value =
+                                      !controller.isCalenderSelected.value;
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(100),
+                                    border: Border.all(
+                                      color: Colors.grey.withOpacity(0.5),
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                      border: Border.all(
-                                        color: Colors.grey.withOpacity(0.5),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          _formatDateRange(
-                                            controller.rangeStartDate.value,
-                                            controller.rangeEndDate.value,
-                                          ),
-                                          style: w500_14p(color: AppColor.c2C2A2A),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        _formatDateRange(
+                                          controller.rangeStartDate.value,
+                                          controller.rangeEndDate.value,
                                         ),
-                                        ImageView(
-                                          path: Assets.iconsDownArrow,
-                                          height: 6,
-                                          width: 8,
+                                        style: w500_14p(
                                           color: AppColor.c2C2A2A,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      ImageView(
+                                        path: Assets.iconsDownArrow,
+                                        height: 6,
+                                        width: 8,
+                                        color: AppColor.c2C2A2A,
+                                      ),
+                                    ],
                                   ),
-                                ),
-
-                                Column(
-                                  children: [
-                                    15.heightSizeBox,
-
-                                    ListView.separated(
-                                      padding: EdgeInsets.only(top: 20, bottom: 30),
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: controller.washLogModel.value?.data?.length ?? 0,
-                                      separatorBuilder: (
-                                        BuildContext context,
-                                        int index,
-                                      ) {
-                                        return 15.heightSizeBox;
-                                      },
-
-                                        itemBuilder: (context, index) {
-                                          final washDay = controller.washLogModel.value!.data![index];
-                                          return dayWashRow(washDay);
-                                        }
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            if (controller.isCalenderSelected.value)
-                              Container(
-                                margin: EdgeInsets.only(top: 60),
-
-                                decoration: BoxDecoration(
-                                  color: AppColor.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: TableCalendar(
-                                  focusedDay: controller.focusedDay1,
-                                  firstDay: DateTime.utc(2025, 3, 4),
-                                  lastDay: DateTime.utc(2090, 3, 4),
-                                  selectedDayPredicate: (day) {
-                                    return isSameDay(day, controller.selectedDay1);
-                                  },
-                                  calendarFormat: controller.calendarFormat,
-                                  startingDayOfWeek: StartingDayOfWeek.monday,
-                                  weekNumbersVisible: false,
-                                  rangeStartDay: controller.rangeStartDate.value,
-                                  rangeEndDay: controller.rangeEndDate.value,
-                                  rangeSelectionMode: RangeSelectionMode.toggledOn,
-                                  onRangeSelected: controller.onRangeSelected,
-                                  calendarStyle: CalendarStyle(
-                                    outsideDaysVisible: false,
-                                  ),
-                                  onDaySelected: (selectedDay, focusedDay) {
-                                    controller.update();
-                                  },
-                                  onFormatChanged: (format) {
-                                    if (controller.calendarFormat != format) {
-                                      controller.calendarFormat = format;
-                                      controller.update();
-                                    }
-                                  },
-                                  onPageChanged: (focusedDay) {
-                                    controller.focusedDay1 = focusedDay;
-                                    controller.update();
-                                  },
                                 ),
                               ),
-                          ],
-                        ),
-                      );
-                    }
-                  ),
+
+                              Column(
+                                children: [
+                                  15.heightSizeBox,
+
+                                  ListView.separated(
+                                    padding: EdgeInsets.only(
+                                      top: 20,
+                                      bottom: 30,
+                                    ),
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        controller
+                                            .washLogModel
+                                            .value
+                                            ?.data
+                                            ?.length ??
+                                        0,
+                                    separatorBuilder: (
+                                      BuildContext context,
+                                      int index,
+                                    ) {
+                                      return 15.heightSizeBox;
+                                    },
+
+                                    itemBuilder: (context, index) {
+                                      final washDay =
+                                          controller
+                                              .washLogModel
+                                              .value!
+                                              .data![index];
+                                      return dayWashRow(washDay);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          if (controller.isCalenderSelected.value)
+                            Container(
+                              margin: EdgeInsets.only(top: 60),
+
+                              decoration: BoxDecoration(
+                                color: AppColor.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TableCalendar(
+                                focusedDay: controller.focusedDay1,
+                                firstDay: DateTime.utc(2025, 3, 4),
+                                lastDay: DateTime.utc(2090, 3, 4),
+                                selectedDayPredicate: (day) {
+                                  return isSameDay(
+                                    day,
+                                    controller.selectedDay1,
+                                  );
+                                },
+                                calendarFormat: controller.calendarFormat,
+                                startingDayOfWeek: StartingDayOfWeek.monday,
+                                weekNumbersVisible: false,
+                                rangeStartDay: controller.rangeStartDate.value,
+                                rangeEndDay: controller.rangeEndDate.value,
+                                rangeSelectionMode:
+                                    RangeSelectionMode.toggledOn,
+                                onRangeSelected: controller.onRangeSelected,
+                                calendarStyle: CalendarStyle(
+                                  outsideDaysVisible: false,
+                                ),
+                                onDaySelected: (selectedDay, focusedDay) {
+                                  controller.update();
+                                },
+                                onFormatChanged: (format) {
+                                  if (controller.calendarFormat != format) {
+                                    controller.calendarFormat = format;
+                                    controller.update();
+                                  }
+                                },
+                                onPageChanged: (focusedDay) {
+                                  controller.focusedDay1 = focusedDay;
+                                  controller.update();
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  }),
         ),
       ],
     );
   }
-
 
   Widget dayWashRow(Data log) {
     return Stack(
@@ -311,11 +327,22 @@ class TodayWashScreen extends StatelessWidget {
 
   String _getMonthName(int month) {
     const months = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
     return months[month - 1];
   }
+
   Widget washLogRow() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -351,10 +378,10 @@ class TodayWashScreen extends StatelessWidget {
   }
 
   Widget todayWashes(
-      String? totalWashTest,
-      String? remainingWashTest,
-      String? completedWashTest,
-      ) {
+    String? totalWashTest,
+    String? remainingWashTest,
+    String? completedWashTest,
+  ) {
     return Container(
       height: 151,
       decoration: BoxDecoration(
@@ -379,7 +406,6 @@ class TodayWashScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ImageView(path: Assets.iconsTodayCar, height: 59, width: 107),
-
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -473,8 +499,6 @@ class TodayWashScreen extends StatelessWidget {
         "${end.day.toString().padLeft(2, '0')} ${_getMonthName(end.month)} ${end.year}";
     return "$startDate – $endDate";
   }
-
-
 
   Widget servicesContainer(int index, VoidCallback onTap) {
     var customerData = controller.todayWashSummaryModel.value?.data?.washes;
@@ -581,20 +605,15 @@ class TodayWashScreen extends StatelessWidget {
     );
   }
 
-
-
   Widget rowDivider() {
     return Column(
       children: [10.heightSizeBox, DotedHorizontalLine(), 10.heightSizeBox],
     );
   }
 
-
-
   Widget scanDialog(int index) {
     return Obx(() {
       return Column(
-
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
@@ -725,130 +744,199 @@ class TodayWashScreen extends StatelessWidget {
                     Text("Reward", style: w400_12p(color: AppColor.c455A64)),
 
                     (qrController.getOffersByIdModel.value?.data?.first.discountValue == null ||
-                        qrController.getOffersByIdModel.value!.data!.first.discountValue.toString().isEmpty)
+                            qrController.getOffersByIdModel.value!.data!.first.discountValue.toString().isEmpty)
                         ? GestureDetector(
-                      onTap: () {
-                        Get.toNamed(RouteStrings.rewardQrScreen);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColor.cD83030),
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        child: Row(
-                          children: [
-                            ImageView(
-                              path: Assets.iconsIcQr,
-                              height: 14,
-                              width: 14,
+                          onTap: () {
+                            Get.toNamed(RouteStrings.rewardQrScreen);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 5,
                             ),
-                            7.widthSizeBox,
-                            Text(
-                              "Scan Offer",
-                              style: w500_12a(color: AppColor.c142293),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColor.cD83030),
+                              borderRadius: BorderRadius.circular(40),
                             ),
-                          ],
-                        ),
-                      ),
-                    )
+                            child: Row(
+                              children: [
+                                ImageView(
+                                  path: Assets.iconsIcQr,
+                                  height: 14,
+                                  width: 14,
+                                ),
+                                7.widthSizeBox,
+                                Text(
+                                  "Scan Offer",
+                                  style: w500_12a(color: AppColor.c142293),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                         : Text(
-                      qrController.getOffersByIdModel.value?.data?.first.discountValue.toString() ?? "",
-                      style: w500_14a(color: AppColor.c1F9D70),
-                    ),
+                          "Flat ${qrController.formatDiscount(qrController.getOffersByIdModel.value?.data?.first.discountValue)}% off",
+                          style: w500_14a(color: AppColor.c1F9D70),
+                        ),
                   ],
                 ),
-
-
 
                 32.heightSizeBox,
               ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColor.cF6F7FF,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+          if (controller
+                  .getCustomerData
+                  .value
+                  ?.data
+                  ?.subscriptionDetails
+                  ?.subscriptionId ==
+              2)
+            Container(
+              decoration: BoxDecoration(
+                color: AppColor.cF6F7FF,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
               ),
-            ),
-            child: Column(
-              children: [
-                DotedHorizontalLine(),
+              child: Column(
+                children: [
+                  DotedHorizontalLine(),
 
-                32.heightSizeBox,
+                  32.heightSizeBox,
 
-                Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 5, left: 16, right: 16),
-                      child: Padding(
-                        padding: EdgeInsets.zero,
-                        child: GestureDetector(
-                          onTap: () {
-                            controller.pickImageFromCamera();
-                          },
-                          child: DottedBorder(
-                            color: AppColor.c5C6B72.withOpacity(0.5),
-                            strokeWidth: 1,
-                            dashPattern: [4, 4],
-                            radius: Radius.circular(15),
-                            borderType: BorderType.RRect,
-                            child: Container(
-                              //margin: EdgeInsets.symmetric(horizontal: 50),
-                              // color: Colors.green,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              height: 144,
-                              width: Get.width,
-                              child: Obx(() {
-                                if (controller.pickedImage.value != null) {
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: Image.file(
-                                      File(controller.pickedImage.value!.path),
-                                      fit: BoxFit.fitWidth,
-                                      width: double.infinity,
-                                    ),
-                                  );
-                                } else {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Capture Car Number Plate and Verify",
-                                        style: w400_12p(
-                                          color: AppColor.c455A64,
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(top: 5, left: 16, right: 16),
+                        child: Padding(
+                          padding: EdgeInsets.zero,
+                          child: GestureDetector(
+                            onTap: () {
+                              controller.pickImageFromCamera();
+                            },
+                            child: DottedBorder(
+                              color: AppColor.c5C6B72.withOpacity(0.5),
+                              strokeWidth: 1,
+                              dashPattern: [4, 4],
+                              radius: Radius.circular(15),
+                              borderType: BorderType.RRect,
+                              child: Container(
+                                //margin: EdgeInsets.symmetric(horizontal: 50),
+                                // color: Colors.green,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                height: 144,
+                                width: Get.width,
+                                child: Obx(() {
+                                  if (controller.pickedImage.value != null) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.file(
+                                        File(
+                                          controller.pickedImage.value!.path,
                                         ),
-                                        textAlign: TextAlign.center,
+                                        fit: BoxFit.fitWidth,
+                                        width: double.infinity,
                                       ),
-                                    ],
-                                  );
-                                }
-                              }),
+                                    );
+                                  } else {
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Capture Car Number Plate and Verify",
+                                          style: w400_12p(
+                                            color: AppColor.c455A64,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                }),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    (controller.pickedImage.value != null)
-                        ? Positioned(
-                          right: 10,
-                          child: ImageView(
-                            path: Assets.iconsIcVerify,
-                            height: 25,
-                            width: 25,
+                      (controller.pickedImage.value != null)
+                          ? Positioned(
+                            right: 10,
+                            child: ImageView(
+                              path: Assets.iconsIcVerify,
+                              height: 25,
+                              width: 25,
+                            ),
+                          )
+                          : SizedBox(),
+                    ],
+                  ),
+
+                  30.heightSizeBox,
+
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: CustomSwipeButton(
+                        thumbPadding: EdgeInsets.all(3),
+                        activeThumbColor: AppColor.c1F9D70,
+                        thumb: Icon(Icons.chevron_right, color: Colors.white),
+                        elevationThumb: 2,
+                        elevationTrack: 2,
+                        child: Text(
+                          "Swipe to Complete Wash ".toUpperCase(),
+                          style: TextStyle(
+                            color: AppColor.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                        : SizedBox(),
-                  ],
-                ),
+                        ),
+                        onSwipe: () async {
+                          try {
+                            // showLoader();
+                            await controller.completeWash(
+                              controller
+                                      .todayWashSummaryModel
+                                      .value
+                                      ?.data
+                                      ?.washes![index]
+                                      .id
+                                      .toString() ??
+                                  "",
+                            );
+                            //hideLoader();
+                          } catch (e) {
+                            hideLoader();
+                            ScaffoldMessenger.of(Get.context!).showSnackBar(
+                              SnackBar(
+                                content: Text("Error completing wash: $e"),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
 
-                30.heightSizeBox,
+                  /*   GetStartButton(
+                  text: 'Complete Wash',
+                  color: AppColor.c1F9D70,
 
+                  boxShadowColor: AppColor.c1F9D70.withOpacity(0.40),
+                ),*/
+                  46.heightSizeBox,
+                ],
+              ),
+            )
+          else
+            Column(
+              children: [
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -893,17 +981,9 @@ class TodayWashScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                /*   GetStartButton(
-                  text: 'Complete Wash',
-                  color: AppColor.c1F9D70,
-
-                  boxShadowColor: AppColor.c1F9D70.withOpacity(0.40),
-                ),*/
-                46.heightSizeBox,
+                32.heightSizeBox,
               ],
             ),
-          ),
         ],
       );
     });
