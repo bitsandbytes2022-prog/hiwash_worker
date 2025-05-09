@@ -67,7 +67,7 @@ class DrawerProfileController extends GetxController {
       hideLoader();
       return response;
     } catch (e) {
-      print("Upload error: $e");
+      print("Upload error profiler: $e");
     }
   }
 

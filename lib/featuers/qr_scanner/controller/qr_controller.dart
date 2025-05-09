@@ -2,24 +2,28 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
-import 'package:hiwash_worker/route/route_strings.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
-
 import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
-import '../../dashboard/model/get_customer_data_model.dart';
 import '../model/get_offers_by_id_model.dart';
 
 class QrController extends GetxController with GetTickerProviderStateMixin {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? qrController;
+  RxMap<int, GetOffersByIdModel> scannedOffers = <int, GetOffersByIdModel>{}.obs;
+
 
   RxString scanUrl = ''.obs;
+  RxString scanUrlOffer = ''.obs;
   RxString customerId = ''.obs;
   RxString offerIdForReward = ''.obs;
   RxString internetStatus = ''.obs;
   RxBool hasScanned = false.obs;
+  RxBool hasScannedOffer = false.obs;
+  RxString getOfferId = ''.obs;
+  Rxn<String> scannedCustomerId = Rxn<String>();
+  Rxn<String> scannedOfferId = Rxn<String>();
 
   late AnimationController animationController;
   late Animation<double> animation;
@@ -67,7 +71,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
         final scannedCode = scanData.code ?? '';
         scanUrl.value = scannedCode;
         hasScanned.value = true;
-
         animationController.stop();
         controller.pauseCamera();
 
@@ -98,7 +101,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       }
     });
   }
-
   void onQRViewCreatedOffer(QRViewController controller) {
     qrController = controller;
 
@@ -106,8 +108,8 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       if (!hasScanned.value) {
         final scannedCode = scanData.code ?? '';
         print("ScanData----->${scanData.code}");
-        scanUrl.value = scannedCode;
-        hasScanned.value = true;
+        scanUrlOffer.value = scannedCode;
+        hasScannedOffer.value = true;
 
         animationController.stop();
         controller.pauseCamera();
@@ -120,6 +122,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
             print("Extracted OfferId: $offerId");
             offerIdForReward.value = offerId;
+            offerIdForReward.value = id;
 
 
             await validateOfferQr(id, offerId).then((value) async {
@@ -140,6 +143,70 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       }
     });
   }
+
+
+
+/*  void onQRViewCreatedOffer(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScanned.value) {
+        final scannedCode = scanData.code ?? '';
+        scanUrl.value = scannedCode;
+        hasScanned.value = true;
+
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            print("ScanData----->${scanData.code}");
+
+            String id = decodedToken['CustomerId'];
+            String offerId = decodedToken['OfferId'];
+
+            customerId.value = id;
+            getOfferId.value = offerId;
+
+
+            var validationResponse = await validateOfferQr(id, offerId);
+            if (validationResponse != null) {
+              scannedCustomerId.value = id;
+              scannedOfferId.value = offerId;
+
+
+              final results = await Future.wait([
+                getCustomerDataById(int.parse(id)),
+                getOffersById(int.parse(offerId)),
+              ]);
+
+              final GetCustomerData? customerData = results[0] as GetCustomerData?;
+              final GetOffersByIdModel? offerDetail = results[1] as GetOffersByIdModel?;
+
+              if (customerData != null && offerDetail != null) {
+                Get.dialog(
+                  approveRewardDialog(customerData, offerDetail),
+                  barrierDismissible: false,
+                );
+              } else {
+                Get.snackbar("Error", "Failed to fetch customer or offer data.");
+              }
+            }
+
+          } catch (e) {
+            Get.snackbar("Error", "Failed to decode JWT: $e");
+            clearScan();
+          }
+        } else {
+          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
+          clearScan();
+        }
+      }
+    });
+  }*/
+
+
 
 
 /*  void onQRViewCreatedOffer(QRViewController controller) {
@@ -165,6 +232,8 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     scanUrl.value = '';
     customerId.value = '';
     hasScanned.value = false;
+    offerIdForReward.value = '';
+    hasScannedOffer.value = false;
 
     qrController?.resumeCamera();
     animationController.repeat(reverse: true);
@@ -185,24 +254,24 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<dynamic> validateOfferQr(String customerId,String offerId) async {
-    Map<String, dynamic> requestBody = {"customerId": customerId,
-      "offerId":offerId
+    Future<dynamic> validateOfferQr(String customerId,String offerId) async {
+      Map<String, dynamic> requestBody = {"customerId": customerId,
+        "offerId":offerId
 
 
-    };
-    try {
-      isLoading.value = true;
-      var response = await Repository().validateOfferQrRepo(requestBody);
-      print("Value received in controller validateWashQr: $response");
-      return response;
-    } catch (e) {
-      print("Error in controller while validating QR: $e");
-      return null;
-    } finally {
-      isLoading.value = false;
+      };
+      try {
+        isLoading.value = true;
+        var response = await Repository().validateOfferQrRepo(requestBody);
+        print("Value received in controller validateWashQr: $response");
+        return response;
+      } catch (e) {
+        print("Error in controller while validating QR: $e");
+        return null;
+      } finally {
+        isLoading.value = false;
+      }
     }
-  }
 
   @override
   void onClose() {

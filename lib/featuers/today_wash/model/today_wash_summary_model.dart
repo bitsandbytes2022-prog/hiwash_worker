@@ -3,14 +3,14 @@ import 'package:hiwash_worker/network_manager/api_constant.dart';
 class TodayWashSummaryModel {
   bool? success;
   String? message;
-  Data? data;
+  WashData? data;
 
   TodayWashSummaryModel({this.success, this.message, this.data});
 
   TodayWashSummaryModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new WashData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -24,13 +24,13 @@ class TodayWashSummaryModel {
   }
 }
 
-class Data {
+class WashData {
   Summary? summary;
   List<Washes>? washes;
 
-  Data({this.summary, this.washes});
+  WashData({this.summary, this.washes});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  WashData.fromJson(Map<String, dynamic> json) {
     summary =
     json['summary'] != null ? new Summary.fromJson(json['summary']) : null;
     if (json['washes'] != null) {

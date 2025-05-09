@@ -102,20 +102,6 @@ class RewardQrScreen extends StatelessWidget {
               ],
             ),
           ),
-          Obx(() {
-            print("ScanUrl----->${controller.scanUrl.value}");
-            return Text(
-              controller.scanUrl.value.isNotEmpty
-                  ? 'Scanned URL: ${controller.scanUrl.value}'
-                  : 'No URL scanned yet',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            );
-          }),
         ],
       ),
     );

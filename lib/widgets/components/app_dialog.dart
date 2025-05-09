@@ -89,10 +89,7 @@ class AppDialog extends StatelessWidget {
                           ],
                         ),
                       ),
-                     /* Text(
-                        remainingTextTop ?? ''.tr,
-                        style: w500_14p(color: AppColor.c2C2A2A),
-                      ),*/
+
                     ],
                   ),
                 ),
@@ -115,16 +112,13 @@ class AppDialog extends StatelessWidget {
                       style: w500_14p(color: AppColor.c2C2A2A),
                       children: <TextSpan>[
                         TextSpan(
-                          text: '19',
+                          text: remainingTextTop,
                           style: w400_16p(color: AppColor.cC31848)
                         ),
                       ],
                     ),
                   ),
-                 /* Text(
-                    remainingTextBottom ?? ''.tr,
-                    style: w500_14p(color: AppColor.c2C2A2A),
-                  ),*/
+
                 ],
               ),
             ),

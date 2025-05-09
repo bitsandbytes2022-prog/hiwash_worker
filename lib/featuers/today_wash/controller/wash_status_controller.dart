@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -9,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../network_manager/repository.dart';
+import '../../../network_manager/utils/api_response.dart';
 import '../../dashboard/controller/dashboard_controller.dart';
 import '../../dashboard/model/get_customer_data_model.dart';
 import 'package:dio/dio.dart' as dio;
@@ -17,7 +20,9 @@ import '../../qr_scanner/controller/qr_controller.dart';
 import '../model/wash_log_model.dart';
 
 class WashStatusController extends GetxController {
-  //final QrController qrController = Get.find<QrController>();
+
+
+
 
   Rx<XFile?> pickedImage = Rx<XFile?>(null);
 
@@ -41,6 +46,8 @@ class WashStatusController extends GetxController {
   Rx<DateTime?> rangeEndDate1 = Rx<DateTime?>(null);
   Rxn<TodayWashSummaryModel> todayWashSummaryModel = Rxn();
   Rxn<WashLogModel> washLogModel = Rxn();
+  //Rxn<WashLogModel> washLogModel = Rxn();
+
 
   void toggleWashSelection() {
     isWashSelected.value = !isWashSelected.value;
@@ -145,6 +152,7 @@ class WashStatusController extends GetxController {
         int? customerId = getCustomerData.value?.data!.customerDetails?.id;
         print("Customer ID: $customerId");
       }
+
       hideLoader();
       return getCustomerData.value;
     } catch (error) {
@@ -152,8 +160,74 @@ class WashStatusController extends GetxController {
       return null;
     }
   }
+  Future<void> completeWash(String? washId, {bool requireImage = false}) async {
+    try {
+      dio.FormData formData;
 
-  Future<dynamic> completeWash(String washId) async {
+      if (requireImage) {
+        if (pickedImage.value == null) {
+          Get.snackbar("Error", "Please capture an image.");
+          return;
+        }
+
+        final file = File(pickedImage.value!.path);
+        final fileSize = await file.length();
+
+        if (fileSize > 2 * 1024 * 1024) {
+          Get.snackbar("Error", "File size exceeds 2MB.");
+          return;
+        }
+
+        formData = await dio.FormData.fromMap({
+          "file": await dio.MultipartFile.fromFile(
+            pickedImage.value!.path,
+            filename: pickedImage.value!.path.split('/').last,
+          ),
+          "WashId": washId,
+        });
+      } else {
+        formData = dio.FormData.fromMap({
+          "WashId": washId,
+        });
+      }
+
+      final response = await Repository().completeWashRepo(formData);
+      print("Upload success");
+      return response;
+
+    } catch (e) {
+      print("Upload error: $e");
+      rethrow;
+    }
+  }
+
+/*  Future<void> completeWash(String? washId) async {
+    try {
+
+      final file = File(pickedImage.value!.path);
+      final fileSize = await file.length();
+
+      if (fileSize > 2 * 1024 * 1024) {
+        Get.snackbar("Error", "File size exceeds 2MB.");
+        return;
+      }
+
+      dio.FormData formData = await dio.FormData.fromMap({
+        "file": await dio.MultipartFile.fromFile(
+          pickedImage.value!.path,
+          filename: pickedImage.value!.path.split('/').last,
+        ),
+        "WashId": washId,
+      });
+      final response = await Repository().completeWashRepo(formData);
+      print("m------>}");
+      return response;
+    } catch (e) {
+      print("Upload error: $e");
+      rethrow;
+    }}*/
+
+/*  Future<dynamic> completeWash(String?washId,) async {
     try {
       dio.FormData formData = await dio.FormData.fromMap({
         "file": await dio.MultipartFile.fromFile(
@@ -169,7 +243,7 @@ class WashStatusController extends GetxController {
       print("Upload error: $e");
       rethrow;
     }
-  }
+  }*/
 
   Future<WashLogModel?> washLog(String startingDate, String endingDate) async {
     try {
@@ -184,6 +258,29 @@ class WashStatusController extends GetxController {
       hideLoader();
       print("Wash log error: $e");
       rethrow;
+    }
+  }
+
+  int userRating = 0;
+  final TextEditingController commentController = TextEditingController();
+
+  Rxn<ApiResponse> apiResponse = Rxn<ApiResponse>();
+  Future<ApiResponse?> getRating(
+      String rating,
+      String washId,
+      String comment,
+      ) async {
+    Map params = {"rating": rating, "washId": washId, "comment": comment};
+    try {
+      print("Rating body--->: $params");
+      //  loading.value = true;
+      apiResponse.value = await Repository().rating(params);
+      return apiResponse.value;
+    } catch (e) {
+      print("Error in controller: $e");
+      return null;
+    } finally {
+      // loading.value = false;
     }
   }
 }

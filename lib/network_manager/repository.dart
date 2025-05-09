@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
+import 'package:hiwash_worker/network_manager/utils/api_response.dart';
 
 import '../featuers/auth/model/get_token_model.dart';
 import '../featuers/auth/model/send_otp_model.dart';
@@ -192,6 +193,17 @@ class Repository {
     } catch (e) {
       print("validateOfferQr failed: $e");
     }
+  }
+
+  Future<ApiResponse> rating(Object requestBody) async {
+    // print("Rating body--->: $requestBody");
+    Map<String, dynamic> response = await dioHelper.post(
+      url: ApiConstant.rating,
+      requestBody: requestBody,
+      isAuthRequired: true,
+    );
+    //  print("Rating Response--->: $response");
+    return ApiResponse.fromJson(response);
   }
 
 }

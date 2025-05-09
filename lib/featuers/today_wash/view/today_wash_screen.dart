@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/featuers/dashboard/controller/dashboard_controller.dart';
+import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
 import 'package:hiwash_worker/route/route_strings.dart';
 import 'package:hiwash_worker/widgets/components/doted_vertical_line.dart';
 
@@ -92,9 +94,6 @@ class TodayWashScreen extends StatelessWidget {
                                       .length,
                               itemBuilder: (context, i) {
                                 return servicesContainer(i, () async {
-                                  /*    final QrController qrController =Get.isRegistered<QrController>() ? Get.find() : Get.put(QrController());;
-                                  final String scannedCustomerId = qrController.customerId.value;
-*/
                                   String customerId =
                                       controller
                                           .todayWashSummaryModel
@@ -114,9 +113,13 @@ class TodayWashScreen extends StatelessWidget {
                                       barrierDismissible: false,
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return AppDialog(
-                                          padding: EdgeInsets.zero,
-                                          child: scanDialog(i),
+                                        return newScanDialog(
+                                          washData:
+                                              controller
+                                                  .todayWashSummaryModel
+                                                  .value!
+                                                  .data!
+                                                  .washes![i],
                                         );
                                       },
                                     );
@@ -266,6 +269,881 @@ class TodayWashScreen extends StatelessWidget {
                       ),
                     );
                   }),
+        ),
+      ],
+    );
+  }
+
+  Widget servicesContainer(int index, VoidCallback onTap) {
+    var customerData = controller.todayWashSummaryModel.value?.data?.washes;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.c142293.withOpacity(0.15),
+              spreadRadius: 0,
+              blurRadius: 7,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ProfileImageView(
+              radius: 25,
+              imagePath: customerData![index].profilePicUrl,
+              radiusStack: 6,
+              isVisibleStack: customerData[index].isPremium,
+            ),
+            15.widthSizeBox,
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  Text(
+                    customerData[index].customerName ?? "".tr,
+                    style: w600_14a(color: AppColor.c2C2A2A),
+                  ),
+                  10.heightSizeBox,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IsSelectButton(),
+                          5.widthSizeBox,
+                          Text(
+                            "09-May-2024",
+                            style: w400_12a(color: AppColor.c455A64),
+                          ),
+                        ],
+                      ),
+                      if (customerData[index] == true) ...[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, bottom: 5),
+                          child: DotedVerticalLine(height: 8.1),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IsSelectButton(),
+                            5.widthSizeBox,
+                            Text(
+                              "Buy 1 Get 1 Free ",
+                              style: w400_10a(color: AppColor.c455A64),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                  7.heightSizeBox,
+                ],
+              ),
+            ),
+            customerData[index].rating == 0
+                ? SizedBox()
+                : Container(
+                  width: 30,
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ImageView(
+                        path: Assets.iconsIcStar,
+                        height: 14,
+                        width: 14,
+                      ),
+
+                      Text(
+                        "${customerData[index].rating ?? "".tr}",
+                        style: w400_10a(color: AppColor.c455A64),
+                      ),
+                    ],
+                  ),
+                ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget newScanDialog({required Washes washData}) {
+    qrController.getOffersByIdModel.value = null;
+    return Center(
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: 11,
+                      top: 11,
+                    ),
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    // padding: EdgeInsets.symmetric(horizontal: 27),
+                    child: Obx(() {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                37.heightSizeBox,
+                                Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          100,
+                                        ),
+                                        border: Border.all(
+                                          color: AppColor.blue.withOpacity(0.2),
+                                        ),
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 50,
+                                        backgroundColor: Colors.grey[200],
+                                        backgroundImage:
+                                            (washData
+                                                        .profilePicUrl
+                                                        ?.isNotEmpty ??
+                                                    false)
+                                                ? NetworkImage(
+                                                  washData.profilePicUrl!,
+                                                )
+                                                : AssetImage(
+                                                  Assets.imagesDemoProfile,
+                                                ),
+                                      ),
+                                    ),
+
+                                    washData.isPremium == true
+                                        ? Container(
+                                          padding: EdgeInsets.all(3),
+                                          decoration: BoxDecoration(
+                                            color: AppColor.white,
+                                            borderRadius: BorderRadius.circular(
+                                              100,
+                                            ),
+                                            border: Border.all(
+                                              color: AppColor.cE8E9F4,
+                                            ),
+                                          ),
+
+                                          child: CircleAvatar(
+                                            radius: 10,
+                                            backgroundImage: AssetImage(
+                                              Assets.iconsIcCrown,
+                                            ),
+                                          ),
+                                        )
+                                        : SizedBox(),
+                                  ],
+                                ),
+                                11.heightSizeBox,
+
+                                Text(
+                                  washData.customerName ?? "",
+                                  style: w700_16a(color: AppColor.c2C2A2A),
+                                  textAlign: TextAlign.center,
+                                ),
+
+                                15.heightSizeBox,
+                                subscriptionRowWidget(
+                                  title: 'Pack Name ',
+                                  packName:
+                                      controller
+                                          .getCustomerData
+                                          .value
+                                          ?.data
+                                          ?.subscriptionDetails
+                                          ?.subscriptionName ??
+                                      '',
+                                ),
+                                10.heightSizeBox,
+                                DotedHorizontalLine(),
+                                10.heightSizeBox,
+                                subscriptionRowWidget(
+                                  title: 'Expiry date ',
+                                  packName: formatDate(
+                                    controller
+                                        .getCustomerData
+                                        .value
+                                        ?.data
+                                        ?.subscriptionDetails
+                                        ?.endDate,
+                                  ),
+                                ),
+                                10.heightSizeBox,
+                                DotedHorizontalLine(),
+                                10.heightSizeBox,
+                                subscriptionRowWidget(
+                                  title: 'Car Number',
+                                  packName:
+                                      controller
+                                          .getCustomerData
+                                          .value
+                                          ?.data
+                                          ?.customerDetails
+                                          ?.carNumber ??
+                                      '',
+                                ),
+                                10.heightSizeBox,
+                                DotedHorizontalLine(),
+                                10.heightSizeBox,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Reward",
+                                      style: w400_12p(color: AppColor.c455A64),
+                                    ),
+
+                                    (qrController
+                                                    .getOffersByIdModel
+                                                    .value
+                                                    ?.data
+                                                    ?.first
+                                                    .discountValue ==
+                                                null ||
+                                            qrController
+                                                .getOffersByIdModel
+                                                .value!
+                                                .data!
+                                                .first
+                                                .discountValue
+                                                .toString()
+                                                .isEmpty)
+                                        ? GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed(
+                                              RouteStrings.rewardQrScreen,
+                                            );
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 5,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: AppColor.cD83030,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                ImageView(
+                                                  path: Assets.iconsIcQr,
+                                                  height: 14,
+                                                  width: 14,
+                                                ),
+                                                7.widthSizeBox,
+                                                Text(
+                                                  "Scan Offer",
+                                                  style: w500_12a(
+                                                    color: AppColor.c142293,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                        : Text(
+                                          "Flat ${qrController.formatDiscount(qrController.getOffersByIdModel.value?.data?.first.discountValue)}% off",
+                                          style: w500_14a(
+                                            color: AppColor.c1F9D70,
+                                          ),
+                                        ),
+                                  ],
+                                ),
+
+                                32.heightSizeBox,
+                              ],
+                            ),
+                          ),
+                          if (controller
+                                  .getCustomerData
+                                  .value
+                                  ?.data
+                                  ?.subscriptionDetails
+                                  ?.subscriptionId ==
+                              2)
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppColor.cF6F7FF,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  DotedHorizontalLine(),
+
+                                  32.heightSizeBox,
+
+                                  Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                          top: 5,
+                                          left: 16,
+                                          right: 16,
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.zero,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              controller.pickImageFromCamera();
+                                            },
+                                            child: DottedBorder(
+                                              color: AppColor.c5C6B72
+                                                  .withOpacity(0.5),
+                                              strokeWidth: 1,
+                                              dashPattern: [4, 4],
+                                              radius: Radius.circular(15),
+                                              borderType: BorderType.RRect,
+                                              child: Container(
+                                                //margin: EdgeInsets.symmetric(horizontal: 50),
+                                                // color: Colors.green,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                height: 144,
+                                                width: Get.width,
+                                                child: Obx(() {
+                                                  if (controller
+                                                          .pickedImage
+                                                          .value !=
+                                                      null) {
+                                                    return ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            15,
+                                                          ),
+                                                      child: Image.file(
+                                                        File(
+                                                          controller
+                                                              .pickedImage
+                                                              .value!
+                                                              .path,
+                                                        ),
+                                                        fit: BoxFit.fitWidth,
+                                                        width: double.infinity,
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          "Capture Car Number Plate and Verify",
+                                                          style: w400_12p(
+                                                            color:
+                                                                AppColor
+                                                                    .c455A64,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }
+                                                }),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      (controller.pickedImage.value != null)
+                                          ? Positioned(
+                                            right: 10,
+                                            child: ImageView(
+                                              path: Assets.iconsIcVerify,
+                                              height: 25,
+                                              width: 25,
+                                            ),
+                                          )
+                                          : SizedBox(),
+                                    ],
+                                  ),
+
+                                  30.heightSizeBox,
+
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                      ),
+                                      child: CustomSwipeButton(
+                                        thumbPadding: EdgeInsets.all(3),
+                                        activeThumbColor: AppColor.c1F9D70,
+                                        thumb: Icon(
+                                          Icons.chevron_right,
+                                          color: Colors.white,
+                                        ),
+                                        elevationThumb: 2,
+                                        elevationTrack: 2,
+                                        child: Text(
+                                          "Swipe to Complete Wash "
+                                              .toUpperCase(),
+                                          style: TextStyle(
+                                            color: AppColor.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        onSwipe: () async {
+                                          try {
+                                            await controller
+                                                .completeWash(
+                                                  washData.id.toString(),
+                                                  requireImage:
+                                                      controller
+                                                          .getCustomerData
+                                                          .value
+                                                          ?.data
+                                                          ?.subscriptionDetails
+                                                          ?.subscriptionId ==
+                                                      2,
+                                                )
+                                                .then((value) {
+                                                  Get.back();
+                                                  showDialog(
+                                                    barrierDismissible: false,
+                                                    context: Get.context!,
+                                                    builder: (
+                                                      BuildContext context,
+                                                    ) {
+                                                      return AppDialog(
+                                                        bottomVisible: true,
+
+                                                        padding:
+                                                            EdgeInsets.zero,
+
+                                                        child: successDialog(
+                                                          washDetail: washData,
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                });
+                                          } catch (e) {
+                                            hideLoader();
+                                            ScaffoldMessenger.of(
+                                              Get.context!,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "Error completing wash: $e",
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+
+                                  46.heightSizeBox,
+                                ],
+                              ),
+                            )
+                          else
+                            Column(
+                              children: [
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                    ),
+                                    child: CustomSwipeButton(
+                                      thumbPadding: EdgeInsets.all(3),
+                                      activeThumbColor: AppColor.c1F9D70,
+                                      thumb: Icon(
+                                        Icons.chevron_right,
+                                        color: Colors.white,
+                                      ),
+                                      elevationThumb: 2,
+                                      elevationTrack: 2,
+                                      child: Text(
+                                        "Swipe to Complete Wash ".toUpperCase(),
+                                        style: TextStyle(
+                                          color: AppColor.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      onSwipe: () async {
+                                        try {
+                                          await controller
+                                              .completeWash(
+                                                washData.id.toString() ?? "",
+                                              )
+                                              .then((va) {
+                                                Get.back();
+                                                showDialog(
+                                                  barrierDismissible: false,
+                                                  context: Get.context!,
+                                                  builder: (
+                                                    BuildContext context,
+                                                  ) {
+                                                    return AppDialog(
+                                                      padding: EdgeInsets.zero,
+                                                      child: successDialog(
+                                                        washDetail: washData,
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              });
+                                        } catch (e) {
+                                          hideLoader();
+                                          ScaffoldMessenger.of(
+                                            Get.context!,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "Error completing wash: $e",
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                32.heightSizeBox,
+                              ],
+                            ),
+                        ],
+                      );
+                    }),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      /*      controller.pickedImage.value = null;
+                      qrController.getOffersByIdModel.value = null;*/
+                      Get.back();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(right: 21, top: 18),
+                      child: ImageView(
+                        path: Assets.iconsIcClose,
+                        height: 28,
+                        width: 32,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          controller
+                      .getCustomerData
+                      .value
+                      ?.data
+                      ?.subscriptionDetails
+                      ?.subscriptionId ==
+                  1
+              ? Container(
+                padding: EdgeInsets.only(top: 0),
+                margin: EdgeInsets.only(left: 50, right: 50),
+
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset(Assets.imagesDiloagBgTop),
+
+                    RichText(
+                      text: TextSpan(
+                        text: 'Remaining Washes: ',
+                        style: w500_14p(color: AppColor.c2C2A2A),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: "0",
+                            style: w400_16p(color: AppColor.cC31848),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              : SizedBox(),
+        ],
+      ),
+    );
+  }
+
+  Widget successDialog({required Washes washDetail}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              30.heightSizeBox,
+              Container(
+                width: Get.width,
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: ImageView(
+                        path: Assets.imagesImSussess,
+                        width: Get.width,
+                        fit: BoxFit.cover,
+                        height: 180,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              21.heightSizeBox,
+              Text("Wash Complete!", style: w700_22a(color: AppColor.c2C2A2A)),
+              Text(
+                "Share your feedback and\nrate the Customer.",
+                textAlign: TextAlign.center,
+                style: w400_16p(),
+              ),
+              9.heightSizeBox,
+              GetBuilder<DashboardController>(
+                builder: (controller) {
+                  return RatingStars(
+                    value: controller.userRating.toDouble(),
+                    onValueChanged: (v) {
+                      controller.userRating = v.toInt();
+                      controller.update();
+                    },
+                    starBuilder:
+                        (index, color) =>
+                            Icon(Icons.star, color: color, size: 28),
+                    starCount: 5,
+                    starSize: 28,
+                    valueLabelVisibility: false,
+                    starColor: AppColor.cFFC200,
+                    starOffColor: Colors.grey,
+
+                    animationDuration: Duration(milliseconds: 200),
+                    starSpacing: 2,
+                  );
+                },
+              ),
+
+              15.heightSizeBox,
+
+              TextFormField(
+                controller: controller.commentController,
+                maxLines: 3,
+                style: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
+                decoration: InputDecoration(
+                  fillColor: AppColor.white,
+                  hintText: "Enter your comment here...",
+                  filled: true,
+                  labelStyle: w400_13a(color: AppColor.c455A64),
+                  hintStyle: w400_14p(
+                    color: AppColor.c2C2A2A.withOpacity(0.40),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColor.c5C6B72.withOpacity(0.30),
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColor.c5C6B72.withOpacity(0.30),
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+
+              15.heightSizeBox,
+
+              GestureDetector(
+                onTap: () {
+                  final comment = controller.commentController.text.trim();
+                  final ratingString = controller.userRating.toString();
+
+                  controller
+                      .getRating(
+                        ratingString,
+                        washDetail.id.toString(),
+                        comment,
+                      )
+                      .then((value) {
+                        if (value != null) {
+                          Get.back();
+                          controller.commentController.clear();
+                        }
+                      });
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: AppColor.c142293,
+                    borderRadius: BorderRadius.circular(100),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColor.c142293.withOpacity(0.30),
+                        blurRadius: 15,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Text("Submit", style: w500_14a(color: AppColor.white)),
+                ),
+              ),
+
+              18.heightSizeBox,
+            ],
+          ),
+        ),
+
+        // Bottom profile section stays same
+        Container(
+          decoration: BoxDecoration(
+            color: AppColor.cF6F7FF,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            children: [
+              DotedHorizontalLine(),
+              Padding(
+                padding: EdgeInsets.only(top: 23, left: 19, bottom: 23),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ProfileImageView(radius: 20, radiusStack: 4),
+                    9.widthSizeBox,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Ibrahim Bafqia",
+                          style: w600_14a(color: AppColor.c2C2A2A),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IsSelectButton(),
+                            5.widthSizeBox,
+                            Text(
+                              "09-May-2024",
+                              style: w400_12a(color: AppColor.c455A64),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, bottom: 5),
+                          child: DotedVerticalLine(height: 5),
+                        ),
+
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IsSelectButton(),
+                            5.widthSizeBox,
+                            Text(
+                              "Buy 1 Get 1 Free ",
+                              style: w400_10a(color: AppColor.c455A64),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              /* Padding(
+                padding: EdgeInsets.only(top: 23, left: 19, bottom: 40),
+                child: Row(
+                  children: [
+                    ProfileImageView(
+                      radius: 20,
+                      radiusStack: 4,
+                      isVisibleStack: false,
+                    ),
+                    9.widthSizeBox,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Ibrahim Bafqia",
+                          style: w600_14a(color: AppColor.c2C2A2A),
+                        ),
+                        5.widthSizeBox,
+                        Row(
+                          children: [
+                            ImageView(
+                              path: Assets.iconsIcPlaceMarker,
+                              height: 18,
+                              width: 18,
+                            ),
+                            Text(
+                              "09-May-2024",
+                              style: w400_12a(color: AppColor.c455A64),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),*/
+            ],
+          ),
         ),
       ],
     );
@@ -500,922 +1378,9 @@ class TodayWashScreen extends StatelessWidget {
     return "$startDate – $endDate";
   }
 
-  Widget servicesContainer(int index, VoidCallback onTap) {
-    var customerData = controller.todayWashSummaryModel.value?.data?.washes;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: AppColor.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: AppColor.c142293.withOpacity(0.15),
-              spreadRadius: 0,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ProfileImageView(
-              radius: 25,
-              imagePath: customerData![index].profilePicUrl,
-              radiusStack: 6,
-              isVisibleStack: customerData[index].isPremium,
-            ),
-            15.widthSizeBox,
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-
-                children: [
-                  Text(
-                    customerData[index].customerName ?? "".tr,
-                    style: w600_14a(color: AppColor.c2C2A2A),
-                  ),
-                  10.heightSizeBox,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IsSelectButton(),
-                          5.widthSizeBox,
-                          Text(
-                            "09-May-2024",
-                            style: w400_12a(color: AppColor.c455A64),
-                          ),
-                        ],
-                      ),
-                      if (customerData[index] == true) ...[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5, bottom: 5),
-                          child: DotedVerticalLine(height: 8.1),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IsSelectButton(),
-                            5.widthSizeBox,
-                            Text(
-                              "Buy 1 Get 1 Free ",
-                              style: w400_10a(color: AppColor.c455A64),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ],
-                  ),
-                  7.heightSizeBox,
-                ],
-              ),
-            ),
-            customerData[index].rating == 0
-                ? SizedBox()
-                : Container(
-                  width: 30,
-                  child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      ImageView(
-                        path: Assets.iconsIcStar,
-                        height: 14,
-                        width: 14,
-                      ),
-
-                      Text(
-                        "${customerData[index].rating ?? "".tr}",
-                        style: w400_10a(color: AppColor.c455A64),
-                      ),
-                    ],
-                  ),
-                ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget rowDivider() {
     return Column(
       children: [10.heightSizeBox, DotedHorizontalLine(), 10.heightSizeBox],
-    );
-  }
-
-  Widget scanDialog(int index) {
-    return Obx(() {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                37.heightSizeBox,
-                Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(
-                          color: AppColor.blue.withOpacity(0.2),
-                        ),
-                      ),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey[200],
-                        backgroundImage:
-                            (controller
-                                        .todayWashSummaryModel
-                                        .value
-                                        ?.data
-                                        ?.washes?[index]
-                                        .profilePicUrl
-                                        ?.isNotEmpty ??
-                                    false)
-                                ? NetworkImage(
-                                  controller
-                                      .todayWashSummaryModel
-                                      .value!
-                                      .data!
-                                      .washes![index]
-                                      .profilePicUrl!,
-                                )
-                                : AssetImage(Assets.imagesDemoProfile),
-                      ),
-                    ),
-
-                    controller
-                                .todayWashSummaryModel
-                                .value
-                                ?.data
-                                ?.washes?[index]
-                                .isPremium ==
-                            true
-                        ? Container(
-                          padding: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            color: AppColor.white,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: AppColor.cE8E9F4),
-                          ),
-
-                          child: CircleAvatar(
-                            radius: 10,
-                            backgroundImage: AssetImage(Assets.iconsIcCrown),
-                          ),
-                        )
-                        : SizedBox(),
-                  ],
-                ),
-                11.heightSizeBox,
-
-                Text(
-                  controller
-                          .todayWashSummaryModel
-                          .value
-                          ?.data
-                          ?.washes?[index]
-                          .customerName ??
-                      "",
-                  style: w700_16a(color: AppColor.c2C2A2A),
-                  textAlign: TextAlign.center,
-                ),
-
-                15.heightSizeBox,
-                subscriptionRowWidget(
-                  title: 'Pack Name ',
-                  packName:
-                      controller
-                          .getCustomerData
-                          .value
-                          ?.data
-                          ?.subscriptionDetails
-                          ?.subscriptionName ??
-                      '',
-                ),
-                10.heightSizeBox,
-                DotedHorizontalLine(),
-                10.heightSizeBox,
-                subscriptionRowWidget(
-                  title: 'Expiry date ',
-                  packName: formatDate(
-                    controller
-                        .getCustomerData
-                        .value
-                        ?.data
-                        ?.subscriptionDetails
-                        ?.endDate,
-                  ),
-                ),
-                10.heightSizeBox,
-                DotedHorizontalLine(),
-                10.heightSizeBox,
-                subscriptionRowWidget(
-                  title: 'Car Number',
-                  packName:
-                      controller
-                          .getCustomerData
-                          .value
-                          ?.data
-                          ?.customerDetails
-                          ?.carNumber ??
-                      '',
-                ),
-                10.heightSizeBox,
-                DotedHorizontalLine(),
-                10.heightSizeBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Reward", style: w400_12p(color: AppColor.c455A64)),
-
-                    (qrController.getOffersByIdModel.value?.data?.first.discountValue == null ||
-                            qrController.getOffersByIdModel.value!.data!.first.discountValue.toString().isEmpty)
-                        ? GestureDetector(
-                          onTap: () {
-                            Get.toNamed(RouteStrings.rewardQrScreen);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColor.cD83030),
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Row(
-                              children: [
-                                ImageView(
-                                  path: Assets.iconsIcQr,
-                                  height: 14,
-                                  width: 14,
-                                ),
-                                7.widthSizeBox,
-                                Text(
-                                  "Scan Offer",
-                                  style: w500_12a(color: AppColor.c142293),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                        : Text(
-                          "Flat ${qrController.formatDiscount(qrController.getOffersByIdModel.value?.data?.first.discountValue)}% off",
-                          style: w500_14a(color: AppColor.c1F9D70),
-                        ),
-                  ],
-                ),
-
-                32.heightSizeBox,
-              ],
-            ),
-          ),
-          if (controller
-                  .getCustomerData
-                  .value
-                  ?.data
-                  ?.subscriptionDetails
-                  ?.subscriptionId ==
-              2)
-            Container(
-              decoration: BoxDecoration(
-                color: AppColor.cF6F7FF,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                children: [
-                  DotedHorizontalLine(),
-
-                  32.heightSizeBox,
-
-                  Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 5, left: 16, right: 16),
-                        child: Padding(
-                          padding: EdgeInsets.zero,
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.pickImageFromCamera();
-                            },
-                            child: DottedBorder(
-                              color: AppColor.c5C6B72.withOpacity(0.5),
-                              strokeWidth: 1,
-                              dashPattern: [4, 4],
-                              radius: Radius.circular(15),
-                              borderType: BorderType.RRect,
-                              child: Container(
-                                //margin: EdgeInsets.symmetric(horizontal: 50),
-                                // color: Colors.green,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                height: 144,
-                                width: Get.width,
-                                child: Obx(() {
-                                  if (controller.pickedImage.value != null) {
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: Image.file(
-                                        File(
-                                          controller.pickedImage.value!.path,
-                                        ),
-                                        fit: BoxFit.fitWidth,
-                                        width: double.infinity,
-                                      ),
-                                    );
-                                  } else {
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Capture Car Number Plate and Verify",
-                                          style: w400_12p(
-                                            color: AppColor.c455A64,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    );
-                                  }
-                                }),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      (controller.pickedImage.value != null)
-                          ? Positioned(
-                            right: 10,
-                            child: ImageView(
-                              path: Assets.iconsIcVerify,
-                              height: 25,
-                              width: 25,
-                            ),
-                          )
-                          : SizedBox(),
-                    ],
-                  ),
-
-                  30.heightSizeBox,
-
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: CustomSwipeButton(
-                        thumbPadding: EdgeInsets.all(3),
-                        activeThumbColor: AppColor.c1F9D70,
-                        thumb: Icon(Icons.chevron_right, color: Colors.white),
-                        elevationThumb: 2,
-                        elevationTrack: 2,
-                        child: Text(
-                          "Swipe to Complete Wash ".toUpperCase(),
-                          style: TextStyle(
-                            color: AppColor.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onSwipe: () async {
-                          try {
-                            // showLoader();
-                            await controller.completeWash(
-                              controller
-                                      .todayWashSummaryModel
-                                      .value
-                                      ?.data
-                                      ?.washes![index]
-                                      .id
-                                      .toString() ??
-                                  "",
-                            );
-                            //hideLoader();
-                          } catch (e) {
-                            hideLoader();
-                            ScaffoldMessenger.of(Get.context!).showSnackBar(
-                              SnackBar(
-                                content: Text("Error completing wash: $e"),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-
-                  /*   GetStartButton(
-                  text: 'Complete Wash',
-                  color: AppColor.c1F9D70,
-
-                  boxShadowColor: AppColor.c1F9D70.withOpacity(0.40),
-                ),*/
-                  46.heightSizeBox,
-                ],
-              ),
-            )
-          else
-            Column(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: CustomSwipeButton(
-                      thumbPadding: EdgeInsets.all(3),
-                      activeThumbColor: AppColor.c1F9D70,
-                      thumb: Icon(Icons.chevron_right, color: Colors.white),
-                      elevationThumb: 2,
-                      elevationTrack: 2,
-                      child: Text(
-                        "Swipe to Complete Wash ".toUpperCase(),
-                        style: TextStyle(
-                          color: AppColor.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onSwipe: () async {
-                        try {
-                          // showLoader();
-                          await controller.completeWash(
-                            controller
-                                    .todayWashSummaryModel
-                                    .value
-                                    ?.data
-                                    ?.washes![index]
-                                    .id
-                                    .toString() ??
-                                "",
-                          );
-                          //hideLoader();
-                        } catch (e) {
-                          hideLoader();
-                          ScaffoldMessenger.of(Get.context!).showSnackBar(
-                            SnackBar(
-                              content: Text("Error completing wash: $e"),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                32.heightSizeBox,
-              ],
-            ),
-        ],
-      );
-    });
-  }
-
-  Widget scannedWithImageDialog() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              37.heightSizeBox,
-              Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(color: AppColor.blue.withOpacity(0.2)),
-                    ),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage(Assets.imagesDemoProfile),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(color: AppColor.cE8E9F4),
-                    ),
-
-                    child: CircleAvatar(
-                      radius: 10,
-                      backgroundImage: AssetImage(Assets.iconsIcCrown),
-                    ),
-                  ),
-                ],
-              ),
-              11.heightSizeBox,
-
-              Text(
-                "Ibrahim Bafqia",
-                style: w700_16a(color: AppColor.c2C2A2A),
-                textAlign: TextAlign.center,
-              ),
-
-              15.heightSizeBox,
-              subscriptionRowWidget(
-                title: 'Pack Name',
-                packName: ' Unlimited Washes',
-              ),
-              10.heightSizeBox,
-              DotedHorizontalLine(),
-              10.heightSizeBox,
-              subscriptionRowWidget(
-                title: 'Expiry date ',
-                packName: ' 15 Oct 2025',
-              ),
-              10.heightSizeBox,
-              DotedHorizontalLine(),
-              10.heightSizeBox,
-              subscriptionRowWidget(title: 'Car Number', packName: 'I35·VQD'),
-              10.heightSizeBox,
-              DotedHorizontalLine(),
-              10.heightSizeBox,
-              subscriptionRowWidget(
-                title: 'Reward',
-                packName: 'Flat 30% off',
-                color: AppColor.c1F9D70,
-              ),
-
-              32.heightSizeBox,
-            ],
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColor.cF6F7FF,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            children: [
-              DotedHorizontalLine(),
-
-              30.heightSizeBox,
-              ImageView(path: Assets.demoNumberPlate, height: 155),
-              30.heightSizeBox,
-
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: CustomSwipeButton(
-                    thumbPadding: EdgeInsets.all(3),
-                    activeThumbColor: AppColor.c1F9D70,
-                    thumb: Icon(Icons.chevron_right, color: Colors.white),
-                    elevationThumb: 2,
-                    elevationTrack: 2,
-                    child: Text(
-                      "Swipe to Complete Wash ".toUpperCase(),
-                      style: TextStyle(
-                        color: AppColor.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onSwipe: () {
-                      ScaffoldMessenger.of(Get.context!).showSnackBar(
-                        SnackBar(
-                          content: Text("Swiped!"),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      Get.back();
-                      showDialog(
-                        barrierDismissible: false,
-                        context: Get.context!,
-                        builder: (BuildContext context) {
-                          return AppDialog(
-                            topVisible: true,
-
-                            padding: EdgeInsets.zero,
-
-                            child: ownerDetailsDialog(),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-
-              /*   GetStartButton(
-                text: 'Complete Wash',
-                color: AppColor.c1F9D70,
-
-                boxShadowColor: AppColor.c1F9D70.withOpacity(0.40),
-              ),*/
-              46.heightSizeBox,
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget ownerDetailsDialog() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              37.heightSizeBox,
-              ProfileImageView(radius: 50, isVisibleStack: false),
-              11.heightSizeBox,
-
-              Text(
-                "Ibrahim Bafqia",
-                style: w700_16a(color: AppColor.c2C2A2A),
-                textAlign: TextAlign.center,
-              ),
-
-              15.heightSizeBox,
-              subscriptionRowWidget(
-                title: 'Pack Name',
-                packName: ' Unlimited Washes',
-              ),
-              10.heightSizeBox,
-              DotedHorizontalLine(),
-              10.heightSizeBox,
-              subscriptionRowWidget(
-                title: 'Expiry date ',
-                packName: ' 15 Oct 2025',
-              ),
-              10.heightSizeBox,
-              DotedHorizontalLine(),
-              10.heightSizeBox,
-              subscriptionRowWidget(title: 'Car Number', packName: 'I35·VQD'),
-              10.heightSizeBox,
-              DotedHorizontalLine(),
-              10.heightSizeBox,
-              subscriptionRowWidget(
-                title: 'Reward',
-                packName: 'Flat 30% off',
-                color: AppColor.c1F9D70,
-              ),
-
-              32.heightSizeBox,
-            ],
-          ),
-        ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: CustomSwipeButton(
-              thumbPadding: EdgeInsets.all(3),
-              activeThumbColor: AppColor.c1F9D70,
-              thumb: Icon(Icons.chevron_right, color: Colors.white),
-              elevationThumb: 2,
-              elevationTrack: 2,
-              child: Text(
-                "Swipe to Complete Wash ".toUpperCase(),
-                style: TextStyle(
-                  color: AppColor.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onSwipe: () {
-                /* ScaffoldMessenger.of(Get.context!).showSnackBar(
-                  SnackBar(
-                    content: Text("Swiped!"),
-                    backgroundColor: Colors.green,
-                  ),*/
-                Get.back();
-                showDialog(
-                  barrierDismissible: false,
-                  context: Get.context!,
-                  builder: (BuildContext context) {
-                    return AppDialog(
-                      bottomVisible: true,
-
-                      padding: EdgeInsets.zero,
-
-                      child: successDialog(),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-        30.heightSizeBox,
-      ],
-    );
-  }
-
-  Widget successDialog() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              30.heightSizeBox,
-              Container(
-                width: Get.width,
-
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: ImageView(
-                        path: Assets.imagesImSussess,
-                        width: Get.width,
-                        height: 180,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              21.heightSizeBox,
-              Text("Wash Complete! ", style: w700_22a(color: AppColor.c2C2A2A)),
-              Text(
-                "Share your feedback and\nrate the Customer.",
-                textAlign: TextAlign.center,
-                style: w400_16p(),
-              ),
-              9.heightSizeBox,
-              StarRating(rating: 4),
-              15.heightSizeBox,
-              TextFormField(
-                maxLines: 3,
-                style: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
-                decoration: InputDecoration(
-                  fillColor: AppColor.white,
-                  hintText: "Enter your comment here...",
-                  //  labelText: "Address",
-                  filled: true,
-                  //  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  labelStyle: w400_13a(color: AppColor.c455A64),
-                  hintStyle: w400_14p(
-                    color: AppColor.c2C2A2A.withOpacity(0.40),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.cEAE8E8.withOpacity(0.5),
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.c5C6B72.withOpacity(0.30),
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.c5C6B72.withOpacity(0.30),
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.c5C6B72.withOpacity(0.30),
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.c5C6B72.withOpacity(0.30),
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColor.c5C6B72.withOpacity(0.30),
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-              ),
-              15.heightSizeBox,
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: AppColor.c142293,
-                    borderRadius: BorderRadius.circular(100),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColor.c142293.withOpacity(0.30),
-                        blurRadius: 15,
-                        spreadRadius: 0,
-                        offset: Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Text("Submit", style: w500_14a(color: AppColor.white)),
-                ),
-              ),
-              18.heightSizeBox,
-            ],
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColor.cF6F7FF,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(20),
-              bottomRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            children: [
-              DotedHorizontalLine(),
-
-              Padding(
-                padding: EdgeInsets.only(top: 23, left: 19, bottom: 23),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ProfileImageView(radius: 20, radiusStack: 4),
-                    9.widthSizeBox,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Ibrahim Bafqia",
-                          style: w600_14a(color: AppColor.c2C2A2A),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IsSelectButton(),
-                            5.widthSizeBox,
-                            Text(
-                              "09-May-2024",
-                              style: w400_12a(color: AppColor.c455A64),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5, bottom: 5),
-                          child: DotedVerticalLine(height: 5),
-                        ),
-
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IsSelectButton(),
-                            5.widthSizeBox,
-                            Text(
-                              "Buy 1 Get 1 Free ",
-                              style: w400_10a(color: AppColor.c455A64),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              40.heightSizeBox,
-            ],
-          ),
-        ),
-      ],
     );
   }
 
