@@ -20,6 +20,8 @@ static const washLog="$baseUrl/worker/wash-log";
 static  getOffersById(int id)=>"$baseUrl/offer/$id";
 static const validateOfferQr="$baseUrl/offer/validate-offer-qr";
 static const rating="$baseUrl/worker/rating";
+static const String notification = "$baseUrl/notification/0";
+
 
 
 

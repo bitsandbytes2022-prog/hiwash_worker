@@ -275,7 +275,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onClose() {
-    qrController?.dispose();
+   // qrController?.dispose();
     animationController.dispose();
     super.onClose();
   }

@@ -85,16 +85,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
           border: Border.all(color: AppColor.blue.withOpacity(0.2)),
         ),
         child: Obx(() {
-          final profilePicUrl = dashboardController.getWorkerModel.value?.data?.first.profilePicUrl ?? '';
+          final profilePicUrl =
+              dashboardController
+                  .getWorkerModel
+                  .value
+                  ?.data
+                  ?.first
+                  .profilePicUrl ??
+              '';
           final hasImage = profilePicUrl.isNotEmpty;
           return CircleAvatar(
             radius: 20,
-            backgroundImage: hasImage
-                ? CachedNetworkImageProvider(
-              profilePicUrl,
-              headers: {'Cache-Control': 'no-cache'},
-            )
-                : AssetImage(Assets.imagesImMap),
+            backgroundImage:
+                hasImage
+                    ? CachedNetworkImageProvider(
+                      profilePicUrl,
+                      headers: {'Cache-Control': 'no-cache'},
+                    )
+                    : AssetImage(Assets.imagesImMap),
           );
         }),
       ),
@@ -111,16 +119,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
           border: Border.all(color: AppColor.blue.withOpacity(0.2)),
         ),
         child: Obx(() {
-          final profilePicUrl = dashboardController.getWorkerModel.value?.data?.first.profilePicUrl ?? '';
+          final profilePicUrl =
+              dashboardController
+                  .getWorkerModel
+                  .value
+                  ?.data
+                  ?.first
+                  .profilePicUrl ??
+              '';
           final hasImage = profilePicUrl.isNotEmpty;
           return CircleAvatar(
             radius: 20,
-            backgroundImage: hasImage
-                ? CachedNetworkImageProvider(
-              profilePicUrl,
-              headers: {'Cache-Control': 'no-cache'},
-            )
-                : AssetImage(Assets.imagesImMap),
+            backgroundImage:
+                hasImage
+                    ? CachedNetworkImageProvider(
+                      profilePicUrl,
+                      headers: {'Cache-Control': 'no-cache'},
+                    )
+                    : AssetImage(Assets.imagesImMap),
           );
         }),
       ),
@@ -154,7 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           Expanded(
                             child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 controller.isWashSelected.value = true;
                               },
                               child: Container(
@@ -187,6 +203,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: GestureDetector(
                               onTap: () {
                                 controller.isWashSelected.value = false;
+                                controller.washLog(
+                                  controller.defaultStartDate.toIso8601String(),
+                                  controller.defaultEndDate.toIso8601String(),
+                                );
                               },
                               child: Container(
                                 alignment: Alignment.center,

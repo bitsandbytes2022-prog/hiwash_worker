@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +12,7 @@ import 'package:hiwash_worker/route/route_strings.dart';
 import 'package:hiwash_worker/widgets/components/doted_vertical_line.dart';
 
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../generated/assets.dart';
 import '../../../network_manager/local_storage.dart';
@@ -136,148 +138,265 @@ class TodayWashScreen extends StatelessWidget {
                       ],
                     ),
                   )
-                  : Obx(() {
-                    return SingleChildScrollView(
-                      child: Stack(
+                  :Obx(() {
+                final groupedLogs = groupLogsByDate(
+                  controller.washLogModel.value?.data ?? [],
+                );
+
+                return SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Column(
                         children: [
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.isCalenderSelected.value =
-                                      !controller.isCalenderSelected.value;
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(100),
-                                    border: Border.all(
-                                      color: Colors.grey.withOpacity(0.5),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        _formatDateRange(
-                                          controller.rangeStartDate.value,
-                                          controller.rangeEndDate.value,
-                                        ),
-                                        style: w500_14p(
-                                          color: AppColor.c2C2A2A,
-                                        ),
-                                      ),
-                                      ImageView(
-                                        path: Assets.iconsDownArrow,
-                                        height: 6,
-                                        width: 8,
-                                        color: AppColor.c2C2A2A,
-                                      ),
-                                    ],
-                                  ),
+                          15.heightSizeBox,
+                          GestureDetector(
+                            onTap: () {
+                              controller.isCalenderSelected.value =
+                              !controller.isCalenderSelected.value;
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(
+                                  color: Colors.grey.withOpacity(0.5),
                                 ),
                               ),
-
-                              Column(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  15.heightSizeBox,
-
-                                  ListView.separated(
-                                    padding: EdgeInsets.only(
-                                      top: 20,
-                                      bottom: 30,
+                                  Text(
+                                    _formatDateRange(
+                                      controller.rangeStartDate.value,
+                                      controller.rangeEndDate.value,
                                     ),
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        controller
-                                            .washLogModel
-                                            .value
-                                            ?.data
-                                            ?.length ??
-                                        0,
-                                    separatorBuilder: (
-                                      BuildContext context,
-                                      int index,
-                                    ) {
-                                      return 15.heightSizeBox;
-                                    },
-
-                                    itemBuilder: (context, index) {
-                                      final washDay =
-                                          controller
-                                              .washLogModel
-                                              .value!
-                                              .data![index];
-                                      return dayWashRow(washDay);
-                                    },
+                                    style: w500_14p(
+                                      color: AppColor.c2C2A2A,
+                                    ),
+                                  ),
+                                  ImageView(
+                                    path: Assets.iconsDownArrow,
+                                    height: 6,
+                                    width: 8,
+                                    color: AppColor.c2C2A2A,
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                          if (controller.isCalenderSelected.value)
-                            Container(
-                              margin: EdgeInsets.only(top: 60),
+                          Column(
+                            children: [
+                              15.heightSizeBox,
+                              ListView.separated(
+                                padding: EdgeInsets.only(top: 20, bottom: 30),
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: groupedLogs.length,
+                                separatorBuilder: (_, __) => 15.heightSizeBox,
+                                itemBuilder: (context, index) {
+                                  final dateKey = groupedLogs.keys.elementAt(index);
+                                  final logs = groupedLogs[dateKey]!;
 
-                              decoration: BoxDecoration(
-                                color: AppColor.white,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: TableCalendar(
-                                focusedDay: controller.focusedDay1,
-                                firstDay: DateTime.utc(2025, 3, 4),
-                                lastDay: DateTime.utc(2090, 3, 4),
-                                selectedDayPredicate: (day) {
-                                  return isSameDay(
-                                    day,
-                                    controller.selectedDay1,
+                                  return Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(top: 14), // Leave space for the floating label
+                                        padding: EdgeInsets.symmetric(vertical: 15),
+                                        decoration: BoxDecoration(
+                                          color: AppColor.white,
+                                          borderRadius: BorderRadius.circular(15),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: AppColor.c142293.withOpacity(0.15),
+                                              blurRadius: 10,
+                                            ),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          children: logs.map((log) => Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 8),
+                                            child: washLogRow(log: log),
+                                          )).toList(),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                                        decoration: BoxDecoration(
+                                          color: AppColor.white,
+                                          borderRadius: BorderRadius.circular(30),
+                                          border: Border.all(color: AppColor.c142293.withOpacity(0.10)),
+                                        ),
+                                        child: Text(
+                                          formatDate(logs[0].redeemedAt ?? ""),
+                                          style: w500_10p(),
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 },
-                                calendarFormat: controller.calendarFormat,
-                                startingDayOfWeek: StartingDayOfWeek.monday,
-                                weekNumbersVisible: false,
-                                rangeStartDay: controller.rangeStartDate.value,
-                                rangeEndDay: controller.rangeEndDate.value,
-                                rangeSelectionMode:
-                                    RangeSelectionMode.toggledOn,
-                                onRangeSelected: controller.onRangeSelected,
-                                calendarStyle: CalendarStyle(
-                                  outsideDaysVisible: false,
-                                ),
-                                onDaySelected: (selectedDay, focusedDay) {
-                                  controller.update();
-                                },
-                                onFormatChanged: (format) {
-                                  if (controller.calendarFormat != format) {
-                                    controller.calendarFormat = format;
-                                    controller.update();
-                                  }
-                                },
-                                onPageChanged: (focusedDay) {
-                                  controller.focusedDay1 = focusedDay;
-                                  controller.update();
-                                },
-                              ),
-                            ),
+                              )
+                            ],
+                          ),
                         ],
                       ),
-                    );
-                  }),
+                      if (controller.isCalenderSelected.value)
+                        Container(
+                          margin: EdgeInsets.only(top: 60),
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: TableCalendar(
+                            focusedDay: controller.focusedDay1,
+                            firstDay: DateTime.utc(2025, 3, 4),
+                            lastDay: DateTime.utc(2090, 3, 4),
+                            selectedDayPredicate: (day) {
+                              return isSameDay(
+                                day,
+                                controller.selectedDay1,
+                              );
+                            },
+                            calendarFormat: controller.calendarFormat,
+                            startingDayOfWeek: StartingDayOfWeek.monday,
+                            weekNumbersVisible: false,
+                            rangeStartDay: controller.rangeStartDate.value,
+                            rangeEndDay: controller.rangeEndDate.value,
+                            rangeSelectionMode: RangeSelectionMode.toggledOn,
+                            onRangeSelected: controller.onRangeSelected,
+                            calendarStyle: CalendarStyle(
+                              outsideDaysVisible: false,
+                            ),
+                            onDaySelected: (selectedDay, focusedDay) {
+                              controller.update();
+                            },
+                            onFormatChanged: (format) {
+                              if (controller.calendarFormat != format) {
+                                controller.calendarFormat = format;
+                                controller.update();
+                              }
+                            },
+                            onPageChanged: (focusedDay) {
+                              controller.focusedDay1 = focusedDay;
+                              controller.isCalenderSelected.value = false;
+                              controller.update();
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              }),
+
+
         ),
       ],
     );
   }
+  Map<String, List<Data>> groupLogsByDate(List<Data> logs) {
+    Map<String, List<Data>> grouped = {};
+
+    for (var log in logs) {
+      if (log.redeemedAt != null) {
+        DateTime parsedDate = DateTime.parse(log.redeemedAt!);
+
+        final dateKey = DateFormat('yyyy-MM-dd').format(parsedDate);
+
+        if (!grouped.containsKey(dateKey)) {
+          grouped[dateKey] = [];
+        }
+        grouped[dateKey]!.add(log);
+      }
+    }
+
+    var sortedKeys = grouped.keys.toList()
+      ..sort((a, b) => b.compareTo(a));
+    Map<String, List<Data>> sortedGroupedLogs = {};
+    for (var key in sortedKeys) {
+      sortedGroupedLogs[key] = grouped[key]!;
+    }
+
+    return sortedGroupedLogs;
+  }
+
+ /* Map<String, List<Data>> groupLogsByDate(List<Data> logs) {
+    Map<String, List<Data>> grouped = {};
+
+    for (var log in logs) {
+      if (log.redeemedAt != null) {
+        DateTime parsedDate = DateTime.parse(log.redeemedAt!);
+
+        final dateKey = DateFormat('yyyy-MM-dd').format(parsedDate);
+
+        if (!grouped.containsKey(dateKey)) {
+          grouped[dateKey] = [];
+        }
+        grouped[dateKey]!.add(log);
+      }
+    }
+
+    return grouped;
+  }*/
+  String _formatDateRange(DateTime? start, DateTime? end) {
+    if (start == null || end == null) {
+      final defaultStart = DateTime.now().subtract(Duration(days: 10));
+      final defaultEnd = DateTime.now();
+
+      final startDate =
+          "${defaultStart.day.toString().padLeft(2, '0')} ${_getMonthName(defaultStart.month)} ${defaultStart.year}";
+      final endDate =
+          "${defaultEnd.day.toString().padLeft(2, '0')} ${_getMonthName(defaultEnd.month)} ${defaultEnd.year}";
+      return "$startDate – $endDate";
+    }
+
+    final startDate =
+        "${start.day.toString().padLeft(2, '0')} ${_getMonthName(start.month)} ${start.year}";
+    final endDate =
+        "${end.day.toString().padLeft(2, '0')} ${_getMonthName(end.month)} ${end.year}";
+    return "$startDate – $endDate";
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return months[month - 1];
+  }
+
+
+/*  String _formatDateRange(DateTime? start, DateTime? end) {
+    if (start == null || end == null) {
+      return "Select Date Range";
+    }
+    final startDate =
+        "${start.day.toString().padLeft(2, '0')} ${_getMonthName(start.month)} ${start.year}";
+    final endDate =
+        "${end.day.toString().padLeft(2, '0')} ${_getMonthName(end.month)} ${end.year}";
+    return "$startDate – $endDate";
+  }*/
 
   Widget servicesContainer(int index, VoidCallback onTap) {
+
     var customerData = controller.todayWashSummaryModel.value?.data?.washes;
+    bool isCompleted = customerData![index].isCompleted == true;
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: isCompleted ? null : onTap,
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -323,12 +442,12 @@ class TodayWashScreen extends StatelessWidget {
                           IsSelectButton(),
                           5.widthSizeBox,
                           Text(
-                            "09-May-2024",
+                            formatDate(customerData[index].redeemedAt ??""),
                             style: w400_12a(color: AppColor.c455A64),
                           ),
                         ],
                       ),
-                      if (customerData[index] == true) ...[
+                    if(customerData[index].isCompleted==true)...[
                         Padding(
                           padding: const EdgeInsets.only(left: 5, bottom: 5),
                           child: DotedVerticalLine(height: 8.1),
@@ -345,8 +464,8 @@ class TodayWashScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ],
-                    ],
+                      ],]
+
                   ),
                   7.heightSizeBox,
                 ],
@@ -734,13 +853,7 @@ class TodayWashScreen extends StatelessWidget {
                                                 .completeWash(
                                                   washData.id.toString(),
                                                   requireImage:
-                                                      controller
-                                                          .getCustomerData
-                                                          .value
-                                                          ?.data
-                                                          ?.subscriptionDetails
-                                                          ?.subscriptionId ==
-                                                      2,
+                                                      true,
                                                 )
                                                 .then((value) {
                                                   Get.back();
@@ -898,7 +1011,14 @@ class TodayWashScreen extends StatelessWidget {
                         style: w500_14p(color: AppColor.c2C2A2A),
                         children: <TextSpan>[
                           TextSpan(
-                            text: "0",
+                            text:
+                                controller
+                                    .getCustomerData
+                                    .value
+                                    ?.data
+                                    ?.subscriptionDetails
+                                    ?.remainingWashes
+                                    .toString(),
                             style: w400_16p(color: AppColor.cC31848),
                           ),
                         ],
@@ -947,7 +1067,7 @@ class TodayWashScreen extends StatelessWidget {
                 style: w400_16p(),
               ),
               9.heightSizeBox,
-              GetBuilder<DashboardController>(
+              GetBuilder<WashStatusController>(
                 builder: (controller) {
                   return RatingStars(
                     value: controller.userRating.toDouble(),
@@ -1063,13 +1183,34 @@ class TodayWashScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ProfileImageView(radius: 20, radiusStack: 4),
+                    ProfileImageView(
+                      radius: 20,
+                      radiusStack: 4,
+
+                      isVisibleStack:
+                          controller
+                                      .getCustomerData
+                                      .value
+                                      ?.data
+                                      ?.subscriptionDetails
+                                      ?.subscriptionId ==
+                                  2
+                              ? true
+                              : false,
+                      imagePath: washDetail.profilePicUrl,
+                    ),
                     9.widthSizeBox,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Ibrahim Bafqia",
+                          controller
+                                  .getCustomerData
+                                  .value
+                                  ?.data
+                                  ?.customerDetails
+                                  ?.fullName ??
+                              '',
                           style: w600_14a(color: AppColor.c2C2A2A),
                         ),
                         Row(
@@ -1079,28 +1220,20 @@ class TodayWashScreen extends StatelessWidget {
                             IsSelectButton(),
                             5.widthSizeBox,
                             Text(
-                              "09-May-2024",
+                              formatDate(
+                                controller
+                                        .getCustomerData
+                                        .value
+                                        ?.data
+                                        ?.subscriptionDetails
+                                        ?.startDate ??
+                                    '',
+                              ),
                               style: w400_12a(color: AppColor.c455A64),
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5, bottom: 5),
-                          child: DotedVerticalLine(height: 5),
-                        ),
 
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IsSelectButton(),
-                            5.widthSizeBox,
-                            Text(
-                              "Buy 1 Get 1 Free ",
-                              style: w400_10a(color: AppColor.c455A64),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ],
@@ -1166,17 +1299,8 @@ class TodayWashScreen extends StatelessWidget {
               ),
             ],
           ),
-          child: ListTile(
-            leading: Icon(Icons.person),
-            title: Text(log.customerName ?? "No Name"),
-            subtitle: Text("Rating: ${log.rating?.toString() ?? "N/A"}"),
-            trailing: Icon(
-              log.isPremium == true ? Icons.star : Icons.star_border,
-              color: log.isPremium == true ? Colors.amber : Colors.grey,
-            ),
-          ),
+          child: washLogRow(log: log),
         ),
-        // Display the formatted date (redeemedAt)
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           decoration: BoxDecoration(
@@ -1184,76 +1308,59 @@ class TodayWashScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             border: Border.all(color: AppColor.c142293.withOpacity(0.10)),
           ),
-          child: Text(
-            _formatDate(log.redeemedAt), // Format the date here
-            style: w500_10p(),
-          ),
+          child: Text(formatDate(log.redeemedAt), style: w500_10p()),
         ),
       ],
     );
   }
 
-  String _formatDate(String? dateStr) {
-    if (dateStr == null) return "No Date";
-    final dateTime = DateTime.tryParse(dateStr);
-    if (dateTime == null) return "Invalid Date";
-
-    return "${dateTime.day.toString().padLeft(2, '0')} "
-        "${_getMonthName(dateTime.month)} "
-        "${dateTime.year}";
-  }
-
-  String _getMonthName(int month) {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    return months[month - 1];
-  }
-
-  Widget washLogRow() {
+  Widget washLogRow({required Data log}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         15.widthSizeBox,
-        ProfileImageView(radius: 20, radiusStack: 4),
+        ProfileImageView(
+          radius: 20,
+          radiusStack: 4,
+
+          imagePath: log.profilePicUrl,
+          isVisibleStack: log.isPremium,
+        ),
 
         11.widthSizeBox,
         Expanded(
           child: Text(
-            "Elite car wash service",
+            log.customerName ?? "",
             style: w600_12a(color: AppColor.c2C2A2A),
           ),
         ),
-        Container(
-          width: 50,
-          child: Text("10:25 AM", style: w400_12a(color: AppColor.c2C2A2A)),
+        Text(
+          formatDate(log.redeemedAt),
+          style: w400_12a(color: AppColor.c2C2A2A),
         ),
         20.widthSizeBox,
-        Container(
-          padding: EdgeInsets.only(right: 15),
-          child: Row(
-            children: [
-              Text("4.5", style: w400_10a(color: AppColor.c455A64)),
-              2.widthSizeBox,
-              ImageView(path: Assets.iconsIcStar, height: 10, width: 10),
-            ],
-          ),
-        ),
+        log.rating == 0
+            ? SizedBox()
+            : Container(
+              padding: EdgeInsets.only(right: 15),
+              child: Row(
+                children: [
+                  Text(
+                    log.rating.toString(),
+                    style: w400_10a(color: AppColor.c455A64),
+                  ),
+                  2.widthSizeBox,
+                  ImageView(path: Assets.iconsIcStar, height: 10, width: 10),
+                ],
+              ),
+            ),
       ],
     );
   }
+
+
+
 
   Widget todayWashes(
     String? totalWashTest,
@@ -1365,17 +1472,6 @@ class TodayWashScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatDateRange(DateTime? start, DateTime? end) {
-    if (start == null || end == null) {
-      return "Select Date Range";
-    }
-    final startDate =
-        "${start.day.toString().padLeft(2, '0')} ${_getMonthName(start.month)} ${start.year}";
-    final endDate =
-        "${end.day.toString().padLeft(2, '0')} ${_getMonthName(end.month)} ${end.year}";
-    return "$startDate – $endDate";
   }
 
   Widget rowDivider() {

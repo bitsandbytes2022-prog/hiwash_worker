@@ -1,3 +1,5 @@
+import 'package:hiwash_worker/network_manager/api_constant.dart';
+
 class WashLogModel {
   bool? success;
   String? message;
@@ -31,7 +33,7 @@ class Data {
   int? id;
   String? customerName;
   String? redeemedAt;
-  Null? profilePicUrl;
+  String? profilePicUrl;
   int? rating;
   bool? isPremium;
 
@@ -47,7 +49,9 @@ class Data {
     id = json['id'];
     customerName = json['customerName'];
     redeemedAt = json['redeemedAt'];
-    profilePicUrl = json['profilePicUrl'];
+    //profilePicUrl = json['profilePicUrl']!=null;
+    profilePicUrl = json['profilePicUrl']!=null?"${ApiConstant.baseImageUrl}${json['profilePicUrl']}":null;
+
     rating = json['rating'];
     isPremium = json['isPremium'];
   }

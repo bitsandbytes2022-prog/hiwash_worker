@@ -10,7 +10,7 @@ import '../model/get_worker_model.dart';
 class DashboardController extends GetxController {
   RxBool loading = false.obs;
   Rxn<ApiResponse> apiResponse = Rxn<ApiResponse>();
-  int userRating = 0;
+
   final TextEditingController commentController = TextEditingController();
   Rxn<GetWorkerModel> getWorkerModel = Rxn();
 
