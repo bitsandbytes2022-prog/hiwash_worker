@@ -282,8 +282,8 @@ class TodayWashScreen extends StatelessWidget {
                             },
                             onPageChanged: (focusedDay) {
                               controller.focusedDay1 = focusedDay;
-                              controller.isCalenderSelected.value = false;
-                              controller.update();
+                            //  controller.isCalenderSelected.value = false;
+                            //  controller.update();
                             },
                           ),
                         ),
