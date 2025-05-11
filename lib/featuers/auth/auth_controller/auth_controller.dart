@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
 import '../../../route/route_strings.dart';
+import '../../../styling/app_color.dart';
 import '../model/get_token_model.dart';
 import '../model/send_otp_model.dart';
 import '../model/sign_up_model.dart';
@@ -80,7 +81,9 @@ class AuthController extends GetxController {
       }
     });
   }
-
+  void resetTimer() {
+    startTimer();
+  }
   @override
   void onClose() {
     _timer?.cancel();
@@ -105,6 +108,13 @@ class AuthController extends GetxController {
   try{
     isLoading.value = true;
     sendOtpModel = await Repository().sendOtpRepo(requestBody);
+    Get.snackbar(
+      'Success',
+      "OTP: ${sendOtpModel?.data?.otp}",
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.green,
+      colorText: AppColor.white,
+    );
     print("Value received in controller sendOtp: $sendOtpModel");
     return sendOtpModel;
   }catch(e){

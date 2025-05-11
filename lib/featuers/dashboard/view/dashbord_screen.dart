@@ -16,6 +16,7 @@ import 'package:hiwash_worker/widgets/components/image_view.dart';
 import 'package:hiwash_worker/widgets/components/profile_image_container.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
+import '../../../styling/app_font_poppins.dart';
 import '../../notification/view/notification_screen.dart';
 import '../../rewads/view/reward_screen.dart';
 
@@ -142,164 +143,169 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     ];
 
-    return SafeArea(
-      bottom: true,
-      top: false,
-      child: Scaffold(
-        key: _scaffoldKey,
-        drawer: _currentDrawer == 'first' ? DrawerScreen() : SecondDrawer(),
-        drawerEnableOpenDragGesture: false,
-
-        body: AppHomeBg(
-          buttonPadding:
-              _currentIndex == 0
-                  ? EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 30)
-                  : EdgeInsets.only(left: 16, right: 16, top: 40),
-          iconLeft: SizedBox(),
-          headingText: _headings[_currentIndex],
-          padding:
-              _currentIndex == 2
-                  ? EdgeInsets.zero
-                  : EdgeInsets.symmetric(horizontal: 16),
-          childAppBar:
-              _currentIndex == 0
-                  ? Obx(
-                    () => Container(
-                      margin: EdgeInsets.only(left: 25, right: 30),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                                controller.isWashSelected.value = true;
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color:
-                                      controller.isWashSelected.value
-                                          ? AppColor.cF6F7FF
-                                          : Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10),
-                                  ),
-                                ),
-                                child: Text(
-                                  "Today".tr,
-                                  style: w700_16a(
+    return WillPopScope(
+      onWillPop: ()async {
+        return await _showExitConfirmationDialog(context);
+      },
+      child: SafeArea(
+        bottom: true,
+        top: false,
+        child: Scaffold(
+          key: _scaffoldKey,
+          drawer: _currentDrawer == 'first' ? DrawerScreen() : SecondDrawer(),
+          drawerEnableOpenDragGesture: false,
+      
+          body: AppHomeBg(
+            buttonPadding:
+                _currentIndex == 0
+                    ? EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 30)
+                    : EdgeInsets.only(left: 16, right: 16, top: 40),
+            iconLeft: SizedBox(),
+            headingText: _headings[_currentIndex],
+            padding:
+                _currentIndex == 2
+                    ? EdgeInsets.zero
+                    : EdgeInsets.symmetric(horizontal: 16),
+            childAppBar:
+                _currentIndex == 0
+                    ? Obx(
+                      () => Container(
+                        margin: EdgeInsets.only(left: 25, right: 30),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  controller.isWashSelected.value = true;
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 30,
+                                  decoration: BoxDecoration(
                                     color:
                                         controller.isWashSelected.value
-                                            ? AppColor.c2C2A2A
-                                            : AppColor.white,
+                                            ? AppColor.cF6F7FF
+                                            : Colors.transparent,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Today".tr,
+                                    style: w700_16a(
+                                      color:
+                                          controller.isWashSelected.value
+                                              ? AppColor.c2C2A2A
+                                              : AppColor.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          20.widthSizeBox,
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                controller.isWashSelected.value = false;
-                                controller.washLog(
-                                  controller.defaultStartDate.toIso8601String(),
-                                  controller.defaultEndDate.toIso8601String(),
-                                );
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color:
-                                      !controller.isWashSelected.value
-                                          ? AppColor.cF6F7FF
-                                          : Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10),
-                                  ),
-                                ),
-                                child: Text(
-                                  "Wash Log".tr,
-                                  style: w700_16a(
+                            20.widthSizeBox,
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.isWashSelected.value = false;
+                                  controller.washLog(
+                                    controller.defaultStartDate.toIso8601String(),
+                                    controller.defaultEndDate.toIso8601String(),
+                                  );
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 30,
+                                  decoration: BoxDecoration(
                                     color:
                                         !controller.isWashSelected.value
-                                            ? AppColor.c2C2A2A
-                                            : AppColor.white,
+                                            ? AppColor.cF6F7FF
+                                            : Colors.transparent,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Wash Log".tr,
+                                    style: w700_16a(
+                                      color:
+                                          !controller.isWashSelected.value
+                                              ? AppColor.c2C2A2A
+                                              : AppColor.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                  : SizedBox(),
-
-          iconRight: GestureDetector(
-            onTap: () {
-              setState(() {
-                _currentDrawer = 'second';
-              });
-              _openDrawer('second');
-            },
-            child: ImageView(
-              height: 23,
-              width: 23,
-              path: Assets.iconsIcMessage,
-            ),
-          ),
-          child: _pages[_currentIndex],
-        ),
-        bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-          itemCount: filledImages.length,
-          tabBuilder: (int index, bool isActive) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [isActive ? filledImages[index] : outlineImages[index]],
-            );
-          },
-          activeIndex: _currentIndex,
-          gapLocation: GapLocation.center,
-          notchSmoothness: NotchSmoothness.softEdge,
-          onTap: _onItemTapped,
-          backgroundColor: AppColor.blue,
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: GestureDetector(
-          onTap: () {
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return QrScreen();
+                    )
+                    : SizedBox(),
+      
+            iconRight: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _currentDrawer = 'second';
+                });
+                _openDrawer('second');
               },
-            );
-          },
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: AppColor.cC31848,
-              borderRadius: BorderRadius.circular(100),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColor.cC31848.withOpacity(0.60),
-                  spreadRadius: 0,
-                  blurRadius: 30,
-                  offset: Offset(0, 15),
-                ),
-              ],
-            ),
-            child: Center(
               child: ImageView(
-                path: Assets.iconsIcQrScanner,
-                height: 28,
-                width: 28,
+                height: 23,
+                width: 23,
+                path: Assets.iconsIcMessage,
+              ),
+            ),
+            child: _pages[_currentIndex],
+          ),
+          bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+            itemCount: filledImages.length,
+            tabBuilder: (int index, bool isActive) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [isActive ? filledImages[index] : outlineImages[index]],
+              );
+            },
+            activeIndex: _currentIndex,
+            gapLocation: GapLocation.center,
+            notchSmoothness: NotchSmoothness.softEdge,
+            onTap: _onItemTapped,
+            backgroundColor: AppColor.blue,
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: GestureDetector(
+            onTap: () {
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return QrScreen();
+                },
+              );
+            },
+            child: Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: AppColor.cC31848,
+                borderRadius: BorderRadius.circular(100),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColor.cC31848.withOpacity(0.60),
+                    spreadRadius: 0,
+                    blurRadius: 30,
+                    offset: Offset(0, 15),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: ImageView(
+                  path: Assets.iconsIcQrScanner,
+                  height: 28,
+                  width: 28,
+                ),
               ),
             ),
           ),
@@ -322,5 +328,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       child: ImageView(path: image, height: 25, width: 25),
     );
+  }
+  Future<bool> _showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Exit",style: w700_22a(color: AppColor.c2C2A2A),),
+          content: Text("Do you really want to close the app?",style: w400_16p(),),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    ).then((value) => value ?? false);
   }
 }
