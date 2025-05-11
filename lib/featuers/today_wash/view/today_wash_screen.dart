@@ -856,6 +856,7 @@ class TodayWashScreen extends StatelessWidget {
                                                       true,
                                                 )
                                                 .then((value) {
+                                              controller.getTodayWashSummary();
                                                   Get.back();
                                                   showDialog(
                                                     barrierDismissible: false,
@@ -930,6 +931,7 @@ class TodayWashScreen extends StatelessWidget {
                                                 washData.id.toString() ?? "",
                                               )
                                               .then((va) {
+                                                controller.getTodayWashSummary();
                                                 Get.back();
                                                 showDialog(
                                                   barrierDismissible: false,

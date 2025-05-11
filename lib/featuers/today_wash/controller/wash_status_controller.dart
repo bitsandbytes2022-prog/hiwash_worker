@@ -65,16 +65,12 @@ class WashStatusController extends GetxController {
 
   @override
   void onInit() {
-
-
-   // selectedDay1 = focusedDay1;
-   // update();
-
-    getTodayWashSummary();
-    washLog(defaultStartDate.toIso8601String(), defaultEndDate.toIso8601String());
-
-
     super.onInit();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getTodayWashSummary();
+      washLog(defaultStartDate.toIso8601String(), defaultEndDate.toIso8601String());
+    });
   }
   Future<void> onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) async {
     rangeStartDate.value = start;
@@ -91,7 +87,7 @@ class WashStatusController extends GetxController {
 
   Future<WashLogModel?> washLog([String? startingDate, String? endingDate]) async {
     try {
-      showLoader();
+      //showLoader();
 
       if (startingDate != null && endingDate != null) {
         washLogModel.value = await Repository().washLogRepo({
@@ -102,7 +98,7 @@ class WashStatusController extends GetxController {
         washLogModel.value = await Repository().washLogRepo({});
       }
 
-      hideLoader();
+     // hideLoader();
       return washLogModel.value;
     } catch (e) {
       hideLoader();

@@ -61,6 +61,8 @@ dependencies:
   scanning_effect: ^1.0.7
   jwt_decoder: ^2.0.1
   dotted_border: ^2.1.0
+  permission_handler: ^11.0.0
+
 
 
 dev_dependencies:

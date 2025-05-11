@@ -1,21 +1,7 @@
-// qr_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/styling/app_color.dart';
-import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
-
-import '../../../generated/assets.dart';
-import '../../../styling/app_font_anybody.dart';
-import '../../../styling/app_font_poppins.dart';
-import '../../../widgets/components/app_dialog.dart';
-import '../../../widgets/components/custom_swipe_button.dart';
-import '../../../widgets/components/doted_horizontal_line.dart';
-import '../../../widgets/components/doted_vertical_line.dart';
-import '../../../widgets/components/image_view.dart';
-import '../../../widgets/components/is_select_button.dart';
-import '../../../widgets/components/profile_image_container.dart';
-import '../../../widgets/components/star_rating.dart';
 import '../controller/qr_controller.dart';
 
 class QrScreen extends StatelessWidget {
