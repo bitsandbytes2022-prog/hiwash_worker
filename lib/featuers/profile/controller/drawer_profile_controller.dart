@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:hiwash_worker/widgets/components/loader.dart';
 import '../../../network_manager/repository.dart';
@@ -11,7 +11,6 @@ import '../model/terms_and_conditions_response_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DrawerProfileController extends GetxController {
-  //var imageFile = Rx<File?>(null);
   RxBool isLoading = false.obs;
   var  imageFile = Rx<File?>(null);
 
@@ -41,14 +40,14 @@ class DrawerProfileController extends GetxController {
   TextEditingController addressController = TextEditingController();
   TextEditingController carNumberController = TextEditingController();
 
-  TextEditingController zoneController = TextEditingController(text: "Zone 50");
+  TextEditingController zoneController = TextEditingController(text:kDebugMode? "Zone 50":"");
   TextEditingController streetController = TextEditingController(
-    text: "al Matar Street",
+    text:kDebugMode? "al Matar Street":'',
   );
   TextEditingController buildingController = TextEditingController(
-    text: 'Abcd',
+    text:kDebugMode? 'Abcd':"",
   );
-  TextEditingController unitController = TextEditingController(text: 'Abcd');
+  TextEditingController unitController = TextEditingController(text: kDebugMode?'Abcd':"");
 
   Rxn<TermsAndConditionsResponseModel> termsAndConditionsResponseModel = Rxn();
 
@@ -82,7 +81,7 @@ class DrawerProfileController extends GetxController {
   }
 
   Future<TermsAndConditionsResponseModel?> getTermsAndConditions() async {
-    var entityType = 0;
+    var entityType = 1;
     try {
       termsAndConditionsResponseModel.value = await Repository()
           .getTermsAndConditions(entityType);

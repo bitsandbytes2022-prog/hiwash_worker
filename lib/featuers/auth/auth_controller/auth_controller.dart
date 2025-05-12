@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,7 +31,7 @@ class AuthController extends GetxController {
 
   /// login controller
   TextEditingController loginPhoneController = TextEditingController(
-    text: "6446544689",
+    text:kDebugMode? "6446544689":'',
   );
 
 

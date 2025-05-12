@@ -5,11 +5,20 @@ import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 import '../controller/qr_controller.dart';
 
-class RewardQrScreen extends StatelessWidget {
+class RewardQrScreen extends StatefulWidget {
   RewardQrScreen({super.key});
 
-  final QrController controller = Get.put(QrController());
+  @override
+  State<RewardQrScreen> createState() => _RewardQrScreenState();
+}
 
+class _RewardQrScreenState extends State<RewardQrScreen> {
+  final QrController controller = Get.put(QrController());
+  @override
+  void initState() {
+    controller.clearScan();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
