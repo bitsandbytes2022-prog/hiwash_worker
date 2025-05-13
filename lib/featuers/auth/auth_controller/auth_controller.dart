@@ -135,6 +135,7 @@ class AuthController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+
   }
 
   /* Future<SendOtpModel?> sendOtp(String phoneNumber) async {
