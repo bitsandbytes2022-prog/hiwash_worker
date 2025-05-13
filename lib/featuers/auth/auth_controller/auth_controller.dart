@@ -26,7 +26,7 @@ class AuthController extends GetxController {
   }
 
   GetTokenModel? getTokenModel;
-  SendOtpModel? sendOtpModel;
+
   SignUpModel? signUpModel;
 
   /// login controller
@@ -67,11 +67,11 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
   var enteredOtp = ''.obs;
-  var secondsRemaining = 30.obs;
+  var secondsRemaining = 60.obs;
   Timer? _timer;
 
   void startTimer() {
-    secondsRemaining.value = 30;
+    secondsRemaining.value = 60;
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -101,7 +101,43 @@ class AuthController extends GetxController {
       print("User not logged in ");
     }
   }
+  SendOtpModel? sendOtpModel;
   Future<SendOtpModel?> sendOtp(String phoneNumber) async {
+    Map<String, dynamic> requestBody = {
+      "mobileNumber": phoneNumber,
+      "userType": "1",
+    };
+
+    try {
+      isLoading.value = true;
+
+      final result = await Repository().sendOtpRepo(requestBody);
+
+      if (result != null) {
+        sendOtpModel = result;
+        enteredOtp.value = ''; // Clear previous OTP
+
+        Get.snackbar(
+          'Success',
+          "OTP: ${sendOtpModel?.data?.otp.toString()}",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: AppColor.white,
+        );
+
+        print("OTP received: ${sendOtpModel?.data?.otp}");
+      }
+
+      return sendOtpModel;
+    } catch (e) {
+      print("Error in sendOtp: $e");
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /* Future<SendOtpModel?> sendOtp(String phoneNumber) async {
     Map<String, dynamic> requestBody = {
       "mobileNumber": phoneNumber,
       "userType": "1",
@@ -109,13 +145,14 @@ class AuthController extends GetxController {
   try{
     isLoading.value = true;
     sendOtpModel = await Repository().sendOtpRepo(requestBody);
-    Get.snackbar(
-      'Success',
-      "OTP: ${sendOtpModel?.data?.otp}",
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.green,
-      colorText: AppColor.white,
-    );
+    if (sendOtpModel != null) {
+      Get.snackbar(
+        'Success',
+        "OTP: ${sendOtpModel?.data?.otp.toString()}",
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        colorText: AppColor.white,
+      );}
     print("Value received in controller sendOtp: $sendOtpModel");
     return sendOtpModel;
   }catch(e){
@@ -125,7 +162,9 @@ class AuthController extends GetxController {
     isLoading.value = false;
   }
 
-  }
+  }*/
+
+
   Future<GetTokenModel?> getToken(String phoneNumber) async {
     Map<String, dynamic> requestBody = {
       "mobileNumber": phoneNumber,

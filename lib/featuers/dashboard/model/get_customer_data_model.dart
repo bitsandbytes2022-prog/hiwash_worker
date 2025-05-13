@@ -87,8 +87,9 @@ class CustomerDetails {
     unit = json['unit']??"";
     profilePicUrl =
     json['profilePicUrl'] != null
-        ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}"
+        ? "${ApiConstant.baseImageUrl}${json['profilePicUrl']}?timestamp=${DateTime.now().millisecondsSinceEpoch}"
         : null;
+
 
     carNumber = json['carNumber'];
   }
