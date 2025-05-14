@@ -27,6 +27,7 @@ class LoginOtpScreen extends StatelessWidget {
     final String phoneNumber = Get.arguments as String;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.startTimer();
+      controller.getFCMTokenIn();
     });
 
     final defaultPinTheme = PinTheme(

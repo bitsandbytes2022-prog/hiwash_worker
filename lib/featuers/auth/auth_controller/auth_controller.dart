@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,11 @@ class AuthController extends GetxController {
   }
 
 
-
+  Future getFCMTokenIn() async {
+    var token = await FirebaseMessaging.instance.getToken();
+    LocalStorage().saveFCMToken(token: token);
+    debugPrint("fcmTokenSet------> $token");
+  }
 
 
 
@@ -170,6 +175,7 @@ class AuthController extends GetxController {
     Map<String, dynamic> requestBody = {
       "mobileNumber": phoneNumber,
       "userType": "1",
+      "fcmToken":LocalStorage().getFCMToken()
     };
     print("Calling getToken with $phoneNumber");
     isLoading.value = true;

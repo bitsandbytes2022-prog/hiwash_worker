@@ -7,6 +7,8 @@ class LocalStorage {
   final String _userIdKey = 'user_id';
   final String _customerIdKey = 'customer_id';
   final String _scannedQrCodeKey = 'scanned_qr_code';
+  final  String _fcmToken = "fcmToken";
+
 
 
   Future<void> saveToken(String token) async {
@@ -24,6 +26,13 @@ class LocalStorage {
   }
   Future<void> saveScannedQrCode(String qrCode) async {
     await _storage.write(_scannedQrCodeKey, qrCode);
+  }
+  saveFCMToken({var token}) {
+    _storage.write(_fcmToken, token);
+  }
+
+  String getFCMToken() {
+    return _storage.read(_fcmToken) ?? '';
   }
 
   String? getScannedQrCode() => _storage.read(_scannedQrCodeKey);

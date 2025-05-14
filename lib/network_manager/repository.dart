@@ -216,4 +216,15 @@ class Repository {
     return NotificationModel.fromJson(response);
   }
 
+
+  Future<dynamic> getNotificationRepo(Object requestBody) async {
+    Map<String, dynamic> response = await dioHelper.post(
+      url: ApiConstant.notificationUrl,
+      isAuthRequired: true,
+      requestBody: requestBody,
+    );
+
+    return response;
+  }
+
 }
