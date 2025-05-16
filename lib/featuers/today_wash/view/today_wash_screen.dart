@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/featuers/dashboard/controller/dashboard_controller.dart';
+import 'package:hiwash_worker/featuers/qr_scanner/model/get_offers_by_id_model.dart';
 import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
 import 'package:hiwash_worker/route/route_strings.dart';
 import 'package:hiwash_worker/widgets/components/doted_vertical_line.dart';
@@ -138,165 +139,195 @@ class TodayWashScreen extends StatelessWidget {
                       ],
                     ),
                   )
-                  :Obx(() {
-                final groupedLogs = groupLogsByDate(
-                  controller.washLogModel.value?.data ?? [],
-                );
+                  : Obx(() {
+                    final groupedLogs = groupLogsByDate(
+                      controller.washLogModel.value?.data ?? [],
+                    );
 
-                return SingleChildScrollView(
-                  child: Stack(
-                    children: [
-                      Column(
+                    return SingleChildScrollView(
+                      child: Stack(
                         children: [
-                          15.heightSizeBox,
-                          GestureDetector(
-                            onTap: () {
-                              controller.isCalenderSelected.value =
-                              !controller.isCalenderSelected.value;
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(100),
-                                border: Border.all(
-                                  color: Colors.grey.withOpacity(0.5),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    _formatDateRange(
-                                      controller.rangeStartDate.value,
-                                      controller.rangeEndDate.value,
-                                    ),
-                                    style: w500_14p(
-                                      color: AppColor.c2C2A2A,
-                                    ),
-                                  ),
-                                  ImageView(
-                                    path: Assets.iconsDownArrow,
-                                    height: 6,
-                                    width: 8,
-                                    color: AppColor.c2C2A2A,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
                           Column(
                             children: [
                               15.heightSizeBox,
-                              ListView.separated(
-                                padding: EdgeInsets.only(top: 20, bottom: 30),
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: groupedLogs.length,
-                                separatorBuilder: (_, __) => 15.heightSizeBox,
-                                itemBuilder: (context, index) {
-                                  final dateKey = groupedLogs.keys.elementAt(index);
-                                  final logs = groupedLogs[dateKey]!;
-
-                                  return Stack(
-                                    alignment: Alignment.topCenter,
+                              GestureDetector(
+                                onTap: () {
+                                  controller.isCalenderSelected.value =
+                                      !controller.isCalenderSelected.value;
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(100),
+                                    border: Border.all(
+                                      color: Colors.grey.withOpacity(0.5),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
-                                        margin: EdgeInsets.only(top: 14), // Leave space for the floating label
-                                        padding: EdgeInsets.symmetric(vertical: 15),
-                                        decoration: BoxDecoration(
-                                          color: AppColor.white,
-                                          borderRadius: BorderRadius.circular(15),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppColor.c142293.withOpacity(0.15),
-                                              blurRadius: 10,
-                                            ),
-                                          ],
+                                      Text(
+                                        _formatDateRange(
+                                          controller.rangeStartDate.value,
+                                          controller.rangeEndDate.value,
                                         ),
-                                        child: Column(
-                                          children: logs.map((log) => Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 8),
-                                            child: washLogRow(log: log),
-                                          )).toList(),
+                                        style: w500_14p(
+                                          color: AppColor.c2C2A2A,
                                         ),
                                       ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                                        decoration: BoxDecoration(
-                                          color: AppColor.white,
-                                          borderRadius: BorderRadius.circular(30),
-                                          border: Border.all(color: AppColor.c142293.withOpacity(0.10)),
-                                        ),
-                                        child: Text(
-                                          formatDate(logs[0].redeemedAt ?? ""),
-                                          style: w500_10p(),
-                                        ),
+                                      ImageView(
+                                        path: Assets.iconsDownArrow,
+                                        height: 6,
+                                        width: 8,
+                                        color: AppColor.c2C2A2A,
                                       ),
                                     ],
-                                  );
-                                },
-                              )
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  15.heightSizeBox,
+                                  ListView.separated(
+                                    padding: EdgeInsets.only(
+                                      top: 20,
+                                      bottom: 30,
+                                    ),
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: groupedLogs.length,
+                                    separatorBuilder:
+                                        (_, __) => 15.heightSizeBox,
+                                    itemBuilder: (context, index) {
+                                      final dateKey = groupedLogs.keys
+                                          .elementAt(index);
+                                      final logs = groupedLogs[dateKey]!;
+
+                                      return Stack(
+                                        alignment: Alignment.topCenter,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(top: 14),
+                                            // Leave space for the floating label
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 15,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColor.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppColor.c142293
+                                                      .withOpacity(0.15),
+                                                  blurRadius: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Column(
+                                              children:
+                                                  logs
+                                                      .map(
+                                                        (log) => Padding(
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                vertical: 8,
+                                                              ),
+                                                          child: washLogRow(
+                                                            log: log,
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 5,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColor.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                              border: Border.all(
+                                                color: AppColor.c142293
+                                                    .withOpacity(0.10),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              formatDate(
+                                                logs[0].redeemedAt ?? "",
+                                              ),
+                                              style: w500_10p(),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
+                          if (controller.isCalenderSelected.value)
+                            Container(
+                              margin: EdgeInsets.only(top: 60),
+                              decoration: BoxDecoration(
+                                color: AppColor.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TableCalendar(
+                                focusedDay: controller.focusedDay1,
+                                firstDay: DateTime.utc(2025, 3, 4),
+                                lastDay: DateTime.utc(2090, 3, 4),
+                                selectedDayPredicate: (day) {
+                                  return isSameDay(
+                                    day,
+                                    controller.selectedDay1,
+                                  );
+                                },
+                                calendarFormat: controller.calendarFormat,
+                                startingDayOfWeek: StartingDayOfWeek.monday,
+                                weekNumbersVisible: false,
+                                rangeStartDay: controller.rangeStartDate.value,
+                                rangeEndDay: controller.rangeEndDate.value,
+                                rangeSelectionMode:
+                                    RangeSelectionMode.toggledOn,
+                                onRangeSelected: controller.onRangeSelected,
+                                calendarStyle: CalendarStyle(
+                                  outsideDaysVisible: false,
+                                ),
+                                onDaySelected: (selectedDay, focusedDay) {
+                                  controller.update();
+                                },
+                                onFormatChanged: (format) {
+                                  if (controller.calendarFormat != format) {
+                                    controller.calendarFormat = format;
+                                    controller.update();
+                                  }
+                                },
+                                onPageChanged: (focusedDay) {
+                                  controller.focusedDay1 = focusedDay;
+                                  //  controller.isCalenderSelected.value = false;
+                                  //  controller.update();
+                                },
+                              ),
+                            ),
                         ],
                       ),
-                      if (controller.isCalenderSelected.value)
-                        Container(
-                          margin: EdgeInsets.only(top: 60),
-                          decoration: BoxDecoration(
-                            color: AppColor.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: TableCalendar(
-                            focusedDay: controller.focusedDay1,
-                            firstDay: DateTime.utc(2025, 3, 4),
-                            lastDay: DateTime.utc(2090, 3, 4),
-                            selectedDayPredicate: (day) {
-                              return isSameDay(
-                                day,
-                                controller.selectedDay1,
-                              );
-                            },
-                            calendarFormat: controller.calendarFormat,
-                            startingDayOfWeek: StartingDayOfWeek.monday,
-                            weekNumbersVisible: false,
-                            rangeStartDay: controller.rangeStartDate.value,
-                            rangeEndDay: controller.rangeEndDate.value,
-                            rangeSelectionMode: RangeSelectionMode.toggledOn,
-                            onRangeSelected: controller.onRangeSelected,
-                            calendarStyle: CalendarStyle(
-                              outsideDaysVisible: false,
-                            ),
-                            onDaySelected: (selectedDay, focusedDay) {
-                              controller.update();
-                            },
-                            onFormatChanged: (format) {
-                              if (controller.calendarFormat != format) {
-                                controller.calendarFormat = format;
-                                controller.update();
-                              }
-                            },
-                            onPageChanged: (focusedDay) {
-                              controller.focusedDay1 = focusedDay;
-                            //  controller.isCalenderSelected.value = false;
-                            //  controller.update();
-                            },
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              }),
-
-
+                    );
+                  }),
         ),
       ],
     );
   }
+
   Map<String, List<Data>> groupLogsByDate(List<Data> logs) {
     Map<String, List<Data>> grouped = {};
 
@@ -313,8 +344,7 @@ class TodayWashScreen extends StatelessWidget {
       }
     }
 
-    var sortedKeys = grouped.keys.toList()
-      ..sort((a, b) => b.compareTo(a));
+    var sortedKeys = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
     Map<String, List<Data>> sortedGroupedLogs = {};
     for (var key in sortedKeys) {
       sortedGroupedLogs[key] = grouped[key]!;
@@ -323,24 +353,6 @@ class TodayWashScreen extends StatelessWidget {
     return sortedGroupedLogs;
   }
 
- /* Map<String, List<Data>> groupLogsByDate(List<Data> logs) {
-    Map<String, List<Data>> grouped = {};
-
-    for (var log in logs) {
-      if (log.redeemedAt != null) {
-        DateTime parsedDate = DateTime.parse(log.redeemedAt!);
-
-        final dateKey = DateFormat('yyyy-MM-dd').format(parsedDate);
-
-        if (!grouped.containsKey(dateKey)) {
-          grouped[dateKey] = [];
-        }
-        grouped[dateKey]!.add(log);
-      }
-    }
-
-    return grouped;
-  }*/
   String _formatDateRange(DateTime? start, DateTime? end) {
     if (start == null || end == null) {
       final defaultStart = DateTime.now().subtract(Duration(days: 10));
@@ -378,8 +390,7 @@ class TodayWashScreen extends StatelessWidget {
     return months[month - 1];
   }
 
-
-/*  String _formatDateRange(DateTime? start, DateTime? end) {
+  /*  String _formatDateRange(DateTime? start, DateTime? end) {
     if (start == null || end == null) {
       return "Select Date Range";
     }
@@ -391,7 +402,6 @@ class TodayWashScreen extends StatelessWidget {
   }*/
 
   Widget servicesContainer(int index, VoidCallback onTap) {
-
     var customerData = controller.todayWashSummaryModel.value?.data?.washes;
     bool isCompleted = customerData![index].isCompleted == true;
 
@@ -442,12 +452,12 @@ class TodayWashScreen extends StatelessWidget {
                           IsSelectButton(),
                           5.widthSizeBox,
                           Text(
-                            formatDate(customerData[index].redeemedAt ??""),
+                            formatDate(customerData[index].redeemedAt ?? ""),
                             style: w400_12a(color: AppColor.c455A64),
                           ),
                         ],
                       ),
-                    if(customerData[index].isCompleted==true)...[
+                      if (customerData[index].isCompleted == true) ...[
                         Padding(
                           padding: const EdgeInsets.only(left: 5, bottom: 5),
                           child: DotedVerticalLine(height: 8.1),
@@ -464,8 +474,8 @@ class TodayWashScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ],]
-
+                      ],
+                    ],
                   ),
                   7.heightSizeBox,
                 ],
@@ -650,16 +660,16 @@ class TodayWashScreen extends StatelessWidget {
                                     (qrController
                                                     .getOffersByIdModel
                                                     .value
-                                                    ?.data
+                                                    ?.offersByIList
                                                     ?.first
-                                                    .discountValue ==
+                                                    .title ==
                                                 null ||
                                             qrController
                                                 .getOffersByIdModel
                                                 .value!
-                                                .data!
+                                                .offersByIList!
                                                 .first
-                                                .discountValue
+                                                .title
                                                 .toString()
                                                 .isEmpty)
                                         ? GestureDetector(
@@ -699,7 +709,14 @@ class TodayWashScreen extends StatelessWidget {
                                           ),
                                         )
                                         : Text(
-                                          "Flat ${qrController.formatDiscount(qrController.getOffersByIdModel.value?.data?.first.discountValue)}% off",
+                                          qrController
+                                                  .getOffersByIdModel
+                                                  .value
+                                                  ?.offersByIList
+                                                  ?.first
+                                                  .title ??
+                                              '',
+                                          /* "Flat ${qrController.formatDiscount(qrController.getOffersByIdModel.value?.data?.first.discountValue)}% off",*/
                                           style: w500_14a(
                                             color: AppColor.c1F9D70,
                                           ),
@@ -852,11 +869,12 @@ class TodayWashScreen extends StatelessWidget {
                                             await controller
                                                 .completeWash(
                                                   washData.id.toString(),
-                                                  requireImage:
-                                                      true,
+                                                  requireImage: true,
                                                 )
-                                                .then((value) {
-                                              controller.getTodayWashSummary();
+                                                .then((value) async {
+                                                 controller.getTodayWashSummary();
+                                                 await qrController.getOffersById(int.parse(washData.id.toString()));
+                                               // await  controller.getCustomerDataById(int.parse(washData.customerId.toString()));
                                                   Get.back();
                                                   showDialog(
                                                     barrierDismissible: false,
@@ -865,13 +883,22 @@ class TodayWashScreen extends StatelessWidget {
                                                       BuildContext context,
                                                     ) {
                                                       return AppDialog(
-                                                        bottomVisible: true,
-
+                                                     /*   bottomVisible:controller.getCustomerData.value?.data?.subscriptionDetails==1? true:false,
+                                                        remainingTextBottom: controller.getCustomerData.value?.data?.subscriptionDetails==1?controller.getCustomerData.value?.data?.subscriptionDetails?.remainingWashes:"",
+*/
                                                         padding:
                                                             EdgeInsets.zero,
 
                                                         child: successDialog(
                                                           washDetail: washData,
+                                                          offerTitle:
+                                                              qrController
+                                                                  .getOffersByIdModel
+                                                                  .value
+                                                                  ?.offersByIList
+                                                                  ?.first
+                                                                  .title ??
+                                                              "",
                                                         ),
                                                       );
                                                     },
@@ -930,8 +957,12 @@ class TodayWashScreen extends StatelessWidget {
                                               .completeWash(
                                                 washData.id.toString() ?? "",
                                               )
-                                              .then((va) {
-                                                controller.getTodayWashSummary();
+                                              .then((va) async {
+                                                controller
+                                                    .getTodayWashSummary();
+
+                                             qrController.getOffersById(int.parse(washData.id.toString()));
+                                            // await  controller.getCustomerDataById(int.parse(washData.customerId.toString()));
                                                 Get.back();
                                                 showDialog(
                                                   barrierDismissible: false,
@@ -940,9 +971,20 @@ class TodayWashScreen extends StatelessWidget {
                                                     BuildContext context,
                                                   ) {
                                                     return AppDialog(
+                                                      bottomVisible: true,
+
                                                       padding: EdgeInsets.zero,
+
                                                       child: successDialog(
                                                         washDetail: washData,
+                                                        offerTitle:
+                                                            qrController
+                                                                .getOffersByIdModel
+                                                                .value
+                                                                ?.offersByIList
+                                                                ?.first
+                                                                .title ??
+                                                            "",
                                                       ),
                                                     );
                                                   },
@@ -1035,7 +1077,10 @@ class TodayWashScreen extends StatelessWidget {
     );
   }
 
-  Widget successDialog({required Washes washDetail}) {
+  Widget successDialog({
+    required Washes washDetail,
+    required String offerTitle,
+  }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -1055,7 +1100,7 @@ class TodayWashScreen extends StatelessWidget {
                         path: Assets.imagesImSussess,
                         width: Get.width,
                         fit: BoxFit.cover,
-                        height: 180,
+                        height: 120,
                       ),
                     ),
                   ],
@@ -1169,6 +1214,7 @@ class TodayWashScreen extends StatelessWidget {
 
         // Bottom profile section stays same
         Container(
+          padding: EdgeInsets.only(bottom: 25),
           decoration: BoxDecoration(
             color: AppColor.cF6F7FF,
             borderRadius: BorderRadius.only(
@@ -1190,13 +1236,13 @@ class TodayWashScreen extends StatelessWidget {
                       radiusStack: 4,
 
                       isVisibleStack:
-                          controller
+                          (controller
                                       .getCustomerData
                                       .value
                                       ?.data
-                                      ?.subscriptionDetails
-                                      ?.subscriptionId ==
-                                  2
+                                      ?.subscriptionDetails!
+                                      .isPremium ??
+                                  false)
                               ? true
                               : false,
                       imagePath: washDetail.profilePicUrl,
@@ -1216,6 +1262,7 @@ class TodayWashScreen extends StatelessWidget {
                           style: w600_14a(color: AppColor.c2C2A2A),
                         ),
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -1235,39 +1282,18 @@ class TodayWashScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              /* Padding(
-                padding: EdgeInsets.only(top: 23, left: 19, bottom: 40),
-                child: Row(
-                  children: [
-                    ProfileImageView(
-                      radius: 20,
-                      radiusStack: 4,
-                      isVisibleStack: false,
-                    ),
-                    9.widthSizeBox,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Ibrahim Bafqia",
-                          style: w600_14a(color: AppColor.c2C2A2A),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: DotedVerticalLine(height: 15),
                         ),
-                        5.widthSizeBox,
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            ImageView(
-                              path: Assets.iconsIcPlaceMarker,
-                              height: 18,
-                              width: 18,
-                            ),
+                            IsSelectButton(),
+                            5.widthSizeBox,
                             Text(
-                              "09-May-2024",
+                              offerTitle ?? '',
                               style: w400_12a(color: AppColor.c455A64),
                             ),
                           ],
@@ -1276,10 +1302,11 @@ class TodayWashScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),*/
+              ),
             ],
           ),
         ),
+
       ],
     );
   }
@@ -1360,9 +1387,6 @@ class TodayWashScreen extends StatelessWidget {
       ],
     );
   }
-
-
-
 
   Widget todayWashes(
     String? totalWashTest,

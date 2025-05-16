@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../../../generated/assets.dart';
 import '../../../styling/app_color.dart';
 import '../../../styling/app_font_poppins.dart';
 import '../../../widgets/components/data_formet.dart';
@@ -119,10 +120,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const ProfileImageView(
-              radiusStack: 5,
-              isVisibleStack: false,
-              radius: 20,
+
+            Container(
+
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(color: AppColor.blue.withOpacity(0.2)),
+                ),
+                child:CircleAvatar(
+
+                  backgroundColor: AppColor.c142293.withOpacity(0.2),
+                  radius: 20,
+
+                  child:Image.asset(Assets.iconsIcAlert,height: 20,width: 20,color: AppColor.c000000,),
+                )
+
+
             ),
             const SizedBox(width: 10),
             Expanded(

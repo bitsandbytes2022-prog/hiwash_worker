@@ -104,6 +104,7 @@ class DrawerProfileController extends GetxController {
         "email": email,
         "address": address,
       };
+      print("CheckName------>${requestBody}");
 showLoader();
       final response = await Repository().uploadProfile(requestBody);
 hideLoader();

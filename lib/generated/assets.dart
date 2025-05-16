@@ -16,6 +16,7 @@ class Assets {
   static const String iconsBlackForwardArrow = 'assets/icons/black_forward_arrow.png';
   static const String iconsDownArrow = 'assets/icons/down_arrow.svg';
   static const String iconsIcAccount = 'assets/icons/ic_account.png';
+  static const String iconsIcAlert = 'assets/icons/ic_alert.png';
   static const String iconsIcApple = 'assets/icons/ic_apple.png';
   static const String iconsIcArrow = 'assets/icons/ic_arrow.png';
   static const String iconsIcAtSign = 'assets/icons/ic_at_sign.png';

@@ -66,7 +66,8 @@ class AppDialog extends StatelessWidget {
                   ],
                 ),
 
-               if(bottomVisible==true) Container(
+               if(bottomVisible==true)
+                 Container(
                   padding: EdgeInsets.only(bottom: 0),
                   margin: EdgeInsets.only(left: 50, right: 50, top: 40),
 
@@ -83,7 +84,7 @@ class AppDialog extends StatelessWidget {
                           style: w500_14p(color: AppColor.c2C2A2A),
                           children: <TextSpan>[
                             TextSpan(
-                                text: '35',
+                                text:"${remainingTextBottom}",
                                 style: w400_16p(color: AppColor.cC31848)
                             ),
                           ],

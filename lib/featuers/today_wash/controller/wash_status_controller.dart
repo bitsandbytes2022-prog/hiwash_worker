@@ -216,12 +216,16 @@ var fileMult= await dio.MultipartFile.fromFile(
           "WashId": washId,
         });
       }
+showLoader();
+
 
       final response = await Repository().completeWashRepo(formData);
+      hideLoader();
       print("Upload success");
       return response;
 
     } catch (e) {
+      hideLoader();
       Get.snackbar("Error", "$e.");
 
       print("Upload error: $e");
