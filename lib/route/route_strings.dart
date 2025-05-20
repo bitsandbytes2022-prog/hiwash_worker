@@ -18,6 +18,8 @@ class RouteStrings {
   static const String stepByStepGuideDetailScreen = '/stepByStepGuideDetailScreen';
   static const String qrScreen = '/qrScreen';
   static const String rewardQrScreen = '/rewardQrScreen';
+  static const String languageScreen = '/languageScreen';
+
 
 
 

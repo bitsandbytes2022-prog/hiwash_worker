@@ -111,6 +111,7 @@ class _RewardQrScreenState extends State<RewardQrScreen> {
               ],
             ),
           ),
+
         ],
       ),
     );

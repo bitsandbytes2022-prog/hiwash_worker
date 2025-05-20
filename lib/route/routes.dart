@@ -14,6 +14,7 @@ import '../featuers/dashboard/view/widget/second_drawer/faq_screen.dart';
 import '../featuers/dashboard/view/widget/second_drawer/help_desk_ticket_screen.dart';
 import '../featuers/dashboard/view/widget/second_drawer/step_by_step_guide_detail_screen.dart';
 import '../featuers/dashboard/view/widget/second_drawer/step_by_step_guide_screen.dart';
+import '../featuers/profile/view/language_screen.dart';
 import '../featuers/qr_scanner/view/qr_scanner.dart';
 import '../featuers/subscription/view/enter_card_detail_screen.dart';
 import '../featuers/subscription/view/payment_success_screen.dart';
@@ -95,7 +96,10 @@ class Routes {
   page: () => RewardQrScreen(),
  ),
 
-
+    GetPage(
+      name: RouteStrings.languageScreen,
+      page: () => LanguageScreen(),
+    ),
 
 
   ];

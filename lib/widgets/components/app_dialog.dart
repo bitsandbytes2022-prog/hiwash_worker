@@ -15,10 +15,11 @@ class AppDialog extends StatelessWidget {
   final EdgeInsets? padding;
   bool? topVisible = false;
   bool? bottomVisible = false;
+  bool? isClose = false;
 
   AppDialog({super.key, this.child, this.margin, this.padding,this.topVisible,
 
-  this.bottomVisible,this.remainingTextBottom,this.remainingTextTop
+  this.bottomVisible,this.remainingTextBottom,this.remainingTextTop,this.isClose
   });
 
   @override
@@ -38,7 +39,7 @@ class AppDialog extends StatelessWidget {
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    Container(
+                   Container(
                       margin:
                           margin ??
                           EdgeInsets.only(left: 16, right: 16, bottom: 11,top: 11),
@@ -50,7 +51,7 @@ class AppDialog extends StatelessWidget {
                       padding: padding ?? EdgeInsets.symmetric(horizontal: 27),
                       child: child,
                     ),
-                    GestureDetector(
+                    if(isClose==true)  GestureDetector(
                       onTap: () {
                         Get.back();
                       },

@@ -171,7 +171,7 @@ class WashStatusController extends GetxController {
 
   Future<GetCustomerData?> getCustomerDataById(int id) async {
     try {
-      showLoader();
+     // showLoader();
       getCustomerData.value = await Repository().getCustomerData(id);
 
       if (getCustomerData.value?.data != null) {
@@ -179,7 +179,7 @@ class WashStatusController extends GetxController {
         print("Customer ID: $customerId");
       }
 
-      hideLoader();
+     // hideLoader();
       return getCustomerData.value;
     } catch (error) {
       print("Error fetching customer data: $error");

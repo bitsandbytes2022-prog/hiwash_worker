@@ -47,6 +47,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
       if (controller.notifications.isNotEmpty) {
         return ListView.separated(
+          shrinkWrap: true,
           controller: controller.scrollController,
           padding: const EdgeInsets.only(top: 1, bottom: 40),
           itemCount:

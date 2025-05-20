@@ -3,7 +3,7 @@ import 'package:hiwash_worker/network_manager/api_constant.dart';
 class WashLogModel {
   bool? success;
   String? message;
-  List<Data>? data;
+  List<WashLogData>? data;
 
   WashLogModel({this.success, this.message, this.data});
 
@@ -11,9 +11,9 @@ class WashLogModel {
     success = json['success'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <WashLogData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new WashLogData.fromJson(v));
       });
     }
   }
@@ -29,7 +29,7 @@ class WashLogModel {
   }
 }
 
-class Data {
+class WashLogData {
   int? id;
   String? customerName;
   String? redeemedAt;
@@ -37,7 +37,7 @@ class Data {
   int? rating;
   bool? isPremium;
 
-  Data(
+  WashLogData(
       {this.id,
         this.customerName,
         this.redeemedAt,
@@ -45,7 +45,7 @@ class Data {
         this.rating,
         this.isPremium});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  WashLogData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     customerName = json['customerName'];
     redeemedAt = json['redeemedAt'];

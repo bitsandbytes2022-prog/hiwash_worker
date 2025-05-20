@@ -9,39 +9,18 @@ import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
 import '../model/get_offers_by_id_model.dart';
 
-
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
-import '../../../network_manager/local_storage.dart';
-import '../../../network_manager/repository.dart';
-import '../model/get_offers_by_id_model.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
-
-import '../../../network_manager/local_storage.dart';
-import '../../../network_manager/repository.dart';
-import '../model/get_offers_by_id_model.dart';
-
 class QrController extends GetxController with GetTickerProviderStateMixin {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? qrController;
 
-  RxMap<int, GetOffersByIdModel> scannedOffers = <int, GetOffersByIdModel>{}.obs;
+  RxMap<int, GetOffersByIdModel> scannedOffers =
+      <int, GetOffersByIdModel>{}.obs;
 
   RxString scanUrl = ''.obs;
   RxString scanUrlOffer = ''.obs;
   RxString customerId = ''.obs;
   RxString offerIdForReward = ''.obs;
+  RxString washIdIdForReward = ''.obs;
   RxString internetStatus = ''.obs;
   RxBool hasScanned = false.obs;
   RxBool hasScannedOffer = false.obs;
@@ -52,9 +31,10 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   late Animation<double> animation;
 
   final LocalStorage localStorage = LocalStorage();
-  final WashStatusController washStatusController = Get.isRegistered<WashStatusController>()
-      ? Get.find()
-      : Get.put(WashStatusController());
+  final WashStatusController washStatusController =
+      Get.isRegistered<WashStatusController>()
+          ? Get.find()
+          : Get.put(WashStatusController());
 
   var isLoading = false.obs;
   Rxn<GetOffersByIdModel> getOffersByIdModel = Rxn();
@@ -63,7 +43,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   @override
   void onInit() {
     super.onInit();
-  //  checkInternetConnection();
+    //  checkInternetConnection();
   }
 
   @override
@@ -86,20 +66,13 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     if (!status.isGranted) {
       var result = await Permission.camera.request();
       if (!result.isGranted) {
-        Get.snackbar("Permission Denied", "Camera permission is required to scan QR codes.");
+        Get.snackbar(
+          "Permission Denied",
+          "Camera permission is required to scan QR codes.",
+        );
       }
     }
   }
-
-/*  void checkInternetConnection() {
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
-        internetStatus.value = "";
-      } else {
-        internetStatus.value = "Internet is not available";
-      }
-    });
-  }*/
 
   void onQRViewCreated(QRViewController controller) {
     qrController = controller;
@@ -107,6 +80,8 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     controller.scannedDataStream.listen((scanData) async {
       if (!hasScanned.value) {
         final scannedCode = scanData.code ?? '';
+        print("Scanned QR Code: $scannedCode");
+
         scanUrl.value = scannedCode;
         hasScanned.value = true;
         animationController.stop();
@@ -117,9 +92,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
             String id = decodedToken['CustomerId'];
             customerId.value = id;
-
             await validateWashQr(id);
-
             clearScan();
             await washStatusController.getTodayWashSummary();
             Get.back();
@@ -133,6 +106,96 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     });
   }
 
+/*  void onQRViewCreatedOffer(QRViewController controller) {
+    qrController = controller;
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScannedOffer.value) {
+        final scannedCode = scanData.code ?? '';
+        scanUrlOffer.value = scannedCode;
+        hasScannedOffer.value = true;
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            String offerId = decodedToken['OfferId'];
+            String id = decodedToken['CustomerId'];
+            // offerIdForReward.value = offerId;
+            String washIdString = Get.arguments;
+            int washId = int.parse(washIdString);
+             validateOfferQr(id, offerId, washId.toString()).then((value) {
+              if (value != null) {
+              //  Future.delayed(Duration(seconds: 1));
+                getOffersById(int.parse(offerId));
+                Future.delayed(Duration(seconds: 1));
+                Get.back();
+              } else {
+                Future.delayed(Duration(seconds: 1));
+                Get.back();
+                Future.delayed(Duration(seconds: 1));
+                Get.back();
+              }
+            });
+
+          } catch (e) {
+            await Future.delayed(Duration(seconds: 1));
+            Get.back();
+          } finally {
+            await Future.delayed(Duration(seconds: 1));
+          //  Get.back();
+          }
+        } else {
+          await Future.delayed(Duration(seconds: 1));
+          Get.back();
+        }
+      }
+    });
+  }*/
+
+  void onQRViewCreatedOffer(QRViewController controller) {
+    qrController = controller;
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScannedOffer.value) {
+        final scannedCode = scanData.code ?? '';
+        scanUrlOffer.value = scannedCode;
+        hasScannedOffer.value = true;
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            String offerId = decodedToken['OfferId'];
+            String id = decodedToken['CustomerId'];
+            String washIdString = Get.arguments;
+            int washId = int.parse(washIdString);
+
+            final result = await validateOfferQr(id, offerId, washId.toString());
+
+            if (result != null) {
+              await getOffersById(int.parse(offerId));
+              await Future.delayed(Duration(seconds: 1));
+              Get.back();
+            } else {
+              await Future.delayed(Duration(seconds: 1));
+              Get.back();
+            }
+          } catch (e) {
+            await Future.delayed(Duration(seconds: 1));
+            Get.back();
+          }
+        } else {
+          await Future.delayed(Duration(seconds: 1));
+          Get.back();
+        }
+      }
+    });
+  }
+
+
+  /// original
+  /*
   void onQRViewCreatedOffer(QRViewController controller) {
     qrController = controller;
 
@@ -149,22 +212,24 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
             String offerId = decodedToken['OfferId'];
             String id = decodedToken['CustomerId'];
-
             offerIdForReward.value = offerId;
+            String washIdString = Get.arguments;
+            int washId = int.parse(washIdString);
 
-            await validateOfferQr(id, offerId);
+            await validateOfferQr(id, offerId,washId.toString());
             clearScan();
             await getOffersById(int.parse(offerId));
             Get.back();
           } catch (e) {
             Get.snackbar("Error", "Failed to decode JWT: $e");
+            print("QR error----->$e");
           }
         } else {
           Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
         }
       }
     });
-  }
+  }*/
 
   void clearScan() {
     scanUrl.value = '';
@@ -172,6 +237,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     hasScanned.value = false;
     hasScannedOffer.value = false;
     offerIdForReward.value = '';
+    washIdIdForReward.value = '';
 
     qrController?.resumeCamera();
     animationController.repeat(reverse: true);
@@ -190,21 +256,28 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<dynamic> validateOfferQr(String customerId, String offerId) async {
+  Future<dynamic> validateOfferQr(
+    String customerId,
+    String offerId,
+    String washId,
+  ) async {
     Map<String, dynamic> requestBody = {
       "customerId": customerId,
       "offerId": offerId,
+      "washId": washId,
     };
     try {
-      isLoading.value = true;
-      return await Repository().validateOfferQrRepo(requestBody);
+      var response = await Repository().validateOfferQrRepo(requestBody);
+      return response;
     } catch (e) {
       print("Error in validateOfferQr: $e");
       return null;
     } finally {
-      isLoading.value = false;
+     // isLoading.value = false;
     }
   }
+
+
 
   Future<GetOffersByIdModel?> getOffersById(int id) async {
     try {
@@ -223,9 +296,8 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onClose() {
-    qrController?.dispose();
+    // qrController?.dispose();
     animationController.dispose();
     super.onClose();
   }
 }
-

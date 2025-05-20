@@ -84,29 +84,6 @@ class _QrScreenState extends State<QrScreen> {
                     }
                   }),
 
-                  /*   Obx(() {
-                    if (controller.scanUrl.value.isEmpty &&
-                        controller.animationController.isAnimating) {
-                      return AnimatedBuilder(
-                        animation: controller.animationController,
-                        builder: (context, child) {
-                          return Positioned(
-                            top: controller.animation.value,
-                            child: Container(
-                              width: 280,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                color: AppColor.cFFC727,
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }),*/
 
 
                 ],

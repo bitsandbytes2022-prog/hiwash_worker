@@ -100,7 +100,7 @@ class Repository {
     return TermsAndConditionsResponseModel.fromJson(response);
   }
 
-  Future<void> uploadProfilePicture(requestBody) async {
+  Future<dynamic> uploadProfilePicture(requestBody) async {
     try {
       final response = await dioHelper.post(
         url: ApiConstant.uploadProfileImage,
@@ -108,6 +108,8 @@ class Repository {
         isAuthRequired: true,
       );
       print("Upload success: $response");
+
+      return response;
     } catch (e) {
       print("Upload failed: $e");
     }
@@ -190,7 +192,9 @@ class Repository {
         requestBody: requestBody,
         isAuthRequired: true,
       );
+
       print("validateOfferQr success: $response");
+      return response;
     } catch (e) {
       print("validateOfferQr failed: $e");
     }
@@ -206,15 +210,7 @@ class Repository {
     //  print("Rating Response--->: $response");
     return ApiResponse.fromJson(response);
   }
-  Future<NotificationModel> notificationRepo() async {
-    print("{Notification------>${ApiConstant.notification}}");
-    Map<String, dynamic> response = await dioHelper.get(
-      url: ApiConstant.notification,
-      isAuthRequired: true,
-    );
-    print("{Notification------>${response}}");
-    return NotificationModel.fromJson(response);
-  }
+
 
 
   Future<dynamic> getNotificationRepo(Object requestBody) async {

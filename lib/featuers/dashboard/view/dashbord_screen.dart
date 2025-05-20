@@ -103,7 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       profilePicUrl,
                       headers: {'Cache-Control': 'no-cache'},
                     )
-                    : AssetImage(Assets.imagesImMap),
+                    : AssetImage(Assets.imagesDemoProfile),
           );
         }),
       ),
@@ -137,7 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       profilePicUrl,
                       headers: {'Cache-Control': 'no-cache'},
                     )
-                    : AssetImage(Assets.imagesImMap),
+                    : AssetImage(Assets.imagesDemoProfile),
           );
         }),
       ),

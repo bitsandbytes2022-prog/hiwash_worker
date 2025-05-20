@@ -72,11 +72,11 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
   var enteredOtp = ''.obs;
-  var secondsRemaining = 60.obs;
+  var secondsRemaining = 30.obs;
   Timer? _timer;
 
   void startTimer() {
-    secondsRemaining.value = 60;
+    secondsRemaining.value = 30;
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -120,11 +120,11 @@ class AuthController extends GetxController {
 
       if (result != null) {
         sendOtpModel = result;
-        enteredOtp.value = ''; // Clear previous OTP
+        enteredOtp.value = '';
 
         Get.snackbar(
           'Success',
-          "OTP: ${sendOtpModel?.data?.otp.toString()}",
+          " TEST OTP: ${sendOtpModel?.data?.otp.toString()}",
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green,
           colorText: AppColor.white,

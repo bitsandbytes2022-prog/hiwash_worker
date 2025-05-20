@@ -13,6 +13,9 @@ import 'package:image_picker/image_picker.dart';
 class DrawerProfileController extends GetxController {
   RxBool isLoading = false.obs;
   var  imageFile = Rx<File?>(null);
+  var isSwitchOn = false.obs;
+  RxBool isUploadingProfileImage = false.obs;
+
 
   Future<void> imagePicker({required ImageSource source}) async {
     var pickedFile = await ImagePicker().pickImage(source: source,imageQuality: 20);
@@ -67,18 +70,56 @@ class DrawerProfileController extends GetxController {
     );
     return dio.FormData.fromMap({"file": file});
   }
-
-  Future<dynamic> uploadProfileImage() async {
+  Future<bool> uploadProfileImage() async {
+    isUploadingProfileImage.value = true;
     try {
-      showLoader();
       final formData = await getFormDataForUpload();
       final response = await Repository().uploadProfilePicture(formData);
-      hideLoader();
+
+      if (response != null && response['success'] == true) {
+        return true;
+      } else {
+        imageFile.value = null;
+        return false;
+      }
+    } catch (e) {
+      imageFile.value = null;
+      return false;
+    } finally {
+      isUploadingProfileImage.value = false;
+    }
+  }
+
+  /* Future<bool> uploadProfileImage() async {
+    try {
+
+      final formData = await getFormDataForUpload();
+      final response = await Repository().uploadProfilePicture(formData);
+
+      if (response != null && response['success'] == true) {
+        return true;
+      } else {
+        imageFile.value = null;
+        return false;
+      }
+    } catch (e) {
+      imageFile.value = null;
+      return false;
+    }
+  }*/
+
+/*
+  Future<dynamic> uploadProfileImage() async {
+    try {
+     //showLoader();
+      final formData = await getFormDataForUpload();
+      final response = await Repository().uploadProfilePicture(formData);
+     // hideLoader();
       return response;
     } catch (e) {
       print("Upload error profiler: $e");
     }
-  }
+  }*/
 
   Future<TermsAndConditionsResponseModel?> getTermsAndConditions() async {
     var entityType = 1;
