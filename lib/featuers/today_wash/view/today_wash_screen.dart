@@ -775,8 +775,9 @@ class TodayWashScreen extends StatelessWidget {
                                               borderType: BorderType.RRect,
                                               child: Container(
                                                 //margin: EdgeInsets.symmetric(horizontal: 50),
-                                                // color: Colors.green,
+                                                //color: Colors.green,
                                                 decoration: BoxDecoration(
+                                                  color: AppColor.c5C6B72.withOpacity(0.1),
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                 ),
@@ -809,8 +810,31 @@ class TodayWashScreen extends StatelessWidget {
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
+                                                        Container(
+                                                          padding: EdgeInsets.all(15),
+                                                          decoration: BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color: AppColor.cC31848,
+                                                            boxShadow: [
+                                                               BoxShadow(
+                                                                 color: AppColor.cC31848.withOpacity(0.30),
+                                                                 spreadRadius: 0,
+                                                                 blurRadius: 15,
+                                                                 offset: Offset(0, 10),
+
+                                                               )
+                                                            ]
+
+                                                          ),
+                                                          child:ImageView(
+                                                            path: Assets.iconsIcCamera,
+                                                            height: 20,
+                                                            width: 20,
+                                                          ),
+                                                        ),
+                                                        5.heightSizeBox,
                                                         Text(
-                                                          "Capture Car Number Plate and Verify",
+                                                          "Capture Car Number Plate\nAnd Verify",
                                                           style: w400_12p(
                                                             color:
                                                                 AppColor
@@ -868,7 +892,7 @@ class TodayWashScreen extends StatelessWidget {
                                         ),
                                         onSwipe: () async {
                                           try {
-                                            controller.pickedImage.value = null;
+
                                             await controller
                                                 .completeWash(
                                                   washData.id.toString(),
@@ -878,8 +902,10 @@ class TodayWashScreen extends StatelessWidget {
                                                  controller.getTodayWashSummary();
                                                  //await qrController.getOffersById(int.parse(washData.id.toString()));
                                                // await  controller.getCustomerDataById(int.parse(washData.customerId.toString()));
-
+                                                 controller.pickedImage.value = null;
                                                   Get.back();
+                                                  Get.back();
+
                                                   showDialog(
                                                     barrierDismissible: false,
                                                     context: Get.context!,
@@ -887,6 +913,7 @@ class TodayWashScreen extends StatelessWidget {
                                                       BuildContext context,
                                                     ) {
                                                       return AppDialog(
+                                                        color: Colors.white,
                                                         padding: EdgeInsets.zero,
                                                         child: successDialog(
                                                           washDetail: washData,
@@ -961,7 +988,6 @@ class TodayWashScreen extends StatelessWidget {
                                                 controller
                                                     .getTodayWashSummary();
 
-                                             //qrController.getOffersById(int.parse(washData.id.toString()));
                                              await  controller.getCustomerDataById(int.parse(washData.customerId.toString()));
                                                 Get.back();
                                                 showDialog(
@@ -971,6 +997,7 @@ class TodayWashScreen extends StatelessWidget {
                                                     BuildContext context,
                                                   ) {
                                                     return AppDialog(
+                                                      color: Colors.transparent,
 
                                                       padding: EdgeInsets.zero
                                                         ,
@@ -1087,264 +1114,280 @@ class TodayWashScreen extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       children: [
         Container(
-          //color: Colors.red,
-          padding: const EdgeInsets.only(bottom: 1),
-
+          padding: EdgeInsets.only(bottom: 0),
+          color: Colors.transparent,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: EdgeInsets.only(left: 16,right: 16),
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
+                //color: Colors.red,
+                padding: const EdgeInsets.only(bottom: 1),
 
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    30.heightSizeBox,
                     Container(
-                      width: Get.width,
-                      child: Stack(
+                      padding: EdgeInsets.only(left: 16,right: 16),
+                      decoration: BoxDecoration(
+                        color: AppColor.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: ImageView(
-                              path: Assets.imagesImSussess,
-                              width: Get.width,
-                              fit: BoxFit.cover,
-                              height: 120,
+                          30.heightSizeBox,
+                          Container(
+                            width: Get.width,
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: ImageView(
+                                    path: Assets.imagesImSussess,
+                                    width: Get.width,
+                                    fit: BoxFit.cover,
+                                    height: 120,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          21.heightSizeBox,
+                          Text("Wash Complete!", style: w700_22a(color: AppColor.c2C2A2A)),
+                          Text(
+                            "Share your feedback and\nrate the Customer.",
+                            textAlign: TextAlign.center,
+                            style: w400_16p(),
+                          ),
+                          9.heightSizeBox,
+                          GetBuilder<WashStatusController>(
+                            builder: (controller) {
+                              return RatingStars(
+                                value: controller.userRating.toDouble(),
+                                onValueChanged: (v) {
+                                  controller.userRating = v.toInt();
+                                  controller.update();
+                                },
+                                starBuilder:
+                                    (index, color) =>
+                                    Icon(Icons.star, color: color, size: 28),
+                                starCount: 5,
+                                starSize: 28,
+                                valueLabelVisibility: false,
+                                starColor: AppColor.cFFC200,
+                                starOffColor: Colors.grey,
+
+                                animationDuration: Duration(milliseconds: 200),
+                                starSpacing: 2,
+                              );
+                            },
+                          ),
+                          15.heightSizeBox,
+                          TextFormField(
+                            controller: controller.commentController,
+                            maxLines: 3,
+                            style: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
+                            decoration: InputDecoration(
+                              fillColor: AppColor.white,
+                              hintText: "Enter your comment here...",
+                              filled: true,
+                              labelStyle: w400_13a(color: AppColor.c455A64),
+                              hintStyle: w400_14p(
+                                color: AppColor.c2C2A2A.withOpacity(0.40),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 12,
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColor.c5C6B72.withOpacity(0.30),
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColor.c5C6B72.withOpacity(0.30),
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                          ),
+                          15.heightSizeBox,
+                          GestureDetector(
+                            onTap: () {
+                              final comment = controller.commentController.text.trim();
+                              final ratingString = controller.userRating.toString();
+
+                              controller
+                                  .getRating(
+                                ratingString,
+                                washDetail.id.toString(),
+                                comment,
+                              )
+                                  .then((value) {
+                                if (value != null) {
+                                  Get.back();
+                                  controller.getTodayWashSummary();
+                                  controller.userRating=0;
+                                  controller.commentController.clear();
+                                  controller.update();
+                                }
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: AppColor.c142293,
+                                borderRadius: BorderRadius.circular(100),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColor.c142293.withOpacity(0.30),
+                                    blurRadius: 15,
+                                    offset: Offset(0, 10),
+                                  ),
+                                ],
+                              ),
+                              child: Text("Submit", style: w500_14a(color: AppColor.white)),
+                            ),
+                          ),
+
+                          18.heightSizeBox,
                         ],
                       ),
                     ),
-                    21.heightSizeBox,
-                    Text("Wash Complete!", style: w700_22a(color: AppColor.c2C2A2A)),
-                    Text(
-                      "Share your feedback and\nrate the Customer.",
-                      textAlign: TextAlign.center,
-                      style: w400_16p(),
-                    ),
-                    9.heightSizeBox,
-                    GetBuilder<WashStatusController>(
-                      builder: (controller) {
-                        return RatingStars(
-                          value: controller.userRating.toDouble(),
-                          onValueChanged: (v) {
-                            controller.userRating = v.toInt();
-                            controller.update();
-                          },
-                          starBuilder:
-                              (index, color) =>
-                              Icon(Icons.star, color: color, size: 28),
-                          starCount: 5,
-                          starSize: 28,
-                          valueLabelVisibility: false,
-                          starColor: AppColor.cFFC200,
-                          starOffColor: Colors.grey,
+                    Container(
+                      margin: EdgeInsets.only(bottom: 11),
 
-                          animationDuration: Duration(milliseconds: 200),
-                          starSpacing: 2,
-                        );
-                      },
-                    ),
-                    15.heightSizeBox,
-                    TextFormField(
-                      controller: controller.commentController,
-                      maxLines: 3,
-                      style: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
-                      decoration: InputDecoration(
-                        fillColor: AppColor.white,
-                        hintText: "Enter your comment here...",
-                        filled: true,
-                        labelStyle: w400_13a(color: AppColor.c455A64),
-                        hintStyle: w400_14p(
-                          color: AppColor.c2C2A2A.withOpacity(0.40),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 12,
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColor.c5C6B72.withOpacity(0.30),
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColor.c5C6B72.withOpacity(0.30),
-                          ),
-                          borderRadius: BorderRadius.circular(15),
+                      padding: EdgeInsets.only(bottom: 25),
+                      decoration: BoxDecoration(
+                        color: AppColor.cF6F7FF,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
                         ),
                       ),
-                    ),
-                    15.heightSizeBox,
-                    GestureDetector(
-                      onTap: () {
-                        final comment = controller.commentController.text.trim();
-                        final ratingString = controller.userRating.toString();
-
-                        controller
-                            .getRating(
-                          ratingString,
-                          washDetail.id.toString(),
-                          comment,
-                        )
-                            .then((value) {
-                          if (value != null) {
-                            Get.back();
-                            controller.getTodayWashSummary();
-                            controller.userRating=0;
-                            controller.commentController.clear();
-                            controller.update();
-                          }
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: AppColor.c142293,
-                          borderRadius: BorderRadius.circular(100),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColor.c142293.withOpacity(0.30),
-                              blurRadius: 15,
-                              offset: Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                        child: Text("Submit", style: w500_14a(color: AppColor.white)),
-                      ),
-                    ),
-
-                    18.heightSizeBox,
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 25),
-                decoration: BoxDecoration(
-                  color: AppColor.cF6F7FF,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    DotedHorizontalLine(),
-                    Padding(
-                      padding: EdgeInsets.only(top: 23, left: 19, bottom: 23),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      child: Column(
                         children: [
-                          ProfileImageView(
-                            radius: 20,
-                            radiusStack: 4,
+                          DotedHorizontalLine(),
+                          Padding(
+                            padding: EdgeInsets.only(top: 23, left: 19, bottom: 23),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ProfileImageView(
+                                  radius: 20,
+                                  radiusStack: 4,
 
-                            isVisibleStack:
-                            (controller
-                                .getCustomerData
-                                .value
-                                ?.data
-                                ?.subscriptionDetails!
-                                .isPremium ??
-                                false)
-                                ? true
-                                : false,
-                            imagePath: washDetail.profilePicUrl,
-                          ),
-                          9.widthSizeBox,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                controller
-                                    .getCustomerData
-                                    .value
-                                    ?.data
-                                    ?.customerDetails
-                                    ?.fullName ??
-                                    '',
-                                style: w600_14a(color: AppColor.c2C2A2A),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IsSelectButton(),
-                                  5.widthSizeBox,
-                                  Text(
-                                    formatDate(
+                                  isVisibleStack:
+                                  (controller
+                                      .getCustomerData
+                                      .value
+                                      ?.data
+                                      ?.subscriptionDetails!
+                                      .isPremium ??
+                                      false)
+                                      ? true
+                                      : false,
+                                  imagePath: washDetail.profilePicUrl,
+                                ),
+                                9.widthSizeBox,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
                                       controller
                                           .getCustomerData
                                           .value
                                           ?.data
-                                          ?.subscriptionDetails
-                                          ?.startDate ??
+                                          ?.customerDetails
+                                          ?.fullName ??
                                           '',
+                                      style: w600_14a(color: AppColor.c2C2A2A),
                                     ),
-                                    style: w400_12a(color: AppColor.c455A64),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5),
-                                child: DotedVerticalLine(height: 15),
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IsSelectButton(),
-                                  5.widthSizeBox,
-                                  Text(
-                                    offerTitle ?? '',
-                                    style: w400_12a(color: AppColor.c455A64),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        IsSelectButton(),
+                                        5.widthSizeBox,
+                                        Text(
+                                          formatDate(
+                                            controller
+                                                .getCustomerData
+                                                .value
+                                                ?.data
+                                                ?.subscriptionDetails
+                                                ?.startDate ??
+                                                '',
+                                          ),
+                                          style: w400_12a(color: AppColor.c455A64),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 5),
+                                      child: DotedVerticalLine(height: 15),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        IsSelectButton(),
+                                        5.widthSizeBox,
+                                        Text(
+                                          offerTitle ?? '',
+                                          style: w400_12a(color: AppColor.c455A64),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
+
                   ],
                 ),
               ),
-
             ],
           ),
         ),
 
         controller.getCustomerData.value?.data?.subscriptionDetails?.subscriptionId==1?
-        Container(
-          margin: EdgeInsets.only(left: 20, right: 20,),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Image.asset(Assets.imagesDialogBottom),
-              RichText(
-                text: TextSpan(
-                  text: 'Remaining Washes: ',
-                  style: w500_14p(color: AppColor.c2C2A2A),
-                  children:[
-                    TextSpan(text: controller.getCustomerData.value?.data?.subscriptionDetails?.remainingWashes.toString(),
-                        style: w400_16p(color: AppColor.cC31848)
-                    ),
-                  ],
+        Positioned(
+          bottom: 0,
+          left: 20,
+          right: 20,
+          child: Container(
+            padding: EdgeInsets.only(top: 20),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(Assets.imagesDialogBottom),
+                RichText(
+                  text: TextSpan(
+                    text: 'Remaining Washes: ',
+                    style: w500_14p(color: AppColor.c2C2A2A),
+                    children:[
+                      TextSpan(text: controller.getCustomerData.value?.data?.subscriptionDetails?.remainingWashes.toString(),
+                          style: w400_16p(color: AppColor.cC31848)
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-            ],
+              ],
+            ),
           ),
         ):SizedBox(),
       ],

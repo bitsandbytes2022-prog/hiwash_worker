@@ -74,84 +74,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  void onQRViewCreated(QRViewController controller) {
-    qrController = controller;
-
-    controller.scannedDataStream.listen((scanData) async {
-      if (!hasScanned.value) {
-        final scannedCode = scanData.code ?? '';
-        print("Scanned QR Code: $scannedCode");
-
-        scanUrl.value = scannedCode;
-        hasScanned.value = true;
-        animationController.stop();
-        controller.pauseCamera();
-
-        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
-          try {
-            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
-            String id = decodedToken['CustomerId'];
-            customerId.value = id;
-            await validateWashQr(id);
-            clearScan();
-            await washStatusController.getTodayWashSummary();
-            Get.back();
-          } catch (e) {
-            Get.snackbar("Error", "Failed to decode JWT: $e");
-          }
-        } else {
-          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
-        }
-      }
-    });
-  }
-
-/*  void onQRViewCreatedOffer(QRViewController controller) {
-    qrController = controller;
-    controller.scannedDataStream.listen((scanData) async {
-      if (!hasScannedOffer.value) {
-        final scannedCode = scanData.code ?? '';
-        scanUrlOffer.value = scannedCode;
-        hasScannedOffer.value = true;
-        animationController.stop();
-        controller.pauseCamera();
-
-        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
-          try {
-            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
-            String offerId = decodedToken['OfferId'];
-            String id = decodedToken['CustomerId'];
-            // offerIdForReward.value = offerId;
-            String washIdString = Get.arguments;
-            int washId = int.parse(washIdString);
-             validateOfferQr(id, offerId, washId.toString()).then((value) {
-              if (value != null) {
-              //  Future.delayed(Duration(seconds: 1));
-                getOffersById(int.parse(offerId));
-                Future.delayed(Duration(seconds: 1));
-                Get.back();
-              } else {
-                Future.delayed(Duration(seconds: 1));
-                Get.back();
-                Future.delayed(Duration(seconds: 1));
-                Get.back();
-              }
-            });
-
-          } catch (e) {
-            await Future.delayed(Duration(seconds: 1));
-            Get.back();
-          } finally {
-            await Future.delayed(Duration(seconds: 1));
-          //  Get.back();
-          }
-        } else {
-          await Future.delayed(Duration(seconds: 1));
-          Get.back();
-        }
-      }
-    });
-  }*/
 
   void onQRViewCreatedOffer(QRViewController controller) {
     qrController = controller;
@@ -193,6 +115,72 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     });
   }
 
+  void clearScan() {
+    scanUrl.value = '';
+    customerId.value = '';
+    hasScanned.value = false;
+    hasScannedOffer.value = false;
+    offerIdForReward.value = '';
+    washIdIdForReward.value = '';
+
+    qrController?.resumeCamera();
+    animationController.repeat(reverse: true);
+  }
+
+  void onQRViewCreated(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScanned.value) {
+        final scannedCode = scanData.code ?? '';
+        print("Scanned QR Code: $scannedCode");
+
+        scanUrl.value = scannedCode;
+        hasScanned.value = true;
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            String id = decodedToken['CustomerId'];
+            customerId.value = id;
+            await validateWashQr(id);
+            clearScan();
+            await washStatusController.getTodayWashSummary();
+            Get.back();
+          } catch (e) {
+            Get.snackbar("Error", "Failed to decode JWT: $e");
+          }
+        } else {
+          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
+        }
+      }
+    });
+  }
+  Future<dynamic> validateOfferQr(
+      String customerId,
+      String offerId,
+      String washId,
+      ) async {
+    Map<String, dynamic> requestBody = {
+      "customerId": customerId,
+      "offerId": offerId,
+      "washId": washId,
+    };
+    try {
+      var response = await Repository().validateOfferQrRepo(requestBody);
+      return response;
+    } catch (e) {
+      print("Error in validateOfferQr: $e");
+      return null;
+    } finally {
+      // isLoading.value = false;
+    }
+  }
+
+
+
 
   /// original
   /*
@@ -231,17 +219,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     });
   }*/
 
-  void clearScan() {
-    scanUrl.value = '';
-    customerId.value = '';
-    hasScanned.value = false;
-    hasScannedOffer.value = false;
-    offerIdForReward.value = '';
-    washIdIdForReward.value = '';
-
-    qrController?.resumeCamera();
-    animationController.repeat(reverse: true);
-  }
 
   Future<dynamic> validateWashQr(String customerId) async {
     Map<String, dynamic> requestBody = {"customerId": customerId};
@@ -256,26 +233,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<dynamic> validateOfferQr(
-    String customerId,
-    String offerId,
-    String washId,
-  ) async {
-    Map<String, dynamic> requestBody = {
-      "customerId": customerId,
-      "offerId": offerId,
-      "washId": washId,
-    };
-    try {
-      var response = await Repository().validateOfferQrRepo(requestBody);
-      return response;
-    } catch (e) {
-      print("Error in validateOfferQr: $e");
-      return null;
-    } finally {
-     // isLoading.value = false;
-    }
-  }
 
 
 

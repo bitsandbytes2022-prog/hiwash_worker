@@ -16,17 +16,18 @@ class AppDialog extends StatelessWidget {
   bool? topVisible = false;
   bool? bottomVisible = false;
   bool? isClose = false;
+ final Color color;
 
   AppDialog({super.key, this.child, this.margin, this.padding,this.topVisible,
 
-  this.bottomVisible,this.remainingTextBottom,this.remainingTextTop,this.isClose
+  this.bottomVisible,this.remainingTextBottom,this.remainingTextTop,this.isClose,required this.color
   });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Material(
-        color: Colors.transparent,
+        color:Colors.transparent,
 
         child: Stack(
           alignment: Alignment.topCenter,
@@ -45,7 +46,7 @@ class AppDialog extends StatelessWidget {
                           EdgeInsets.only(left: 16, right: 16, bottom: 11,top: 11),
                       width: Get.width,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: color,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       padding: padding ?? EdgeInsets.symmetric(horizontal: 27),
