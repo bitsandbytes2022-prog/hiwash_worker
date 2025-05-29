@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:hiwash_worker/widgets/components/loader.dart';
 import '../../../network_manager/repository.dart';
 import '../model/terms_and_conditions_response_model.dart';
@@ -81,6 +82,13 @@ class DrawerProfileController extends GetxController {
       final response = await Repository().uploadProfilePicture(formData);
 
       if (response != null && response['success'] == true) {
+        appSnackBar(
+          title: "Success",
+          backgroundColor: Colors.green,
+
+          message: response['message'] ?? 'Profile updated successfully',
+        )
+        ;
         return true;
       } else {
         imageFile.value = null;
@@ -94,36 +102,6 @@ class DrawerProfileController extends GetxController {
     }
   }
 
-  /* Future<bool> uploadProfileImage() async {
-    try {
-
-      final formData = await getFormDataForUpload();
-      final response = await Repository().uploadProfilePicture(formData);
-
-      if (response != null && response['success'] == true) {
-        return true;
-      } else {
-        imageFile.value = null;
-        return false;
-      }
-    } catch (e) {
-      imageFile.value = null;
-      return false;
-    }
-  }*/
-
-/*
-  Future<dynamic> uploadProfileImage() async {
-    try {
-     //showLoader();
-      final formData = await getFormDataForUpload();
-      final response = await Repository().uploadProfilePicture(formData);
-     // hideLoader();
-      return response;
-    } catch (e) {
-      print("Upload error profiler: $e");
-    }
-  }*/
 
   Future<TermsAndConditionsResponseModel?> getTermsAndConditions() async {
     var entityType = 1;
@@ -142,7 +120,7 @@ class DrawerProfileController extends GetxController {
     String email,
     String address,
   ) async {
-
+    isLoading.value = true;
     try {
       Map<String, dynamic> requestBody = {
         "fullName": fullName,
@@ -150,9 +128,17 @@ class DrawerProfileController extends GetxController {
         "address": address,
       };
       print("CheckName------>${requestBody}");
-showLoader();
+
       final response = await Repository().uploadProfile(requestBody);
-hideLoader();
+      if (response != null && response['success'] == true) {
+
+        appSnackBar(
+          title: "Success",
+          backgroundColor: Colors.green,
+          message: response['message'] ?? 'Profile updated successfully',
+        );
+      }
+
       return response;
     } catch (e) {
       print("Update profile error: $e");
@@ -166,7 +152,7 @@ hideLoader();
       );
       return null;
     } finally {
-     // isLoading.value = false;
+      isLoading.value = false;
     }
 
   }

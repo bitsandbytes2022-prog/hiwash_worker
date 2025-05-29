@@ -9,12 +9,10 @@ import 'package:hiwash_worker/featuers/profile/view/terms_and_condition_screen.d
 import 'package:hiwash_worker/featuers/profile/view/widget/custome_switch.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import '../../../generated/assets.dart';
-import '../../../network_manager/local_storage.dart';
 import '../../../route/route_strings.dart';
 import '../../../styling/app_color.dart';
 import '../../../styling/app_font_anybody.dart';
 import '../../../styling/app_font_poppins.dart';
-import '../../../view/terms _and_condition_screen.dart';
 import '../../../widgets/components/doted_horizontal_line.dart';
 import '../../../widgets/components/hi_wash_text_field.dart';
 import '../../../widgets/components/image_view.dart';
