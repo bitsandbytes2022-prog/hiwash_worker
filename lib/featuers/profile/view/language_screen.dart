@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
-import '../../../styling/app_color.dart';
-import '../../../styling/app_font_poppins.dart';
-import '../../../widgets/components/app_home_bg.dart';
-import '../../../widgets/components/doted_horizontal_line.dart';
+import '../../../../../styling/app_color.dart';
+import '../../../../../styling/app_font_poppins.dart';
+import '../../../../../widgets/components/app_home_bg.dart';
+import '../../../../../widgets/components/doted_horizontal_line.dart';
 
 class LanguageScreen extends StatelessWidget {
   const LanguageScreen({super.key});

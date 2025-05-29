@@ -18,7 +18,11 @@ class DrawerProfileController extends GetxController {
 
 
   Future<void> imagePicker({required ImageSource source}) async {
-    var pickedFile = await ImagePicker().pickImage(source: source,imageQuality: 20);
+    var pickedFile = await ImagePicker().pickImage(source: source,imageQuality: 50,
+
+      maxWidth: 1024,
+      maxHeight: 1024,
+    );
 
     if (pickedFile != null) {
       imageFile.value = File(pickedFile.path,  );
