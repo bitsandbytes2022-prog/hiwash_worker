@@ -7,6 +7,7 @@ static const  baseImageUrl = "https://loyaltyapistaging.pipelinedns.com";
 static const sendOtp="$baseUrl/authentication/send-otp";
 static const getToken="$baseUrl/authentication/token";
 static  getWorkerId(int id)=>"$baseUrl/worker/$id";
+static const refreshToken="$baseUrl/authentication/refresh-token";
 static  getCustomerId(int id)=>"$baseUrl/customer/$id";
 static  getFaq(int entityType)=>"/content/faqs?entityType=$entityType";
 static  getGuides(int entityType)=>"/content/guides?entityType=$entityType";

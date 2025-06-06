@@ -143,32 +143,7 @@ class AuthController extends GetxController {
 
   }
 
-  /* Future<SendOtpModel?> sendOtp(String phoneNumber) async {
-    Map<String, dynamic> requestBody = {
-      "mobileNumber": phoneNumber,
-      "userType": "1",
-    };
-  try{
-    isLoading.value = true;
-    sendOtpModel = await Repository().sendOtpRepo(requestBody);
-    if (sendOtpModel != null) {
-      Get.snackbar(
-        'Success',
-        "OTP: ${sendOtpModel?.data?.otp.toString()}",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: AppColor.white,
-      );}
-    print("Value received in controller sendOtp: $sendOtpModel");
-    return sendOtpModel;
-  }catch(e){
-    print("Error in controller while sending OTP: $e");
-    return null;
-  }finally{
-    isLoading.value = false;
-  }
 
-  }*/
 
 
   Future<GetTokenModel?> getToken(String phoneNumber) async {
@@ -186,6 +161,7 @@ class AuthController extends GetxController {
       if (value.data?.token != null && value.data!.token!.isNotEmpty) {
         LocalStorage tokenStorage = LocalStorage();
         await tokenStorage.saveToken(value.data!.token!);
+        await tokenStorage.saveRefreshToken(value.data!.refreshToken!);
         await tokenStorage.saveUserId(value.data!.id.toString());
 
         isLoggedIn.value = true;
@@ -194,12 +170,57 @@ class AuthController extends GetxController {
       getTokenModel = value;
       return value;
     } catch (error) {
-      print(" Error in controller send otp: $error");
+      print(" Error in controller get token: $error");
       return null;
     } finally {
       isLoading.value = false;
     }
   }
+
+
+  Future<GetTokenModel?> refreshToken() async {
+    final storedRefreshToken = LocalStorage().getRefreshToken();
+
+    if (storedRefreshToken == null || storedRefreshToken.isEmpty) {
+      print("No refresh token found, user needs to login again.");
+      Get.offAllNamed(RouteStrings.welcomeScreen);
+      return null;
+    }
+
+    Map<String, dynamic> requestBody = {
+      "refreshToken": storedRefreshToken,
+    };
+
+    print("Calling refreshToken API");
+    isLoading.value = true;
+
+    try {
+      final response = await Repository().refreshToken(requestBody);
+      print("Refresh token response: $response");
+
+      if (response.data?.token != null && response.data!.token!.isNotEmpty) {
+        await LocalStorage().saveToken(response.data!.token!);
+      }
+
+      if (response.data?.refreshToken != null && response.data!.refreshToken!.isNotEmpty) {
+        await LocalStorage().saveRefreshToken(response.data!.refreshToken!);
+      }
+
+      isLoggedIn.value = true;
+      return response;
+    } catch (error) {
+      print("Error refreshing token: $error");
+      await LocalStorage().removeToken();
+      Get.offAllNamed(RouteStrings.welcomeScreen);
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
+
+
   Future<void> logout() async {
     await LocalStorage().removeToken();
     isLoggedIn.value = false;

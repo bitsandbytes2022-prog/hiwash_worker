@@ -47,6 +47,18 @@ class Repository {
     return GetTokenModel.fromJson(response);
   }
 
+  Future<GetTokenModel> refreshToken(Object requestBody) async {
+    // print("body--->: $requestBody");
+    //  print("url--->: ${ApiConstant.getToken}");
+
+    var response = await dioHelper.post(
+      url: ApiConstant.refreshToken,
+      requestBody: requestBody,
+    );
+    //   print("Response--->: $response");
+
+    return GetTokenModel.fromJson(response);
+  }
   Future<GetWorkerModel> getWorkerData(int id) async {
     print(" GetWorkerModel url--->:${ApiConstant.getWorkerId(id)}");
     var response = await dioHelper.get(
@@ -137,6 +149,7 @@ class Repository {
         isAuthRequired: true,
       );
       print("validateWashQr success: $response");
+      return response;
     } catch (e) {
       print("validateWashQr failed: $e");
     }

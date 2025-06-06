@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/instance_manager.dart';
+import 'package:hiwash_worker/featuers/auth/auth_controller/auth_controller.dart';
 import 'package:hiwash_worker/network_manager/utils/print_value.dart';
 
 import '../route/route_strings.dart';
@@ -52,25 +54,41 @@ Dio getDio() {
           e.response?.data ?? "",
         );
    if (e.response?.statusCode == 400) {
-          Get.snackbar(
+
+       Get.snackbar(
+         duration: Duration(seconds: 3),
+         "Error",
+         e.response?.data["error"]["message"] ?? "Something went wrong",
+         colorText: Colors.white,
+         backgroundColor: Colors.red,
+       );
+     ;
+
+       /*   Get.snackbar(
+            duration: Duration(seconds: 3),
             "Error",
             e.response?.data["error"]["message"] ??
                 "Something went wrong".toString(),
             colorText: Colors.white,
             backgroundColor: Colors.red,
-          );
+          );*/
         }
        else if (e.response?.statusCode == 401) {
-          Get.snackbar(
+      /*    Get.snackbar(
+            duration: Duration(seconds: 3),
             "Error",
             e.response?.data["error"]["message"] ??
                 "Something went wrong".toString(),
             colorText: Colors.white,
             backgroundColor: Colors.red,
-          );
-          Get.offAllNamed(RouteStrings.welcomeScreen);
-        } else if (e.response?.statusCode == 404) {
+          );*/
+          AuthController   authController=Get.find();
+          print("Refresh Token api");
+          authController.refreshToken();
+        }
+       else if (e.response?.statusCode == 404) {
           Get.snackbar(
+            duration: Duration(seconds: 3),
             "Error 404",
             e.response?.data["error"]["message"] ??
                 "Something went wrong".toString(),
@@ -80,6 +98,7 @@ Dio getDio() {
         } else if (e.response?.statusCode == 500) {
           //print("object${e.response?.data.toString()}");
           Get.snackbar(
+            duration: Duration(seconds: 3),
             "Error",
             e.response?.data["error"]["message"] ??
                 "Something went wrong".toString(),

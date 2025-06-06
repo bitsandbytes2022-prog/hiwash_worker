@@ -80,6 +80,7 @@ class WashStatusController extends GetxController {
 
     if (start != null && end != null) {
       await washLog(start.toIso8601String(), end.toIso8601String());
+      isCalenderSelected.value = false;
     }
 
     update();
@@ -162,7 +163,7 @@ class WashStatusController extends GetxController {
       todayWashSummaryModel.value = await Repository().todayWashSummaryRepo();
       return todayWashSummaryModel.value;
     } catch (error) {
-      print("Error fetching Terms And Condition: $error");
+      print("Error fetching Today Wash: $error");
       return null;
     }
   }

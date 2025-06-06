@@ -8,6 +8,8 @@ class LocalStorage {
   final String _customerIdKey = 'customer_id';
   final String _scannedQrCodeKey = 'scanned_qr_code';
   final  String _fcmToken = "fcmToken";
+  final String _refreshTokenKey = 'refresh_token';
+
 
 
 
@@ -42,9 +44,22 @@ class LocalStorage {
   }
 
   String? getUserId() => _storage.read(_userIdKey);
+
+
+
+  // Refresh Token
+  Future<void> saveRefreshToken(String token) async {
+    await _storage.write(_refreshTokenKey, token);
+  }
+
+  String? getRefreshToken() {
+    return _storage.read(_refreshTokenKey);
+  }
   Future<void> removeToken() async {
     await _storage.remove(_tokenKey);
     await _storage.remove(_userIdKey);
     await _storage.remove(_customerIdKey);
+    await _storage.remove(_refreshTokenKey);
+
   }
 }

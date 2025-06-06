@@ -87,87 +87,7 @@ class DrawerScreen extends StatelessWidget {
             ),
           ),
 
-          /* Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                padding: EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppColor.blue.withOpacity(0.2)),
-                ),
-                child: Obx(() {
 
-                  var profilePicUrl =    dashboardController
-                      .getWorkerModel
-                      .value
-                      ?.data
-                      ?.first
-                      ?.profilePicUrl;
-
-
-                  return CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Colors.grey[200],
-                    child: ClipOval(
-                        child:
-                        Image.network(
-                          profilePicUrl!,
-                          repeat: ImageRepeat.repeat ,
-                          fit: BoxFit.cover,
-                          height: 100,
-                          // Diameter = radius * 2
-                          width: 100,
-                          loadingBuilder: (
-                              BuildContext context,
-                              Widget child,
-                              ImageChunkEvent? loadingProgress,
-                              ) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                            );
-                          },
-                          errorBuilder: (
-                              BuildContext context,
-                              Object error,
-                              StackTrace? stackTrace,
-                              ) {
-                            return Image.asset(
-                              Assets.iconsIcUpWardArrow,
-                              fit: BoxFit.cover,
-                              height: 100,
-                              width: 100,
-                            );
-                          },
-                        )
-
-                    ),
-                  );
-                }),
-              ),
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppColor.cE8E9F4),
-                ),
-
-                child: ImageView(
-                  path: Assets.iconsIcCrown,
-                  height: 17,
-                  width: 17,
-                ),
-              ),
-            ],
-          ),*/
           Stack(
             alignment: Alignment.topRight,
             children: [
@@ -267,7 +187,7 @@ class DrawerScreen extends StatelessWidget {
             image: Assets.iconsIcLanguage,
           ),
           drawerRowWidget(
-            onTap: () => drawerController.toggleDrawer('Privacy Settings'),
+            onTap: () =>  Get.toNamed(RouteStrings.privacySettingScreen),
             title: 'Privacy Settings',
             image: Assets.iconsIcPrivacy,
           ),

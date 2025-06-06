@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
+import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
@@ -74,7 +75,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-
   void onQRViewCreatedOffer(QRViewController controller) {
     qrController = controller;
     controller.scannedDataStream.listen((scanData) async {
@@ -93,7 +93,11 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
             String washIdString = Get.arguments;
             int washId = int.parse(washIdString);
 
-            final result = await validateOfferQr(id, offerId, washId.toString());
+            final result = await validateOfferQr(
+              id,
+              offerId,
+              washId.toString(),
+            );
 
             if (result != null) {
               await getOffersById(int.parse(offerId));
@@ -145,24 +149,161 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
             String id = decodedToken['CustomerId'];
             customerId.value = id;
-            await validateWashQr(id);
+
+            var response = await validateWashQr(id);
+            if (response != null && response['success'] == false) {
+              String errorMessage = response['error']['message'];
+              await Future.delayed(Duration(seconds: 1));
+              Get.back();
+              print("Error: $errorMessage");
+              clearScan();
+
+            }
             clearScan();
             await washStatusController.getTodayWashSummary();
+           // await Future.delayed(Duration(seconds: 1));
             Get.back();
           } catch (e) {
-            Get.snackbar("Error", "Failed to decode JWT: $e");
+            await Future.delayed(Duration(seconds: 1));
+            Get.back();
+            print("QR error----->$e");
           }
         } else {
-          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
+          await Future.delayed(Duration(seconds: 1));
+          Get.back();
+          print("Invalid QR Scanned code is not a valid JWT");
+         // appSnackBar(message: "Something went wrong, try again");
         }
       }
     });
   }
+
+  Future<dynamic> validateWashQr(String customerId) async {
+    Map<String, dynamic> requestBody = {"customerId": customerId};
+    try {
+      isLoading.value = true;
+      var response = await Repository().validateWashQrRepo(requestBody);
+      if (response != null && response['success'] == false) {}else{
+        await Future.delayed(Duration(seconds: 3));
+        Get.back();
+      }
+      return response;
+    } catch (e) {
+      print("Error in validateWashQr: $e");
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /*  void onQRViewCreated(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScanned.value) {
+        final scannedCode = scanData.code ?? '';
+        print("Scanned QR Code: $scannedCode");
+
+        scanUrl.value = scannedCode;
+        hasScanned.value = true;
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            String id = decodedToken['CustomerId'];
+            customerId.value = id;
+
+            await validateWashQr(id);
+
+            clearScan();
+            await washStatusController.getTodayWashSummary();
+            Get.back();
+                    } catch (e) {
+            appSnackBar(
+                duration: Duration(seconds: 3),
+                message: "Failed to decode JWT: $e"
+            );
+            print("QR error----->$e");
+          }
+        } else {
+          print("Invalid QR Scanned code is not a valid JWT");
+          appSnackBar(
+              message: "Something went wrong, try again"
+          );
+        }
+      }
+    });
+  }
+
+  Future<dynamic> validateWashQr(String customerId) async {
+    Map<String, dynamic> requestBody = {"customerId": customerId};
+    try {
+      isLoading.value = true;
+      var response= await Repository().validateWashQrRepo(requestBody);
+      return response;
+    } catch (e) {
+      print("Error in validateWashQr: $e");
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }*/
+
+  /*
+  void onQRViewCreated(QRViewController controller) {
+    qrController = controller;
+
+    controller.scannedDataStream.listen((scanData) async {
+      if (!hasScanned.value) {
+        final scannedCode = scanData.code ?? '';
+        print("Scanned QR Code: $scannedCode");
+
+        scanUrl.value = scannedCode;
+        hasScanned.value = true;
+        animationController.stop();
+        controller.pauseCamera();
+
+        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
+          try {
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
+            String id = decodedToken['CustomerId'];
+            customerId.value = id;
+            if(validateWashQr=!null){
+              await validateWashQr(id);
+              clearScan();
+              await washStatusController.getTodayWashSummary();
+              Get.back();
+            }else{
+              await Future.delayed(Duration(seconds: 1));
+              Get.back();
+            }
+
+          } catch (e) {
+            appSnackBar(
+              duration: Duration(seconds: 3),
+                message: "Failed to decode JWT: $e"
+            );
+            print("QR error----->$e");
+           // Get.snackbar("Error", "Failed to decode JWT: $e");
+          }
+        } else {
+          print("Invalid QR Scanned code is not a valid JWT");
+          appSnackBar(
+            message: "Something went wrong try again"
+          );
+        }
+      }
+    });
+  }
+
+*/
   Future<dynamic> validateOfferQr(
-      String customerId,
-      String offerId,
-      String washId,
-      ) async {
+    String customerId,
+    String offerId,
+    String washId,
+  ) async {
     Map<String, dynamic> requestBody = {
       "customerId": customerId,
       "offerId": offerId,
@@ -178,63 +319,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       // isLoading.value = false;
     }
   }
-
-
-
-
-  /// original
-  /*
-  void onQRViewCreatedOffer(QRViewController controller) {
-    qrController = controller;
-
-    controller.scannedDataStream.listen((scanData) async {
-      if (!hasScannedOffer.value) {
-        final scannedCode = scanData.code ?? '';
-        scanUrlOffer.value = scannedCode;
-        hasScannedOffer.value = true;
-        animationController.stop();
-        controller.pauseCamera();
-
-        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
-          try {
-            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
-            String offerId = decodedToken['OfferId'];
-            String id = decodedToken['CustomerId'];
-            offerIdForReward.value = offerId;
-            String washIdString = Get.arguments;
-            int washId = int.parse(washIdString);
-
-            await validateOfferQr(id, offerId,washId.toString());
-            clearScan();
-            await getOffersById(int.parse(offerId));
-            Get.back();
-          } catch (e) {
-            Get.snackbar("Error", "Failed to decode JWT: $e");
-            print("QR error----->$e");
-          }
-        } else {
-          Get.snackbar("Invalid QR", "Scanned code is not a valid JWT");
-        }
-      }
-    });
-  }*/
-
-
-  Future<dynamic> validateWashQr(String customerId) async {
-    Map<String, dynamic> requestBody = {"customerId": customerId};
-    try {
-      isLoading.value = true;
-      return await Repository().validateWashQrRepo(requestBody);
-    } catch (e) {
-      print("Error in validateWashQr: $e");
-      return null;
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-
-
 
   Future<GetOffersByIdModel?> getOffersById(int id) async {
     try {

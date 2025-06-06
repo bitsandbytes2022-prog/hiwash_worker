@@ -1,0 +1,121 @@
+{
+  "project_info": {
+    "project_number": "771921395674",
+    "project_id": "self-service-iphone",
+    "storage_bucket": "self-service-iphone.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771921395674:android:827e10b0fa8e1bbed9cae3",
+        "android_client_info": {
+          "package_name": "com.hiwash.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771921395674-hbk00us9eqpbt3mt3nhrvl74f4kk2s7b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hiwash.customer",
+            "certificate_hash": "636b9cfe26de825ec92e0a2ee844a040f667abf1"
+          }
+        },
+        {
+          "client_id": "771921395674-n9f13dbujl857ju5njudl8pndn21mje4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeE04laXbAPJe0uTPa5H7o87VVB1HPdY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771921395674-n9f13dbujl857ju5njudl8pndn21mje4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771921395674:android:5e8f9aaf5ba0df89d9cae3",
+        "android_client_info": {
+          "package_name": "com.hiwash.partner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771921395674-9k311plpk15jsm5403rou8jmmmtbjduo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hiwash.partner",
+            "certificate_hash": "636b9cfe26de825ec92e0a2ee844a040f667abf1"
+          }
+        },
+        {
+          "client_id": "771921395674-n9f13dbujl857ju5njudl8pndn21mje4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeE04laXbAPJe0uTPa5H7o87VVB1HPdY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771921395674-n9f13dbujl857ju5njudl8pndn21mje4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771921395674:android:065131a16efdebe4d9cae3",
+        "android_client_info": {
+          "package_name": "com.hiwash.worker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771921395674-nu194121nrt36eafcqtmkh6r2v32s6tl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hiwash.worker",
+            "certificate_hash": "636b9cfe26de825ec92e0a2ee844a040f667abf1"
+          }
+        },
+        {
+          "client_id": "771921395674-n9f13dbujl857ju5njudl8pndn21mje4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeE04laXbAPJe0uTPa5H7o87VVB1HPdY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771921395674-n9f13dbujl857ju5njudl8pndn21mje4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
