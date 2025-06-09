@@ -153,7 +153,6 @@ class Languages extends Translations {
       "kTheme": 'Theme',
       "kLanguage": 'Language',
       "kPrivacySettings": 'Privacy Settings',
-      "kTermsAndCondition": 'Terms & Conditions',
       "kLogout": "Logout",
       "kArabic": "Arabic",
       "kEnglish": "English",

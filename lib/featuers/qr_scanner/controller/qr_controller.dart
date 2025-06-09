@@ -42,11 +42,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   Rxn<GetOffersByIdModel> getOffersByIdModel = Rxn();
   Rxn<OffersByIList> offersByIList = Rxn();
 
-  @override
-  void onInit() {
-    super.onInit();
-    //  checkInternetConnection();
-  }
 
   @override
   void onReady() async {
@@ -236,7 +231,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onClose() {
-    // qrController?.dispose();
     animationController.dispose();
     super.onClose();
   }
