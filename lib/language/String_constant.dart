@@ -205,4 +205,16 @@ class StringConstant {
   static const kPlanIsNowActivated = "kPlanIsNowActivated";
   static const kScanToUnlockWeekly = "kScanToUnlockWeekly";
   static const kYourPaymentIsComplete = "kYourPaymentIsComplete";
+  static const kJan = "kJan";
+  static const kFev = "kFev";
+  static const kMar = "kMar";
+  static const kApr = "kApr";
+  static const kMay = "kMay";
+  static const kJun = "kJun";
+  static const kJul = "kJul";
+  static const kAug = "kAug";
+  static const kSep = "kSep";
+  static const kAct = "kAct";
+  static const kNov = "kNov";
+  static const kDec = "kDec";
 }

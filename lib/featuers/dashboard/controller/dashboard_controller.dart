@@ -15,6 +15,7 @@ class DashboardController extends GetxController {
   Rxn<GetWorkerModel> getWorkerModel = Rxn();
 
   final String? userId = LocalStorage().getUserId();
+  var isLoading = false.obs;
 
 
   @override
@@ -46,7 +47,6 @@ class DashboardController extends GetxController {
     return null;
   }
 
-  var isLoading = false.obs;
 
 
 }

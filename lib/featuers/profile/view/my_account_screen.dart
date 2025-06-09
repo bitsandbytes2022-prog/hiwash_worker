@@ -376,12 +376,9 @@ class MyAccountScreen extends StatelessWidget {
                             0,
                       );
                     } else {
-                    /*  Get.snackbar(
-                        'Invalid Input',
-                        'Please fix the errors in the form',
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white,
-                      );*/
+                    appSnackBar(
+                      message: StringConstant.kSomethingWentWrong.tr
+                    );
                     }
                   },
                 );

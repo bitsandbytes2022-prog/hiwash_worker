@@ -33,9 +33,9 @@ class _CustomContainerSwitchState extends State<CustomContainerSwitch> {
           color: widget.value ? widget.activeColor : widget.inactiveColor,
         ),
         child: AnimatedAlign(
-
           duration: Duration(milliseconds: 200),
-          alignment: widget.value ? Alignment.centerRight : Alignment.centerLeft,
+          alignment:
+              widget.value ? Alignment.centerRight : Alignment.centerLeft,
           curve: Curves.easeInOut,
           child: Container(
             margin: EdgeInsets.all(2),

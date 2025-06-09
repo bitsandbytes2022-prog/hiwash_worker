@@ -22,6 +22,15 @@ class AuthController extends GetxController {
   var enteredOtp = ''.obs;
   var secondsRemaining = 30.obs;
   Timer? _timer;
+  GetTokenModel? getTokenModel;
+
+  SignUpModel? signUpModel;
+  bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
+
+  /// Welcome screen
+  final PageController pageController = PageController();
+  var currentPage = 0.obs;
 
   @override
   void onInit() {
@@ -32,35 +41,20 @@ class AuthController extends GetxController {
     super.onInit();
   }
 
-  GetTokenModel? getTokenModel;
-
-  SignUpModel? signUpModel;
-
   /// login controller
   TextEditingController loginPhoneController = TextEditingController(
-    text:kDebugMode? "6446544689":'',
+    text: kDebugMode ? "6446544689" : '',
   );
-
-
-  bool obscurePassword = true;
-  bool obscureConfirmPassword = true;
-
-  /// Welcome screen
-  final PageController pageController = PageController();
-  var currentPage = 0.obs;
 
   void onPageChanged(int index) {
     currentPage.value = index;
   }
-
 
   Future getFCMTokenIn() async {
     var token = await FirebaseMessaging.instance.getToken();
     LocalStorage().saveFCMToken(token: token);
     debugPrint("fcmTokenSet------> $token");
   }
-
-
 
   String? validatePhoneNumberLogin(String? value) {
     if (value != null && value.isNotEmpty) {
@@ -74,8 +68,6 @@ class AuthController extends GetxController {
     return null;
   }
 
-
-
   void startTimer() {
     secondsRemaining.value = 30;
 
@@ -88,6 +80,7 @@ class AuthController extends GetxController {
       }
     });
   }
+
   void resetTimer() {
     startTimer();
   }
@@ -102,7 +95,9 @@ class AuthController extends GetxController {
       print("User not logged in ");
     }
   }
+
   Rx<SendOtpModel> sendOtpModel = SendOtpModel().obs;
+
   Future<SendOtpModel?> sendOtp(String phoneNumber) async {
     Map<String, dynamic> requestBody = {
       "mobileNumber": phoneNumber,
@@ -121,10 +116,9 @@ class AuthController extends GetxController {
         appSnackBar(
           title: StringConstant.kSuccess.tr,
           message:
-          "${StringConstant.kTestOTP.tr} ${sendOtpModel?.value.data?.otp}",
+              "${StringConstant.kTestOTP.tr} ${sendOtpModel?.value.data?.otp}",
           backgroundColor: Colors.green,
         );
-
 
         print("OTP received: ${sendOtpModel.value.data?.otp}");
       }
@@ -136,17 +130,13 @@ class AuthController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-
   }
-
-
-
 
   Future<GetTokenModel?> getToken(String phoneNumber) async {
     Map<String, dynamic> requestBody = {
       "mobileNumber": phoneNumber,
       "userType": "1",
-      "fcmToken":LocalStorage().getFCMToken()
+      "fcmToken": LocalStorage().getFCMToken(),
     };
     print("Calling getToken with $phoneNumber");
     isLoading.value = true;
@@ -173,7 +163,6 @@ class AuthController extends GetxController {
     }
   }
 
-
   Future<GetTokenModel?> refreshToken() async {
     final storedRefreshToken = LocalStorage().getRefreshToken();
 
@@ -183,9 +172,7 @@ class AuthController extends GetxController {
       return null;
     }
 
-    Map<String, dynamic> requestBody = {
-      "refreshToken": storedRefreshToken,
-    };
+    Map<String, dynamic> requestBody = {"refreshToken": storedRefreshToken};
 
     print("Calling refreshToken API");
     isLoading.value = true;
@@ -198,7 +185,8 @@ class AuthController extends GetxController {
         await LocalStorage().saveToken(response.data!.token!);
       }
 
-      if (response.data?.refreshToken != null && response.data!.refreshToken!.isNotEmpty) {
+      if (response.data?.refreshToken != null &&
+          response.data!.refreshToken!.isNotEmpty) {
         await LocalStorage().saveRefreshToken(response.data!.refreshToken!);
       }
 
@@ -214,18 +202,15 @@ class AuthController extends GetxController {
     }
   }
 
-
-
-
   Future<void> logout() async {
     await LocalStorage().removeToken();
     isLoggedIn.value = false;
     Get.offAllNamed(RouteStrings.welcomeScreen);
   }
+
   @override
   void onClose() {
     _timer?.cancel();
     super.onClose();
   }
-
 }

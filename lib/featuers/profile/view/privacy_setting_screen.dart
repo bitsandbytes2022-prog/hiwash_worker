@@ -15,15 +15,10 @@ class PrivacySettingScreen extends StatelessWidget {
       iconRight: SizedBox(),
 
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
 
-          children: [
-
-            15.heightSizeBox,
-           ]
-      )
-
-      ,
+        children: [15.heightSizeBox],
+      ),
     );
   }
 }

@@ -15,11 +15,13 @@ class RewardQrScreen extends StatefulWidget {
 
 class _RewardQrScreenState extends State<RewardQrScreen> {
   final QrController controller = Get.put(QrController());
+
   @override
   void initState() {
     controller.clearScan();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +114,6 @@ class _RewardQrScreenState extends State<RewardQrScreen> {
               ],
             ),
           ),
-
         ],
       ),
     );

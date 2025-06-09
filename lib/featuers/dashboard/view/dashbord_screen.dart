@@ -7,7 +7,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:hiwash_worker/featuers/dashboard/view/widget/second_drawer/second_drawer.dart';
 import 'package:hiwash_worker/featuers/profile/view/drawer_screen.dart';
 import 'package:hiwash_worker/featuers/qr_scanner/view/qr_scanner.dart';
-import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
+import 'package:hiwash_worker/featuers/today_wash/controller/today_wash_controller.dart';
 import 'package:hiwash_worker/featuers/today_wash/view/today_wash_screen.dart';
 import 'package:hiwash_worker/generated/assets.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
@@ -36,10 +36,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _currentDrawer = 'first';
-  final WashStatusController controller =
-      Get.isRegistered<WashStatusController>()
+  final TodayWashController controller =
+      Get.isRegistered<TodayWashController>()
           ? Get.find()
-          : Get.put(WashStatusController());
+          : Get.put(TodayWashController());
 
   DashboardController dashboardController =
       Get.isRegistered<DashboardController>()

@@ -10,6 +10,11 @@ class SecondDrawerController extends GetxController {
   RxBool isLoading = true.obs;
   RxList<bool> isExpanded = <bool>[].obs;
   RxString searchQuery = ''.obs;
+  @override
+  void onInit() {
+    super.onInit();
+    getGuides();
+  }
 
   void toggleCheckbox(int index) {
     for (int i = 0; i < isChecked.length; i++) {
@@ -17,16 +22,10 @@ class SecondDrawerController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    super.onInit();
 
-    getGuides();
-  }
 
   void toggleExpand(int index) {
     isExpanded[index] = !isExpanded[index];
-    print("gggg");
   }
 
   Future<FaqResponseModel?> getFaq() async {

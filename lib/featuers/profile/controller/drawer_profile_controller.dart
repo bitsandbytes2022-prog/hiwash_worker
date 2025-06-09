@@ -16,6 +16,12 @@ class DrawerProfileController extends GetxController {
   var imageFile = Rx<File?>(null);
   var isSwitchOn = false.obs;
   RxBool isUploadingProfileImage = false.obs;
+  Rxn<TermsAndConditionsResponseModel> termsAndConditionsResponseModel = Rxn();
+  var currentDrawerSection = ''.obs;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   Future<void> imagePicker({required ImageSource source}) async {
     var pickedFile = await ImagePicker().pickImage(
@@ -32,28 +38,6 @@ class DrawerProfileController extends GetxController {
       print("No file selected");
     }
   }
-
-  var currentDrawerSection = ''.obs;
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController carNumberController = TextEditingController();
-
-  TextEditingController zoneController = TextEditingController(
-    text: kDebugMode ? "Zone 50" : "",
-  );
-  TextEditingController streetController = TextEditingController(
-    text: kDebugMode ? "al Matar Street" : '',
-  );
-  TextEditingController buildingController = TextEditingController(
-    text: kDebugMode ? 'Abcd' : "",
-  );
-  TextEditingController unitController = TextEditingController(
-    text: kDebugMode ? 'Abcd' : "",
-  );
-
-  Rxn<TermsAndConditionsResponseModel> termsAndConditionsResponseModel = Rxn();
 
   void toggleDrawer(String section) {
     if (currentDrawerSection.value == section) {
@@ -123,7 +107,6 @@ class DrawerProfileController extends GetxController {
         "email": email,
         "address": address,
       };
-      print("CheckName------>${requestBody}");
 
       final response = await Repository().uploadProfile(requestBody);
       if (response != null && response['success'] == true) {
@@ -131,7 +114,7 @@ class DrawerProfileController extends GetxController {
           title: StringConstant.kSuccess.tr,
           backgroundColor: Colors.green,
           message:
-          response['message'] ??
+              response['message'] ??
               StringConstant.kProfileUpdatedSuccessfully.tr,
         );
       }
@@ -140,9 +123,7 @@ class DrawerProfileController extends GetxController {
     } catch (e) {
       print("Update profile error: $e");
 
-      appSnackBar(
-        message: StringConstant.kSomethingWentWrong.tr,
-      );
+      appSnackBar(message: StringConstant.kSomethingWentWrong.tr);
       return null;
     } finally {
       isLoading.value = false;

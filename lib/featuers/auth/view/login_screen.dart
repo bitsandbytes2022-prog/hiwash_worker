@@ -17,7 +17,6 @@ import '../../../widgets/components/hi_wash_text_field.dart';
 import '../auth_controller/auth_controller.dart';
 import 'auth_widgets/bg_widget.dart';
 
-
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
@@ -59,27 +58,28 @@ class LoginScreen extends StatelessWidget {
                   text: StringConstant.kLogIn.tr,
                   onTap: () async {
                     if (formKey.currentState?.validate() ?? false) {
-                      String phoneNumber = controller.loginPhoneController.text.trim();
-                  await    controller.sendOtp(phoneNumber).then((value) {
-                        if (value != null) {
-                          Get.toNamed(
-                            RouteStrings.loginOtpScreen,
-                            arguments: phoneNumber,
-                          );
-                          controller.loginPhoneController.clear();
-                        }
-                      }).catchError((error) {
-                        print("Error during OTP sending: $error");
-                      });
+                      String phoneNumber =
+                          controller.loginPhoneController.text.trim();
+                      await controller
+                          .sendOtp(phoneNumber)
+                          .then((value) {
+                            if (value != null) {
+                              Get.toNamed(
+                                RouteStrings.loginOtpScreen,
+                                arguments: phoneNumber,
+                              );
+                              controller.loginPhoneController.clear();
+                            }
+                          })
+                          .catchError((error) {
+                            print("Error during OTP sending: $error");
+                          });
                     }
                   },
                 );
               }),
 
-
               54.heightSizeBox,
-
-
 
               30.heightSizeBox,
             ],

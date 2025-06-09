@@ -8,6 +8,7 @@ import 'package:hiwash_worker/featuers/auth/auth_controller/auth_controller.dart
 import 'package:hiwash_worker/featuers/profile/view/terms_and_condition_screen.dart';
 import 'package:hiwash_worker/featuers/profile/view/widget/custome_switch.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
+import 'package:hiwash_worker/network_manager/local_storage.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import '../../../generated/assets.dart';
 import '../../../route/route_strings.dart';
@@ -18,28 +19,24 @@ import '../../../widgets/components/doted_horizontal_line.dart';
 import '../../../widgets/components/hi_wash_text_field.dart';
 import '../../../widgets/components/image_view.dart';
 import '../../dashboard/controller/dashboard_controller.dart';
-import '../../subscription/controller/subscription_controller.dart';
 import '../controller/drawer_profile_controller.dart';
 import 'my_account_screen.dart';
 
 class DrawerScreen extends StatelessWidget {
   final DrawerProfileController drawerController =
-  Get.isRegistered<DrawerProfileController>()
-      ? Get.find<DrawerProfileController>()
-      : Get.put(DrawerProfileController());
-  final SubscriptionController controller =
-  Get.isRegistered<SubscriptionController>()
-      ? Get.find<SubscriptionController>()
-      : Get.put(SubscriptionController());
+      Get.isRegistered<DrawerProfileController>()
+          ? Get.find<DrawerProfileController>()
+          : Get.put(DrawerProfileController());
+
   DashboardController dashboardController =
-  Get.isRegistered<DashboardController>()
-      ? Get.find()
-      : Get.put(DashboardController());
+      Get.isRegistered<DashboardController>()
+          ? Get.find()
+          : Get.put(DashboardController());
 
   AuthController authController =
-  Get.isRegistered<AuthController>()
-      ? Get.find()
-      : Get.put(AuthController());
+      Get.isRegistered<AuthController>()
+          ? Get.find()
+          : Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +45,9 @@ class DrawerScreen extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: AppColor.white,
-            borderRadius: BorderRadius.horizontal(
-              right: Radius.circular(15),
-            ),
+            borderRadius: BorderRadius.horizontal(right: Radius.circular(15)),
           ),
-          child:
-          drawerController.currentDrawerSection.value == ''
-              ? mainDrawerUI()
-              : sectionDrawerUI(
-            drawerController.currentDrawerSection.value,
-          ),
+          child: mainDrawerUI(),
         ),
       );
     });
@@ -88,11 +78,9 @@ class DrawerScreen extends StatelessWidget {
             ),
           ),
 
-
           Stack(
             alignment: Alignment.topRight,
             children: [
-
               Container(
                 padding: EdgeInsets.all(6),
                 decoration: BoxDecoration(
@@ -100,16 +88,24 @@ class DrawerScreen extends StatelessWidget {
                   border: Border.all(color: AppColor.blue.withOpacity(0.2)),
                 ),
                 child: Obx(() {
-                  final profilePicUrl = dashboardController.getWorkerModel.value?.data?.first.profilePicUrl ?? '';
+                  final profilePicUrl =
+                      dashboardController
+                          .getWorkerModel
+                          .value
+                          ?.data
+                          ?.first
+                          .profilePicUrl ??
+                      '';
                   final hasImage = profilePicUrl.isNotEmpty;
                   return CircleAvatar(
                     radius: 50,
-                    backgroundImage: hasImage
-                        ? CachedNetworkImageProvider(
-                      profilePicUrl,
-                      headers: {'Cache-Control': 'no-cache'},
-                    )
-                        : AssetImage(Assets.imagesDemoProfile),
+                    backgroundImage:
+                        hasImage
+                            ? CachedNetworkImageProvider(
+                              profilePicUrl,
+                              headers: {'Cache-Control': 'no-cache'},
+                            )
+                            : AssetImage(Assets.imagesDemoProfile),
                   );
                 }),
               ),
@@ -149,13 +145,13 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 TextSpan(
                   text:
-                  dashboardController
-                      .getWorkerModel
-                      .value
-                      ?.data
-                      ?.first
-                      .employeeId
-                      .toString(),
+                      dashboardController
+                          .getWorkerModel
+                          .value
+                          ?.data
+                          ?.first
+                          .employeeId
+                          .toString(),
                   style: w700_12p(color: AppColor.c2C2A2A),
                 ),
               ],
@@ -170,25 +166,27 @@ class DrawerScreen extends StatelessWidget {
             image: Assets.iconsIcAccount,
           ),
 
-          Obx(() => drawerRowForTheme(
-            title: StringConstant.kTheme.tr,
-            image: Assets.iconsIcTheme,
-            switchValue: drawerController.isSwitchOn.value,
-            onSwitchChanged: (bool value) {
-              drawerController.isSwitchOn.value = value;
+          Obx(
+            () => drawerRowForTheme(
+              title: StringConstant.kTheme.tr,
+              image: Assets.iconsIcTheme,
+              switchValue: drawerController.isSwitchOn.value,
+              onSwitchChanged: (bool value) {
+                drawerController.isSwitchOn.value = value;
 
-              // Optional: toggle theme
-              // Get.changeTheme(value ? ThemeData.dark() : ThemeData.light());
-            },
-          )),
+                // Optional: toggle theme
+                // Get.changeTheme(value ? ThemeData.dark() : ThemeData.light());
+              },
+            ),
+          ),
           drawerRowWidget(
-            padding: EdgeInsets.only(left: 15,right: 15,top: 15),
+            padding: EdgeInsets.only(left: 15, right: 15, top: 15),
             onTap: () => Get.toNamed(RouteStrings.languageScreen),
             title: StringConstant.kLanguage.tr,
             image: Assets.iconsIcLanguage,
           ),
           drawerRowWidget(
-            onTap: () =>  Get.toNamed(RouteStrings.privacySettingScreen),
+            onTap: () => Get.toNamed(RouteStrings.privacySettingScreen),
             title: StringConstant.kPrivacySettings.tr,
             image: Assets.iconsIcPrivacy,
           ),
@@ -202,8 +200,10 @@ class DrawerScreen extends StatelessWidget {
           //60.heightSizeBox,
           GestureDetector(
             onTap: () async {
-              authController.logout();
-            },
+              await LocalStorage().removeToken();
+              final deviceLocale = Get.deviceLocale ?? const Locale('en', 'US');
+              Get.updateLocale(deviceLocale);
+              Get.offAllNamed(RouteStrings.welcomeScreen);            },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 31, vertical: 10),
               decoration: BoxDecoration(
@@ -215,7 +215,10 @@ class DrawerScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ImageView(path: Assets.iconsIcLogout, height: 20, width: 20),
-                  Text(StringConstant.kLogout.tr, style: w500_14a(color: AppColor.c142293)),
+                  Text(
+                    StringConstant.kLogout.tr,
+                    style: w500_14a(color: AppColor.c142293),
+                  ),
                 ],
               ),
             ),
@@ -226,222 +229,20 @@ class DrawerScreen extends StatelessWidget {
     });
   }
 
-  /// **Dynamic Section UI**
-  Widget sectionDrawerUI(String section) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          40.heightSizeBox,
-
-          Align(
-            alignment: Alignment.topLeft,
-            child: GestureDetector(
-              onTap: () {
-                drawerController.toggleDrawer('');
-                print("object");
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ImageView(
-                      path: Assets.iconsIcArrow,
-                      height: 15,
-                      width: 15,
-                      color: AppColor.c455A64,
-                    ),
-                    10.widthSizeBox,
-                    Text(section, style: w500_14a(color: AppColor.c2C2A2A)),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          // Text(section, style: w600_18p(color: AppColor.c142293)),
-          // 20.heightSizeBox,
-
-          /// **Content According to Section**
-          if (section == 'My Account') myAccountUI(),
-          if (section == 'Theme') themeUI(),
-          if (section == 'Language') languageUI(),
-          if (section == 'Privacy Settings') privacySettingsUI(),
-
-          20.heightSizeBox,
-        ],
-      ),
-    );
-  }
-
-  /// **Individual Section UIs**
-  Widget myAccountUI() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              Container(
-                padding: EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppColor.blue.withOpacity(0.2)),
-                ),
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage(Assets.imagesDemoProfile),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: AppColor.cC41949,
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppColor.white, width: 3),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColor.cC41949.withOpacity(0.25),
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-
-                child: ImageView(
-                  path: Assets.iconsIcEdit,
-                  height: 17,
-                  width: 17,
-                ),
-              ),
-            ],
-          ),
-          11.heightSizeBox,
-          Text("Ibrahim Bafqia"),
-          4.heightSizeBox,
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Your ',
-                  style: w400_12p(color: AppColor.c455A64),
-                ),
-                TextSpan(
-                  text: 'Unlimited Washes',
-                  style: w600_14p(color: AppColor.cC31848),
-                ),
-                TextSpan(
-                  text: ' pack\nexpiring in ',
-                  style: w400_12p(color: AppColor.c455A64),
-                ),
-                TextSpan(
-                  text: '15-oct-2025',
-                  style: w600_12p(color: AppColor.c455A64),
-                ),
-              ],
-            ),
-          ),
-          31.heightSizeBox,
-          HiWashTextField(hintText: "Name", labelText: "Name"),
-          20.heightSizeBox,
-          HiWashTextField(hintText: "Email", labelText: "Email"),
-          20.heightSizeBox,
-          HiWashTextField(hintText: "Phone", labelText: "Phone"),
-          20.heightSizeBox,
-
-          TextFormField(
-            maxLines: 3,
-
-            style: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
-            decoration: InputDecoration(
-              fillColor: AppColor.cF6F7FF,
-              // hintText: "Address",
-              //labelText: "Address",
-              label: Text("Address"),
-              filled: true,
-              // suffixIcon: ImageView(path: Assets.iconsMyLocation,height: 5,width: 10,),
-              labelStyle: w400_13a(color: AppColor.c455A64),
-              hintStyle: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.40)),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 12,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColor.cEAE8E8.withOpacity(0.5),
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColor.c5C6B72.withOpacity(0.5),
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColor.c5C6B72.withOpacity(0.5),
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColor.c5C6B72.withOpacity(0.5),
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColor.c5C6B72.withOpacity(0.5),
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: AppColor.c5C6B72.withOpacity(0.5),
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          ),
-
-          20.heightSizeBox,
-          HiWashTextField(hintText: "Car Number", labelText: "Car Number"),
-          20.heightSizeBox,
-        ],
-      ),
-    );
-  }
-
-  Widget themeUI() {
-    return Column(children: [Text("Select Theme"), 10.heightSizeBox]);
-  }
-
-  Widget languageUI() {
-    return Column(children: [Text("Select Language")]);
-  }
-
-  Widget privacySettingsUI() {
-    return Column(children: [Text("Privacy Settings")]);
-  }
-
   /// **Reusable Row Widget**
   Widget drawerRowWidget({
     required VoidCallback onTap,
     required String title,
     required String image,
     bool dashedLineWidget = true,
-    EdgeInsets?padding
+    EdgeInsets? padding,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
           Padding(
-            padding:padding?? EdgeInsets.only(left: 18, right: 12),
+            padding: padding ?? EdgeInsets.only(left: 18, right: 12),
             child: Row(
               children: [
                 ImageView(path: image, height: 20, width: 20),
@@ -476,7 +277,7 @@ class DrawerScreen extends StatelessWidget {
         Container(
           color: Colors.transparent,
           child: Padding(
-            padding: const EdgeInsets.only(left: 15,right: 15,bottom: 15),
+            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
             child: Row(
               children: [
                 ImageView(path: image, height: 20, width: 20),

@@ -7,7 +7,7 @@ import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/featuers/dashboard/controller/dashboard_controller.dart';
 import 'package:hiwash_worker/featuers/dashboard/model/get_customer_data_model.dart';
-import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
+import 'package:hiwash_worker/featuers/today_wash/controller/today_wash_controller.dart';
 import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
 import 'package:hiwash_worker/featuers/today_wash/model/wash_log_model.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
@@ -36,15 +36,14 @@ import '../../qr_scanner/controller/qr_controller.dart';
 class TodayWashScreen extends StatelessWidget {
   TodayWashScreen({super.key});
 
-  final WashStatusController controller = Get.put(WashStatusController());
+  final TodayWashController controller = Get.put(TodayWashController());
   DashboardController dashboardController = Get.find();
   final QrController qrController =
       Get.isRegistered<QrController>() ? Get.find() : Get.put(QrController());
 
   @override
   Widget build(BuildContext context) {
-    var todayWashListData =
-        controller.todayWashSummaryModel.value?.data?.summary;
+
     return Stack(
       children: [
         Obx(
@@ -371,22 +370,23 @@ class TodayWashScreen extends StatelessWidget {
   }
 
   String _getMonthName(int month) {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+    final months = [
+      StringConstant.kJan.tr,
+      StringConstant.kFev.tr,
+      StringConstant.kMar.tr,
+      StringConstant.kApr.tr,
+      StringConstant.kMay.tr,
+      StringConstant.kJun.tr,
+      StringConstant.kJul.tr,
+      StringConstant.kAug.tr,
+      StringConstant.kSep.tr,
+      StringConstant.kAct.tr,
+      StringConstant.kNov.tr,
+      StringConstant.kDec.tr,
     ];
     return months[month - 1];
   }
+
 
   Widget servicesContainer(int index, VoidCallback onTap) {
     var customerData = controller.todayWashSummaryModel.value?.data?.washes;
@@ -1169,7 +1169,7 @@ class TodayWashScreen extends StatelessWidget {
                             style: w400_16p(),
                           ),
                           9.heightSizeBox,
-                          GetBuilder<WashStatusController>(
+                          GetBuilder<TodayWashController>(
                             builder: (controller) {
                               return RatingStars(
                                 value: controller.userRating.toDouble(),

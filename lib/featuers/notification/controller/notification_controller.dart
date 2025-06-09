@@ -7,13 +7,11 @@ import 'package:flutter/material.dart';
 class NotificationController extends GetxController {
   RxList<NotificationData> notifications = <NotificationData>[].obs;
   RxList<RxBool> selectedStates = <RxBool>[].obs;
-
   RxBool isLoading = false.obs;
   RxBool hasMore = true.obs;
   RxInt currentPage = 1.obs;
   RxInt pageSize = 10.obs;
   RxString errorMessage = ''.obs;
-
   final ScrollController scrollController = ScrollController();
 
 

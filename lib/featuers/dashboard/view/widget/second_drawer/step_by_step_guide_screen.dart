@@ -41,8 +41,7 @@ class StepByStepGuideScreen extends StatelessWidget {
                   ?.length ?? 0,
 
               separatorBuilder: (context, index) {
-                print("hjgjh=====>${secondDrawerController.guidesResponseModel.value?.data
-                    ?.length ?? 0}");
+
                 return  DotedHorizontalLine();
               },
               itemBuilder: (context, index) {

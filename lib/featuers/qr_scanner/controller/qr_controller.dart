@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
+import 'package:hiwash_worker/featuers/today_wash/controller/today_wash_controller.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -33,10 +33,10 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   late Animation<double> animation;
 
   final LocalStorage localStorage = LocalStorage();
-  final WashStatusController washStatusController =
-      Get.isRegistered<WashStatusController>()
+  final TodayWashController washStatusController =
+      Get.isRegistered<TodayWashController>()
           ? Get.find()
-          : Get.put(WashStatusController());
+          : Get.put(TodayWashController());
 
   var isLoading = false.obs;
   Rxn<GetOffersByIdModel> getOffersByIdModel = Rxn();
@@ -116,17 +116,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     });
   }
 
-  void clearScan() {
-    scanUrl.value = '';
-    customerId.value = '';
-    hasScanned.value = false;
-    hasScannedOffer.value = false;
-    offerIdForReward.value = '';
-    washIdIdForReward.value = '';
 
-    qrController?.resumeCamera();
-    animationController.repeat(reverse: true);
-  }
 
   void onQRViewCreated(QRViewController controller) {
     qrController = controller;
@@ -158,7 +148,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
             }
             clearScan();
             await washStatusController.getTodayWashSummary();
-           // await Future.delayed(Duration(seconds: 1));
             Get.back();
           } catch (e) {
             await Future.delayed(Duration(seconds: 1));
@@ -169,10 +158,20 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
           await Future.delayed(Duration(seconds: 1));
           Get.back();
           print("Invalid QR Scanned code is not a valid JWT");
-         // appSnackBar(message: "Something went wrong, try again");
         }
       }
     });
+  }
+  void clearScan() {
+    scanUrl.value = '';
+    customerId.value = '';
+    hasScanned.value = false;
+    hasScannedOffer.value = false;
+    offerIdForReward.value = '';
+    washIdIdForReward.value = '';
+
+    qrController?.resumeCamera();
+    animationController.repeat(reverse: true);
   }
 
   Future<dynamic> validateWashQr(String customerId) async {
@@ -209,8 +208,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     } catch (e) {
       print("Error in validateOfferQr: $e");
       return null;
-    } finally {
-      // isLoading.value = false;
     }
   }
 

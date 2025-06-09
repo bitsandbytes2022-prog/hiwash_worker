@@ -15,7 +15,6 @@ class QrScreen extends StatefulWidget {
 class _QrScreenState extends State<QrScreen> {
   final QrController controller = Get.put(QrController());
 
-
   @override
   void initState() {
     controller.clearScan();
@@ -24,8 +23,6 @@ class _QrScreenState extends State<QrScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: AppColor.cF6F7FF.withOpacity(0.2),
       body: Column(
@@ -84,9 +81,6 @@ class _QrScreenState extends State<QrScreen> {
                       return const SizedBox.shrink();
                     }
                   }),
-
-
-
                 ],
               ),
             ),

@@ -118,12 +118,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
 
             ),
-            /*  ProfileImageView(
-              radiusStack: 5,
-              isVisibleStack: false,
-              radius: 20,
-              imagePath: item.notificationType == 1 ? Assets.iconsIcAlert : null
-            ),*/
+
             const SizedBox(width: 10),
             Expanded(
               child: Column(
