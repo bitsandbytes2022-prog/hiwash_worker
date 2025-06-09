@@ -149,6 +149,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: SafeArea(
         bottom: true,
+
+
         top: false,
         child: Scaffold(
           key: _scaffoldKey,
