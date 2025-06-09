@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/styling/app_color.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import '../controller/qr_controller.dart';
@@ -33,7 +34,7 @@ class _QrScreenState extends State<QrScreen> {
           GestureDetector(
             onTap: controller.clearScan,
             child: Text(
-              "Clear",
+              StringConstant.kClear.tr,
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
@@ -97,8 +98,8 @@ class _QrScreenState extends State<QrScreen> {
               children: [
                 Text(
                   controller.customerId.value.isNotEmpty
-                      ? 'Customer ID: ${controller.customerId.value}'
-                      : 'Scan a QR code',
+                      ? '${StringConstant.kCustomerID.tr}${controller.customerId.value}'
+                      : StringConstant.kScanAQRCode.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -111,7 +112,7 @@ class _QrScreenState extends State<QrScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      controller.internetStatus.value,
+                      controller.internetStatus.value.tr,
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),

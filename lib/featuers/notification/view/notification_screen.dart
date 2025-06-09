@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 
 import '../../../generated/assets.dart';
 import '../../../styling/app_color.dart';
@@ -42,7 +43,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       }
 
       if (controller.errorMessage.value.isNotEmpty) {
-        return _buildErrorMessage();
+        return SizedBox();
       }
 
       if (controller.notifications.isNotEmpty) {
@@ -64,7 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           },
         );
       } else {
-        return const Center(child: Text("No Notifications Found"));
+        return  Center(child: Text(StringConstant.kNoNotificationFound.tr));
       }
     });
   }
@@ -77,31 +78,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget _buildPaginationLoader() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 16),
-      child: Center(child: CircularProgressIndicator()),
-    );
+    return Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        children: [
-          Text(
-            controller.errorMessage.value,
-            style: const TextStyle(color: Colors.red),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              controller.fetchInitialNotifications();
-            },
-            child: const Text("Retry"),
-          ),
-        ],
-      ),
-    );
-  }
+
+
 
   Widget _notificationContainer(NotificationData item, int index) {
     return GestureDetector(
@@ -168,63 +149,5 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-/*  Widget _notificationContainer(NotificationData item, int index) {
-    return GestureDetector(
-      onTap: () {
-        controller.toggleSelection(index);
-        controller.updateNotificationReadStatus(item, index);
-      },
-      child: Container(
-        width: Get.width,
-        color:
-            controller.selectedStates[index].value
-                ? AppColor.white
-                : AppColor.cF6F7FF,
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
 
-            Container(
-
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppColor.blue.withOpacity(0.2)),
-                ),
-                child:CircleAvatar(
-
-                  backgroundColor: AppColor.c142293.withOpacity(0.2),
-                  radius: 20,
-
-                  child:Image.asset(Assets.iconsIcAlert,height: 20,width: 20,color: AppColor.c000000,),
-                )
-
-
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.message ?? '',
-                    style: w500_12p(color: AppColor.c2C2A2A),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    formatDate(item.createdAt),
-                    style: w400_10p(color: AppColor.c455A64),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }*/
 }

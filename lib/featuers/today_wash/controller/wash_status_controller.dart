@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
+import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:hiwash_worker/widgets/components/loader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -16,22 +18,22 @@ import 'package:dio/dio.dart' as dio;
 import '../model/wash_log_model.dart';
 
 class WashStatusController extends GetxController {
-
-
-
-
   Rx<XFile?> pickedImage = Rx<XFile?>(null);
 
   final ImagePicker _picker = ImagePicker();
 
   Future<void> pickImageFromCamera() async {
     try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.camera,imageQuality: 20);
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 20,
+      );
       if (image != null) {
         pickedImage.value = image;
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to pick image: $e');
+      print("Error picking image from camera: $e");
+      // Get.snackbar('Error', 'Failed to pick image: $e');
     }
   }
 
@@ -45,7 +47,6 @@ class WashStatusController extends GetxController {
 
   void toggleWashSelection() async {
     isWashSelected.value = !isWashSelected.value;
-
   }
 
   CalendarFormat calendarFormat = CalendarFormat.month;
@@ -56,12 +57,9 @@ class WashStatusController extends GetxController {
   Rx<DateTime?> rangeStartDate = Rx<DateTime?>(null);
   Rx<DateTime?> rangeEndDate = Rx<DateTime?>(null);
 
-
-
   DateTime get defaultStartDate => DateTime.now().subtract(Duration(days: 10));
+
   DateTime get defaultEndDate => DateTime.now();
-
-
 
   @override
   void onInit() {
@@ -69,10 +67,18 @@ class WashStatusController extends GetxController {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getTodayWashSummary();
-      washLog(defaultStartDate.toIso8601String(), defaultEndDate.toIso8601String());
+      washLog(
+        defaultStartDate.toIso8601String(),
+        defaultEndDate.toIso8601String(),
+      );
     });
   }
-  Future<void> onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) async {
+
+  Future<void> onRangeSelected(
+    DateTime? start,
+    DateTime? end,
+    DateTime focusedDay,
+  ) async {
     rangeStartDate.value = start;
     rangeEndDate.value = end;
     focusedDay1 = focusedDay;
@@ -86,7 +92,10 @@ class WashStatusController extends GetxController {
     update();
   }
 
-  Future<WashLogModel?> washLog([String? startingDate, String? endingDate]) async {
+  Future<WashLogModel?> washLog([
+    String? startingDate,
+    String? endingDate,
+  ]) async {
     try {
       //showLoader();
 
@@ -99,7 +108,7 @@ class WashStatusController extends GetxController {
         washLogModel.value = await Repository().washLogRepo({});
       }
 
-     // hideLoader();
+      // hideLoader();
       return washLogModel.value;
     } catch (e) {
       hideLoader();
@@ -107,59 +116,9 @@ class WashStatusController extends GetxController {
       rethrow;
     }
   }
-
-
-
-
-  /// only date
-/*
-  Future<void> onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) async {
-    rangeStartDate.value = start;
-    rangeEndDate.value = end;
-    focusedDay1 = focusedDay;
-    selectedDay1 = null;
-
-    print("Start ---> $start");
-    print("End   ---> $end");
-
-    if (start != null && end != null) {
-      await washLog(start.toIso8601String(), end.toIso8601String());
-    } else {
-      await washLog();
-    }
-
-    update();
-  }
-
-  Future<WashLogModel?> washLog([String? startingDate, String? endingDate]) async {
-    try {
-      showLoader();
-
-      if (startingDate != null && endingDate != null) {
-        washLogModel.value = await Repository().washLogRepo({
-          "startDate": startingDate,
-          "endDate": endingDate,
-        });
-      } else {
-        washLogModel.value = await Repository().washLogRepo({});
-      }
-
-      hideLoader();
-      return washLogModel.value;
-    } catch (e) {
-      hideLoader();
-      print("Wash log error: $e");
-      rethrow;
-    }
-  }
-
-*/
-
-
 
   Future<TodayWashSummaryModel?> getTodayWashSummary() async {
     try {
-
       todayWashSummaryModel.value = await Repository().todayWashSummaryRepo();
       return todayWashSummaryModel.value;
     } catch (error) {
@@ -172,7 +131,7 @@ class WashStatusController extends GetxController {
 
   Future<GetCustomerData?> getCustomerDataById(int id) async {
     try {
-     // showLoader();
+      // showLoader();
       getCustomerData.value = await Repository().getCustomerData(id);
 
       if (getCustomerData.value?.data != null) {
@@ -180,20 +139,21 @@ class WashStatusController extends GetxController {
         print("Customer ID: $customerId");
       }
 
-     // hideLoader();
+      // hideLoader();
       return getCustomerData.value;
     } catch (error) {
       print("Error fetching customer data: $error");
       return null;
     }
   }
+
   Future<void> completeWash(String? washId, {bool? requireImage}) async {
     try {
       dio.FormData formData;
 
-      if (requireImage?? false) {
+      if (requireImage ?? false) {
         if (pickedImage.value == null) {
-          Get.snackbar("Error", "Please capture an image.");
+          appSnackBar(message: StringConstant.kPleaseCaptureAnImage.tr);
           return;
         }
 
@@ -204,62 +164,47 @@ class WashStatusController extends GetxController {
         //   Get.snackbar("Error", "File size exceeds 2MB.");
         //   return;
         // }
-var fileMult= await dio.MultipartFile.fromFile(
-    pickedImage.value!.path,filename: pickedImage.value!.path.split('/').last,
-    );
+        var fileMult = await dio.MultipartFile.fromFile(
+          pickedImage.value!.path,
+          filename: pickedImage.value!.path.split('/').last,
+        );
         formData = await dio.FormData.fromMap({
-          "file":fileMult,
+          "file": fileMult,
 
           "WashId": washId,
         });
       } else {
-        formData = dio.FormData.fromMap({
-          "WashId": washId,
-        });
+        formData = dio.FormData.fromMap({"WashId": washId});
       }
-showLoader();
-
+      showLoader();
 
       final response = await Repository().completeWashRepo(formData);
       hideLoader();
       print("Upload success");
       return response;
-
     } catch (e) {
       hideLoader();
+      appSnackBar(
+        message: "${e}"
+      );
       Get.snackbar("Error", "$e.");
 
-      print("Upload error: $e");
+
       rethrow;
     }
   }
 
 
-  /*Future<WashLogModel?> washLog(String startingDate, String endingDate) async {
-    try {
-      showLoader();
-      washLogModel.value = await Repository().washLogRepo({
-        "startDate": startingDate,
-        "endDate": endingDate,
-      });
-      hideLoader();
-      return washLogModel.value;
-    } catch (e) {
-      hideLoader();
-      print("Wash log error: $e");
-      rethrow;
-    }
-  }*/
-
 
   final TextEditingController commentController = TextEditingController();
   int userRating = 0;
   Rxn<ApiResponse> apiResponse = Rxn<ApiResponse>();
+
   Future<ApiResponse?> getRating(
-      String rating,
-      String washId,
-      String comment,
-      ) async {
+    String rating,
+    String washId,
+    String comment,
+  ) async {
     Map params = {"rating": rating, "washId": washId, "comment": comment};
     try {
       print("Rating body--->: $params");

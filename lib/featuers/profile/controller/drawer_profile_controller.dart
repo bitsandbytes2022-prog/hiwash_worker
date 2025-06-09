@@ -5,41 +5,33 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
-import 'package:hiwash_worker/widgets/components/loader.dart';
 import '../../../network_manager/repository.dart';
 import '../model/terms_and_conditions_response_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DrawerProfileController extends GetxController {
   RxBool isLoading = false.obs;
-  var  imageFile = Rx<File?>(null);
+  var imageFile = Rx<File?>(null);
   var isSwitchOn = false.obs;
   RxBool isUploadingProfileImage = false.obs;
 
-
   Future<void> imagePicker({required ImageSource source}) async {
-    var pickedFile = await ImagePicker().pickImage(source: source,imageQuality: 50,
+    var pickedFile = await ImagePicker().pickImage(
+      source: source,
+      imageQuality: 50,
 
       maxWidth: 1024,
       maxHeight: 1024,
     );
 
     if (pickedFile != null) {
-      imageFile.value = File(pickedFile.path,  );
+      imageFile.value = File(pickedFile.path);
     } else {
       print("No file selected");
     }
   }
-/*  Future<void> imagePicker() async {
-    final pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
-
-    if (pickedFile != null) {
-      imageFile.value = File(pickedFile.path);
-    }
-  }*/
 
   var currentDrawerSection = ''.obs;
   TextEditingController nameController = TextEditingController();
@@ -48,14 +40,18 @@ class DrawerProfileController extends GetxController {
   TextEditingController addressController = TextEditingController();
   TextEditingController carNumberController = TextEditingController();
 
-  TextEditingController zoneController = TextEditingController(text:kDebugMode? "Zone 50":"");
+  TextEditingController zoneController = TextEditingController(
+    text: kDebugMode ? "Zone 50" : "",
+  );
   TextEditingController streetController = TextEditingController(
-    text:kDebugMode? "al Matar Street":'',
+    text: kDebugMode ? "al Matar Street" : '',
   );
   TextEditingController buildingController = TextEditingController(
-    text:kDebugMode? 'Abcd':"",
+    text: kDebugMode ? 'Abcd' : "",
   );
-  TextEditingController unitController = TextEditingController(text: kDebugMode?'Abcd':"");
+  TextEditingController unitController = TextEditingController(
+    text: kDebugMode ? 'Abcd' : "",
+  );
 
   Rxn<TermsAndConditionsResponseModel> termsAndConditionsResponseModel = Rxn();
 
@@ -75,6 +71,7 @@ class DrawerProfileController extends GetxController {
     );
     return dio.FormData.fromMap({"file": file});
   }
+
   Future<bool> uploadProfileImage() async {
     isUploadingProfileImage.value = true;
     try {
@@ -83,12 +80,12 @@ class DrawerProfileController extends GetxController {
 
       if (response != null && response['success'] == true) {
         appSnackBar(
-          title: "Success",
+          title: StringConstant.kSuccess.tr,
           backgroundColor: Colors.green,
-
-          message: response['message'] ?? 'Profile updated successfully',
-        )
-        ;
+          message:
+              response['message'] ??
+              StringConstant.kProfileUpdatedSuccessfully.tr,
+        );
         return true;
       } else {
         imageFile.value = null;
@@ -101,7 +98,6 @@ class DrawerProfileController extends GetxController {
       isUploadingProfileImage.value = false;
     }
   }
-
 
   Future<TermsAndConditionsResponseModel?> getTermsAndConditions() async {
     var entityType = 1;
@@ -131,11 +127,12 @@ class DrawerProfileController extends GetxController {
 
       final response = await Repository().uploadProfile(requestBody);
       if (response != null && response['success'] == true) {
-
         appSnackBar(
-          title: "Success",
+          title: StringConstant.kSuccess.tr,
           backgroundColor: Colors.green,
-          message: response['message'] ?? 'Profile updated successfully',
+          message:
+          response['message'] ??
+              StringConstant.kProfileUpdatedSuccessfully.tr,
         );
       }
 
@@ -143,17 +140,12 @@ class DrawerProfileController extends GetxController {
     } catch (e) {
       print("Update profile error: $e");
 
-      Get.snackbar(
-        "Error",
-        "Something went wrong while updating profile",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      appSnackBar(
+        message: StringConstant.kSomethingWentWrong.tr,
       );
       return null;
     } finally {
       isLoading.value = false;
     }
-
   }
 }

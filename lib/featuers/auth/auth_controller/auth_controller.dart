@@ -119,7 +119,7 @@ class AuthController extends GetxController {
         enteredOtp.value = '';
 
         appSnackBar(
-          title: StringConstant.kSuccess,
+          title: StringConstant.kSuccess.tr,
           message:
           "${StringConstant.kTestOTP.tr} ${sendOtpModel?.value.data?.otp}",
           backgroundColor: Colors.green,

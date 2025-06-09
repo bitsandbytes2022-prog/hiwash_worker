@@ -118,7 +118,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         15.heightSizeBox,
                         Text(
-                          StringConstant.kTermsAndCondition.tr,
+                          StringConstant.kTermsAndConditions.tr,
                           style: w500_14a(color: AppColor.red),
                         ),
                         60.heightSizeBox,

@@ -10,6 +10,7 @@ import 'package:hiwash_worker/featuers/qr_scanner/view/qr_scanner.dart';
 import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
 import 'package:hiwash_worker/featuers/today_wash/view/today_wash_screen.dart';
 import 'package:hiwash_worker/generated/assets.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/styling/app_color.dart';
 import 'package:hiwash_worker/styling/app_font_anybody.dart';
 import 'package:hiwash_worker/widgets/components/image_view.dart';
@@ -50,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     NotificationScreen(),
   ];
 
-  final List<String> _headings = ["", "Rewarded Customers", "Notification’s"];
+  final List<String> _headings = ["", StringConstant.kRewardedCustomers.tr,StringConstant.kNotification.tr];
 
   void _onItemTapped(int index) {
     if (index == 3) {
@@ -194,7 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Today".tr,
+                                    StringConstant.kToday.tr,
                                     style: w700_16a(
                                       color:
                                           controller.isWashSelected.value
@@ -229,7 +230,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Wash Log".tr,
+                                    StringConstant.kWashLog.tr,
                                     style: w700_16a(
                                       color:
                                           !controller.isWashSelected.value
@@ -336,20 +337,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirm Exit",style: w700_22a(color: AppColor.c2C2A2A),),
-          content: Text("Do you really want to close the app?",style: w400_16p(),),
+          title: Text(StringConstant.kConfirmExit.tr,style: w700_22a(color: AppColor.c2C2A2A),),
+          content: Text(StringConstant.kDoYouReally.tr,style: w400_16p(),),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text("No"),
+              child: Text(StringConstant.kNo.tr),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text("Yes"),
+              child: Text(StringConstant.kYes.tr),
             ),
           ],
         );

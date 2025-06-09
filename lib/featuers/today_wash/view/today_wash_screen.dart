@@ -1,24 +1,24 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/featuers/dashboard/controller/dashboard_controller.dart';
 import 'package:hiwash_worker/featuers/dashboard/model/get_customer_data_model.dart';
-import 'package:hiwash_worker/featuers/qr_scanner/model/get_offers_by_id_model.dart';
+import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
 import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
+import 'package:hiwash_worker/featuers/today_wash/model/wash_log_model.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/route/route_strings.dart';
+import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:hiwash_worker/widgets/components/doted_vertical_line.dart';
 
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../generated/assets.dart';
-import '../../../network_manager/local_storage.dart';
-import '../../../route/routes.dart';
 import '../../../styling/app_color.dart';
 import '../../../styling/app_font_anybody.dart';
 import '../../../styling/app_font_poppins.dart';
@@ -30,11 +30,8 @@ import '../../../widgets/components/image_view.dart';
 import '../../../widgets/components/is_select_button.dart';
 import '../../../widgets/components/loader.dart';
 import '../../../widgets/components/profile_image_container.dart';
-import '../../../widgets/components/star_rating.dart';
 import '../../qr_scanner/controller/qr_controller.dart';
-import '../../qr_scanner/view/reward_qr.dart';
-import '../controller/wash_status_controller.dart';
-import '../model/wash_log_model.dart';
+
 
 class TodayWashScreen extends StatelessWidget {
   TodayWashScreen({super.key});
@@ -128,10 +125,10 @@ class TodayWashScreen extends StatelessWidget {
                                       },
                                     );
                                   } else {
-                                    Get.snackbar(
+                                    /*  Get.snackbar(
                                       "Error",
                                       "Could not fetch customer data.",
-                                    );
+                                    );*/
                                   }
                                 });
                               },
@@ -391,8 +388,6 @@ class TodayWashScreen extends StatelessWidget {
     return months[month - 1];
   }
 
-
-
   Widget servicesContainer(int index, VoidCallback onTap) {
     var customerData = controller.todayWashSummaryModel.value?.data?.washes;
     bool isCompleted = customerData![index].isCompleted == true;
@@ -461,7 +456,7 @@ class TodayWashScreen extends StatelessWidget {
                             IsSelectButton(),
                             5.widthSizeBox,
                             Text(
-                              customerData[index].offerTitle??'',
+                              customerData[index].offerTitle ?? '',
                               style: w400_10a(color: AppColor.c455A64),
                             ),
                           ],
@@ -502,7 +497,7 @@ class TodayWashScreen extends StatelessWidget {
 
   Widget newScanDialog({required Washes washData}) {
     qrController.getOffersByIdModel.value = null;
-  //  controller.todayWashSummaryModel.value=null;
+    //  controller.todayWashSummaryModel.value=null;
     return Center(
       child: Stack(
         alignment: Alignment.topCenter,
@@ -600,7 +595,7 @@ class TodayWashScreen extends StatelessWidget {
 
                                 15.heightSizeBox,
                                 subscriptionRowWidget(
-                                  title: 'Pack Name ',
+                                  title: StringConstant.kPackName.tr,
                                   packName:
                                       controller
                                           .getCustomerData
@@ -614,7 +609,7 @@ class TodayWashScreen extends StatelessWidget {
                                 DotedHorizontalLine(),
                                 10.heightSizeBox,
                                 subscriptionRowWidget(
-                                  title: 'Expiry date ',
+                                  title: StringConstant.kExpiryDate.tr,
                                   packName: formatDate(
                                     controller
                                         .getCustomerData
@@ -628,7 +623,7 @@ class TodayWashScreen extends StatelessWidget {
                                 DotedHorizontalLine(),
                                 10.heightSizeBox,
                                 subscriptionRowWidget(
-                                  title: 'Car Number',
+                                  title: StringConstant.kCarNumber.tr,
                                   packName:
                                       controller
                                           .getCustomerData
@@ -646,7 +641,7 @@ class TodayWashScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Reward",
+                                      StringConstant.kReward.tr,
                                       style: w400_12p(color: AppColor.c455A64),
                                     ),
 
@@ -668,7 +663,8 @@ class TodayWashScreen extends StatelessWidget {
                                         ? GestureDetector(
                                           onTap: () {
                                             Get.toNamed(
-                                              RouteStrings.rewardQrScreen,arguments: washData.id.toString()
+                                              RouteStrings.rewardQrScreen,
+                                              arguments: washData.id.toString(),
                                             );
                                           },
                                           child: Container(
@@ -692,7 +688,7 @@ class TodayWashScreen extends StatelessWidget {
                                                 ),
                                                 7.widthSizeBox,
                                                 Text(
-                                                  "Scan Offer",
+                                                  StringConstant.kScanOffer.tr,
                                                   style: w500_12a(
                                                     color: AppColor.c142293,
                                                   ),
@@ -768,7 +764,8 @@ class TodayWashScreen extends StatelessWidget {
                                                 //margin: EdgeInsets.symmetric(horizontal: 50),
                                                 //color: Colors.green,
                                                 decoration: BoxDecoration(
-                                                  color: AppColor.c5C6B72.withOpacity(0.1),
+                                                  color: AppColor.c5C6B72
+                                                      .withOpacity(0.1),
                                                   borderRadius:
                                                       BorderRadius.circular(15),
                                                 ),
@@ -802,30 +799,45 @@ class TodayWashScreen extends StatelessWidget {
                                                               .center,
                                                       children: [
                                                         Container(
-                                                          padding: EdgeInsets.all(15),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                15,
+                                                              ),
                                                           decoration: BoxDecoration(
-                                                            shape: BoxShape.circle,
-                                                            color: AppColor.cC31848,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            color:
+                                                                AppColor
+                                                                    .cC31848,
                                                             boxShadow: [
-                                                               BoxShadow(
-                                                                 color: AppColor.cC31848.withOpacity(0.30),
-                                                                 spreadRadius: 0,
-                                                                 blurRadius: 15,
-                                                                 offset: Offset(0, 10),
-
-                                                               )
-                                                            ]
-
+                                                              BoxShadow(
+                                                                color: AppColor
+                                                                    .cC31848
+                                                                    .withOpacity(
+                                                                      0.30,
+                                                                    ),
+                                                                spreadRadius: 0,
+                                                                blurRadius: 15,
+                                                                offset: Offset(
+                                                                  0,
+                                                                  10,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          child:ImageView(
-                                                            path: Assets.iconsIcCamera,
+                                                          child: ImageView(
+                                                            path:
+                                                                Assets
+                                                                    .iconsIcCamera,
                                                             height: 20,
                                                             width: 20,
                                                           ),
                                                         ),
                                                         5.heightSizeBox,
                                                         Text(
-                                                          "Capture Car Number Plate\nAnd Verify",
+                                                          StringConstant
+                                                              .kCaptureCarNumber
+                                                              .tr,
                                                           style: w400_12p(
                                                             color:
                                                                 AppColor
@@ -873,7 +885,7 @@ class TodayWashScreen extends StatelessWidget {
                                         elevationThumb: 2,
                                         elevationTrack: 2,
                                         child: Text(
-                                          "Swipe to Complete Wash "
+                                          StringConstant.kSwipeToCompleteWash.tr
                                               .toUpperCase(),
                                           style: TextStyle(
                                             color: AppColor.white,
@@ -883,17 +895,18 @@ class TodayWashScreen extends StatelessWidget {
                                         ),
                                         onSwipe: () async {
                                           try {
-
                                             await controller
                                                 .completeWash(
                                                   washData.id.toString(),
                                                   requireImage: true,
                                                 )
                                                 .then((value) async {
-                                                 controller.getTodayWashSummary();
-                                                 //await qrController.getOffersById(int.parse(washData.id.toString()));
-                                               // await  controller.getCustomerDataById(int.parse(washData.customerId.toString()));
-                                                 controller.pickedImage.value = null;
+                                                  controller
+                                                      .getTodayWashSummary();
+                                                  //await qrController.getOffersById(int.parse(washData.id.toString()));
+                                                  // await  controller.getCustomerDataById(int.parse(washData.customerId.toString()));
+                                                  controller.pickedImage.value =
+                                                      null;
                                                   Get.back();
                                                   Get.back();
 
@@ -905,16 +918,17 @@ class TodayWashScreen extends StatelessWidget {
                                                     ) {
                                                       return AppDialog(
                                                         color: Colors.white,
-                                                        padding: EdgeInsets.zero,
+                                                        padding:
+                                                            EdgeInsets.zero,
                                                         child: successDialog(
                                                           washDetail: washData,
                                                           offerTitle:
-                                                          qrController
-                                                              .getOffersByIdModel
-                                                              .value
-                                                              ?.offersByIList
-                                                              ?.first
-                                                              .title ??
+                                                              qrController
+                                                                  .getOffersByIdModel
+                                                                  .value
+                                                                  ?.offersByIList
+                                                                  ?.first
+                                                                  .title ??
                                                               "",
                                                         ),
                                                       );
@@ -923,15 +937,9 @@ class TodayWashScreen extends StatelessWidget {
                                                 });
                                           } catch (e) {
                                             hideLoader();
-                                            ScaffoldMessenger.of(
-                                              Get.context!,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  "Error completing wash: $e",
-                                                ),
-                                                backgroundColor: Colors.red,
-                                              ),
+                                            appSnackBar(
+                                              message:
+                                                  '${StringConstant.kErrorCompletingWash.tr}${e}',
                                             );
                                           }
                                         },
@@ -948,7 +956,7 @@ class TodayWashScreen extends StatelessWidget {
                               children: [
                                 Center(
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                    padding: EdgeInsets.symmetric(
                                       horizontal: 20,
                                     ),
                                     child: CustomSwipeButton(
@@ -961,7 +969,8 @@ class TodayWashScreen extends StatelessWidget {
                                       elevationThumb: 2,
                                       elevationTrack: 2,
                                       child: Text(
-                                        "Swipe to Complete Wash ".toUpperCase(),
+                                        "${StringConstant.kSwipeToCompleteWash.tr}"
+                                            .toUpperCase(),
                                         style: TextStyle(
                                           color: AppColor.white,
                                           fontSize: 12,
@@ -970,7 +979,7 @@ class TodayWashScreen extends StatelessWidget {
                                       ),
                                       onSwipe: () async {
                                         try {
-                                        //  Get.back();
+                                          //  Get.back();
                                           await controller
                                               .completeWash(
                                                 washData.id.toString() ?? "",
@@ -979,7 +988,13 @@ class TodayWashScreen extends StatelessWidget {
                                                 controller
                                                     .getTodayWashSummary();
 
-                                             await  controller.getCustomerDataById(int.parse(washData.customerId.toString()));
+                                                await controller
+                                                    .getCustomerDataById(
+                                                      int.parse(
+                                                        washData.customerId
+                                                            .toString(),
+                                                      ),
+                                                    );
                                                 Get.back();
                                                 showDialog(
                                                   barrierDismissible: false,
@@ -990,19 +1005,22 @@ class TodayWashScreen extends StatelessWidget {
                                                     return AppDialog(
                                                       color: Colors.transparent,
 
-                                                      padding: EdgeInsets.zero
-                                                        ,
+                                                      padding: EdgeInsets.zero,
                                                       child: successDialog(
                                                         washDetail: washData,
                                                         offerTitle:
-                                                        qrController
-                                                            .getOffersByIdModel
-                                                            .value
-                                                            ?.offersByIList
-                                                            ?.first
-                                                            .title ??
+                                                            qrController
+                                                                .getOffersByIdModel
+                                                                .value
+                                                                ?.offersByIList
+                                                                ?.first
+                                                                .title ??
                                                             "",
-                                                        getCustomer:controller.getCustomerData.value?.data
+                                                        getCustomer:
+                                                            controller
+                                                                .getCustomerData
+                                                                .value
+                                                                ?.data,
                                                       ),
                                                     );
                                                   },
@@ -1010,15 +1028,9 @@ class TodayWashScreen extends StatelessWidget {
                                               });
                                         } catch (e) {
                                           hideLoader();
-                                          ScaffoldMessenger.of(
-                                            Get.context!,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                "Error completing wash: $e",
-                                              ),
-                                              backgroundColor: Colors.red,
-                                            ),
+                                          appSnackBar(
+                                            message:
+                                                '${StringConstant.kErrorCompletingWash.tr}${e}',
                                           );
                                         }
                                       },
@@ -1069,7 +1081,7 @@ class TodayWashScreen extends StatelessWidget {
 
                     RichText(
                       text: TextSpan(
-                        text: 'Remaining Washes: ',
+                        text: StringConstant.kRemainingWash.tr,
                         style: w500_14p(color: AppColor.c2C2A2A),
                         children: <TextSpan>[
                           TextSpan(
@@ -1101,7 +1113,6 @@ class TodayWashScreen extends StatelessWidget {
     Data? getCustomer,
   }) {
     return Stack(
-
       alignment: Alignment.bottomCenter,
       children: [
         Container(
@@ -1118,7 +1129,7 @@ class TodayWashScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 16,right: 16),
+                      padding: EdgeInsets.only(left: 16, right: 16),
                       decoration: BoxDecoration(
                         color: AppColor.white,
                         borderRadius: BorderRadius.only(
@@ -1148,9 +1159,12 @@ class TodayWashScreen extends StatelessWidget {
                             ),
                           ),
                           21.heightSizeBox,
-                          Text("Wash Complete!", style: w700_22a(color: AppColor.c2C2A2A)),
                           Text(
-                            "Share your feedback and\nrate the Customer.",
+                            StringConstant.kWashComplete.tr,
+                            style: w700_22a(color: AppColor.c2C2A2A),
+                          ),
+                          Text(
+                            StringConstant.kShareYourFeedback.tr,
                             textAlign: TextAlign.center,
                             style: w400_16p(),
                           ),
@@ -1164,8 +1178,11 @@ class TodayWashScreen extends StatelessWidget {
                                   controller.update();
                                 },
                                 starBuilder:
-                                    (index, color) =>
-                                    Icon(Icons.star, color: color, size: 28),
+                                    (index, color) => Icon(
+                                      Icons.star,
+                                      color: color,
+                                      size: 28,
+                                    ),
                                 starCount: 5,
                                 starSize: 28,
                                 valueLabelVisibility: false,
@@ -1181,10 +1198,12 @@ class TodayWashScreen extends StatelessWidget {
                           TextFormField(
                             controller: controller.commentController,
                             maxLines: 3,
-                            style: w400_14p(color: AppColor.c2C2A2A.withOpacity(0.9)),
+                            style: w400_14p(
+                              color: AppColor.c2C2A2A.withOpacity(0.9),
+                            ),
                             decoration: InputDecoration(
                               fillColor: AppColor.white,
-                              hintText: "Enter your comment here...",
+                              hintText: StringConstant.kEnterYourCommentHere.tr,
                               filled: true,
                               labelStyle: w400_13a(color: AppColor.c455A64),
                               hintStyle: w400_14p(
@@ -1211,27 +1230,32 @@ class TodayWashScreen extends StatelessWidget {
                           15.heightSizeBox,
                           GestureDetector(
                             onTap: () {
-                              final comment = controller.commentController.text.trim();
-                              final ratingString = controller.userRating.toString();
+                              final comment =
+                                  controller.commentController.text.trim();
+                              final ratingString =
+                                  controller.userRating.toString();
 
                               controller
                                   .getRating(
-                                ratingString,
-                                washDetail.id.toString(),
-                                comment,
-                              )
+                                    ratingString,
+                                    washDetail.id.toString(),
+                                    comment,
+                                  )
                                   .then((value) {
-                                if (value != null) {
-                                  Get.back();
-                                  controller.getTodayWashSummary();
-                                  controller.userRating=0;
-                                  controller.commentController.clear();
-                                  controller.update();
-                                }
-                              });
+                                    if (value != null) {
+                                      Get.back();
+                                      controller.getTodayWashSummary();
+                                      controller.userRating = 0;
+                                      controller.commentController.clear();
+                                      controller.update();
+                                    }
+                                  });
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 28,
+                                vertical: 12,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppColor.c142293,
                                 borderRadius: BorderRadius.circular(100),
@@ -1243,7 +1267,10 @@ class TodayWashScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              child: Text("Submit", style: w500_14a(color: AppColor.white)),
+                              child: Text(
+                                StringConstant.kSubmit.tr,
+                                style: w500_14a(color: AppColor.white),
+                              ),
                             ),
                           ),
 
@@ -1266,7 +1293,11 @@ class TodayWashScreen extends StatelessWidget {
                         children: [
                           DotedHorizontalLine(),
                           Padding(
-                            padding: EdgeInsets.only(top: 23, left: 19, bottom: 23),
+                            padding: EdgeInsets.only(
+                              top: 23,
+                              left: 19,
+                              bottom: 23,
+                            ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -1276,15 +1307,15 @@ class TodayWashScreen extends StatelessWidget {
                                   radiusStack: 4,
 
                                   isVisibleStack:
-                                  (controller
-                                      .getCustomerData
-                                      .value
-                                      ?.data
-                                      ?.subscriptionDetails!
-                                      .isPremium ??
-                                      false)
-                                      ? true
-                                      : false,
+                                      (controller
+                                                  .getCustomerData
+                                                  .value
+                                                  ?.data
+                                                  ?.subscriptionDetails!
+                                                  .isPremium ??
+                                              false)
+                                          ? true
+                                          : false,
                                   imagePath: washDetail.profilePicUrl,
                                 ),
                                 9.widthSizeBox,
@@ -1293,32 +1324,36 @@ class TodayWashScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       controller
-                                          .getCustomerData
-                                          .value
-                                          ?.data
-                                          ?.customerDetails
-                                          ?.fullName ??
+                                              .getCustomerData
+                                              .value
+                                              ?.data
+                                              ?.customerDetails
+                                              ?.fullName ??
                                           '',
                                       style: w600_14a(color: AppColor.c2C2A2A),
                                     ),
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         IsSelectButton(),
                                         5.widthSizeBox,
                                         Text(
                                           formatDate(
                                             controller
-                                                .getCustomerData
-                                                .value
-                                                ?.data
-                                                ?.subscriptionDetails
-                                                ?.startDate ??
+                                                    .getCustomerData
+                                                    .value
+                                                    ?.data
+                                                    ?.subscriptionDetails
+                                                    ?.startDate ??
                                                 '',
                                           ),
-                                          style: w400_12a(color: AppColor.c455A64),
+                                          style: w400_12a(
+                                            color: AppColor.c455A64,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -1327,14 +1362,18 @@ class TodayWashScreen extends StatelessWidget {
                                       child: DotedVerticalLine(height: 15),
                                     ),
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         IsSelectButton(),
                                         5.widthSizeBox,
                                         Text(
                                           offerTitle ?? '',
-                                          style: w400_12a(color: AppColor.c455A64),
+                                          style: w400_12a(
+                                            color: AppColor.c455A64,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -1346,7 +1385,6 @@ class TodayWashScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -1354,67 +1392,47 @@ class TodayWashScreen extends StatelessWidget {
           ),
         ),
 
-        controller.getCustomerData.value?.data?.subscriptionDetails?.subscriptionId==1?
-        Positioned(
-          bottom: 0,
-          left: 20,
-          right: 20,
-          child: Container(
-            padding: EdgeInsets.only(top: 20),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Image.asset(Assets.imagesDialogBottom),
-                RichText(
-                  text: TextSpan(
-                    text: 'Remaining Washes: ',
-                    style: w500_14p(color: AppColor.c2C2A2A),
-                    children:[
-                      TextSpan(text: controller.getCustomerData.value?.data?.subscriptionDetails?.remainingWashes.toString(),
-                          style: w400_16p(color: AppColor.cC31848)
+        controller
+                    .getCustomerData
+                    .value
+                    ?.data
+                    ?.subscriptionDetails
+                    ?.subscriptionId ==
+                1
+            ? Positioned(
+              bottom: 0,
+              left: 20,
+              right: 20,
+              child: Container(
+                padding: EdgeInsets.only(top: 20),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset(Assets.imagesDialogBottom),
+                    RichText(
+                      text: TextSpan(
+                        text: StringConstant.kRemainingWash.tr,
+                        style: w500_14p(color: AppColor.c2C2A2A),
+                        children: [
+                          TextSpan(
+                            text:
+                                controller
+                                    .getCustomerData
+                                    .value
+                                    ?.data
+                                    ?.subscriptionDetails
+                                    ?.remainingWashes
+                                    .toString(),
+                            style: w400_16p(color: AppColor.cC31848),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-
-              ],
-            ),
-          ),
-        ):SizedBox(),
-      ],
-    );
-  }
-
-
-
-  Widget dayWashRow(WashLogData log) {
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 14),
-          padding: EdgeInsets.symmetric(vertical: 15),
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.c142293.withOpacity(0.15),
-                blurRadius: 10,
               ),
-            ],
-          ),
-          child: washLogRow(log: log),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: AppColor.c142293.withOpacity(0.10)),
-          ),
-          child: Text(formatDate(log.redeemedAt), style: w500_10p()),
-        ),
+            )
+            : SizedBox(),
       ],
     );
   }
@@ -1507,7 +1525,7 @@ class TodayWashScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(bottom: 15),
                       child: Text(
-                        "Today Washes",
+                        StringConstant.kTodayWashes.tr,
                         style: w500_16p(color: AppColor.white.withOpacity(0.7)),
                       ),
                     ),
@@ -1539,7 +1557,7 @@ class TodayWashScreen extends StatelessWidget {
                             style: w500_24a(color: AppColor.white),
                           ),
                           Text(
-                            "Complete",
+                            StringConstant.kComplete.tr,
                             style: w500_12p(
                               color: AppColor.white.withOpacity(0.7),
                             ),
@@ -1557,11 +1575,12 @@ class TodayWashScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 19, bottom: 10),
                       child: Column(
                         children: [
-                          Text(remainingWashText ?? "".tr,
+                          Text(
+                            remainingWashText ?? "".tr,
                             style: w500_24a(color: AppColor.white),
                           ),
                           Text(
-                            "kRemaining".tr,
+                            StringConstant.kRemaining.tr,
                             style: w500_12p(
                               color: AppColor.white.withOpacity(0.7),
                             ),

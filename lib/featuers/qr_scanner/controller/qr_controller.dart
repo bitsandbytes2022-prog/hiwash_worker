@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/featuers/today_wash/controller/wash_status_controller.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -67,10 +68,11 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     if (!status.isGranted) {
       var result = await Permission.camera.request();
       if (!result.isGranted) {
-        Get.snackbar(
-          "Permission Denied",
-          "Camera permission is required to scan QR codes.",
+        appSnackBar(
+          title: StringConstant.kPermissionDenied.tr,
+          message: StringConstant.kCameraPermissionRequired.tr
         );
+
       }
     }
   }
@@ -196,109 +198,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  /*  void onQRViewCreated(QRViewController controller) {
-    qrController = controller;
-
-    controller.scannedDataStream.listen((scanData) async {
-      if (!hasScanned.value) {
-        final scannedCode = scanData.code ?? '';
-        print("Scanned QR Code: $scannedCode");
-
-        scanUrl.value = scannedCode;
-        hasScanned.value = true;
-        animationController.stop();
-        controller.pauseCamera();
-
-        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
-          try {
-            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
-            String id = decodedToken['CustomerId'];
-            customerId.value = id;
-
-            await validateWashQr(id);
-
-            clearScan();
-            await washStatusController.getTodayWashSummary();
-            Get.back();
-                    } catch (e) {
-            appSnackBar(
-                duration: Duration(seconds: 3),
-                message: "Failed to decode JWT: $e"
-            );
-            print("QR error----->$e");
-          }
-        } else {
-          print("Invalid QR Scanned code is not a valid JWT");
-          appSnackBar(
-              message: "Something went wrong, try again"
-          );
-        }
-      }
-    });
-  }
-
-  Future<dynamic> validateWashQr(String customerId) async {
-    Map<String, dynamic> requestBody = {"customerId": customerId};
-    try {
-      isLoading.value = true;
-      var response= await Repository().validateWashQrRepo(requestBody);
-      return response;
-    } catch (e) {
-      print("Error in validateWashQr: $e");
-      return null;
-    } finally {
-      isLoading.value = false;
-    }
-  }*/
-
-  /*
-  void onQRViewCreated(QRViewController controller) {
-    qrController = controller;
-
-    controller.scannedDataStream.listen((scanData) async {
-      if (!hasScanned.value) {
-        final scannedCode = scanData.code ?? '';
-        print("Scanned QR Code: $scannedCode");
-
-        scanUrl.value = scannedCode;
-        hasScanned.value = true;
-        animationController.stop();
-        controller.pauseCamera();
-
-        if (scannedCode.isNotEmpty && scannedCode.split('.').length == 3) {
-          try {
-            Map<String, dynamic> decodedToken = JwtDecoder.decode(scannedCode);
-            String id = decodedToken['CustomerId'];
-            customerId.value = id;
-            if(validateWashQr=!null){
-              await validateWashQr(id);
-              clearScan();
-              await washStatusController.getTodayWashSummary();
-              Get.back();
-            }else{
-              await Future.delayed(Duration(seconds: 1));
-              Get.back();
-            }
-
-          } catch (e) {
-            appSnackBar(
-              duration: Duration(seconds: 3),
-                message: "Failed to decode JWT: $e"
-            );
-            print("QR error----->$e");
-           // Get.snackbar("Error", "Failed to decode JWT: $e");
-          }
-        } else {
-          print("Invalid QR Scanned code is not a valid JWT");
-          appSnackBar(
-            message: "Something went wrong try again"
-          );
-        }
-      }
-    });
-  }
-
-*/
   Future<dynamic> validateOfferQr(
     String customerId,
     String offerId,

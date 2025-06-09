@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
@@ -48,7 +49,7 @@ class AppHomeBg extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColor.cF6F7FF,
         key: _scaffoldKey,
-        drawer: Drawer(
+      /*  drawer: Drawer(
           backgroundColor: AppColor.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,7 +141,7 @@ class AppHomeBg extends StatelessWidget {
               ),
             ],
           ),
-        ),
+        ),*/
         body: Column(
           children: [
             Stack(
@@ -233,7 +234,7 @@ class AppHomeBg extends StatelessWidget {
               children: [
                 ImageView(path: image, height: 20, width: 20),
                 10.widthSizeBox,
-                Text(title, style: w500_14a(color: AppColor.c2C2A2A)),
+                Text(title.tr, style: w500_14a(color: AppColor.c2C2A2A)),
                 Spacer(),
                 ImageView(
                   path: Assets.iconsBlackForwardArrow,

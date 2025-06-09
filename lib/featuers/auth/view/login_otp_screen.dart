@@ -52,7 +52,10 @@ class LoginOtpScreen extends StatelessWidget {
         child: Column(
           children: [
             110.heightSizeBox,
-            Text(StringConstant.kVerifyPhone.tr, style: w700_22a(color: AppColor.c2C2A2A)),
+            Text(
+              StringConstant.kVerifyPhone.tr,
+              style: w700_22a(color: AppColor.c2C2A2A),
+            ),
             14.heightSizeBox,
             RichText(
               text: TextSpan(
@@ -97,7 +100,10 @@ class LoginOtpScreen extends StatelessWidget {
               return Text(formatted, style: w400_12p(color: AppColor.red));
             }),
             52.heightSizeBox,
-            Text(StringConstant.kDidGetOTPCode.tr, style: w400_12p(color: AppColor.c455A64)),
+            Text(
+              StringConstant.kDidGetOTPCode.tr,
+              style: w400_12p(color: AppColor.c455A64),
+            ),
             5.heightSizeBox,
 
             Obx(() {

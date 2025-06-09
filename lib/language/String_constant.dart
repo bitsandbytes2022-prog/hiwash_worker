@@ -46,22 +46,7 @@ class StringConstant {
   static const kPhoneNumberCannotBeEmpty = "kPhoneNumberCannotBeEmpty";
   static const kTestOTP = "kTestOTP";
 
-  /// Sign up screen
 
-  static const kHello = "Hello,";
-
-  static const kSignUps = "kSignUp";
-  static const kName = "kName";
-  static const kConfirmPassword = "kConfirmPassword";
-  static const signUp = "signUp";
-  static const kZone = "kZone";
-  static const kStreet = "kStreet";
-  static const kBuilding = "kBuilding";
-  static const kUnit = "kUnit";
-  static const kEnterYourFullName = "kEnterYourFullName";
-  static const kEnterYourEmail = "kEnterYourEmail";
-  static const kEnterPhoneNumber = "kEnterPhoneNumber";
-  static const kHaveAnAccount = "kHaveAnAccount";
 
   /// Otp screen
   static const kAuthentication = "kAuthentication";
@@ -77,30 +62,7 @@ class StringConstant {
   static const kPleaseEnterTheCorrectOTP = "kPleaseEnterTheCorrectOTP";
   static const kEnterValidOTP = "kEnterValidOTP";
 
-  /// Wash location screen
-  static const kYourCurrentLocation = "kYourCurrentLocation";
-  static const kFetchingLocation = "kFetchingLocation";
-  static const kNoNearbyLocationsFound = "kNoNearbyLocationsFound";
-  static const kTotalWashes = "kTotalWashes";
-  static const kRemaining = "kRemaining";
-  static const kCompleteWash = "kCompleteWash";
-  static const kWashComplete = "kWashComplete";
-  static const kShareYourFeedback = "kShareYourFeedback";
-  static const kEnterYourCommentHere = "kEnterYourCommentHere";
-  static const kSubmit = "kSubmit";
-  static const kLocationServicesAreDisabled = "kLocationServicesAreDisabled";
-  static const kLocationPermissionDenied = "kLocationPermissionDenied";
-  static const kLocationPermissionPermanentlyDenied =
-      "kLocationPermissionPermanentlyDenied";
-  static const kCouldNotRetrieveAddressDetails =
-      "kCouldNotRetrieveAddressDetails";
-  static const kLocationNotAvailable = "kLocationNotAvailable";
-  static const kImageNotAvailable = "kImageNotAvailable";
-  static const kInvalidImage = "kInvalidImage";
-  static const kCheckNow = "kCheckNow";
-  static const kCongratulations = "kCongratulations";
-  static const kYourRewardHasBeenSuccessfullyRedeemed =
-      "kYourRewardHasBeenSuccessfullyRedeemed";
+
 
   /// Reward screen
   static const kSortByExpiry = "kSortByExpiry";
@@ -150,6 +112,10 @@ class StringConstant {
   static const kDoYouReally = "kDoYouReally";
   static const kNo = "kNo";
   static const kYes = "kYes";
+  static const kRewardedCustomers = "kRewardedCustomers";
+  static const kToday = "kToday";
+  static const kWashLog = "kWashLog";
+
 
   /// notification screen
   static const kProvisionalPermissionGranted = "kProvisionalPermissionGranted";
@@ -162,6 +128,7 @@ class StringConstant {
   static const kNoNotificationFound = "kNoNotificationFound";
   static const kYour = "kYour";
   static const kPackHasBeenOverdueSince = "kPackHasBeenOverdueSince";
+  static const UserGrantedPermission = "UserGrantedPermission";
 
   /// Profile screens
   static const kSuccess = "kSuccess";
@@ -195,17 +162,32 @@ class StringConstant {
       "kYouCanRenewYourSubscriptionOnlyWithin7DaysOfExpiry";
   static const kRenewNow = "kRenewNow";
   static const kNoPlanSelected = "kNoPlanSelected";
+  static const kEmployeeIDNO = "kEmployeeIDNO";
+  static const kName = "kName";
+  static const kAddress = "kAddress";
+  static const kPermissionDenied = "kPermissionDenied";
+  static const kCameraPermissionRequired = "kCameraPermissionRequired";
+  static const kClear = "kClear";
+  static const kScanAQRCode = "kScanAQRCode";
+  static const kCustomerID = "kCustomerID";
+  static const kRewardID = "kRewardID";
+  static const kRewardScreen = "kRewardScreen";
+  static const kPleaseCaptureAnImage = "kPleaseCaptureAnImage";
 
-  /// Subscription screen
-  static const kFullAccessSubscription = "kFullAccessSubscription";
-  static const kMissingSubscription = "kMissingSubscription";
-  static const k100locations = "k100locations";
-  static const kUnlock = "kUnlock";
-  static const kExclusiveOffers = "kExclusiveOffers";
-  static const kSubscribeNow = "kSubscribeNow";
-  static const kPleaseEnterYourCarNumber = "kPleaseEnterYourCarNumber";
-  static const kViewAllOffers = "kViewAllOffers";
-  static const kKm = "kKm";
+  /// Today screen
+  static const kReward = "kReward";
+  static const kScanOffer = "kScanOffer";
+  static const kCaptureCarNumber = "kCaptureCarNumber";
+  static const kSwipeToCompleteWash = "kSwipeToCompleteWash";
+  static const kErrorCompletingWash = "kErrorCompletingWash";
+  static const kWashComplete = "kWashComplete";
+  static const kShareYourFeedback = "kShareYourFeedback";
+  static const kEnterYourCommentHere = "kEnterYourCommentHere";
+  static const kSubmit = "kSubmit";
+  static const kTodayWashes = "kTodayWashes";
+  static const kComplete = "kComplete";
+  static const kRemaining = "kRemaining";
+
 
   ///
   static const kRemainingWashes = "kRemainingWashes";

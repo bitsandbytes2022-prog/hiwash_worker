@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
+import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../generated/assets.dart';
@@ -28,7 +30,7 @@ class MyAccountScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            "Select Image Source",
+            StringConstant.kSelectImageSource.tr,
             style: w500_20a(color: AppColor.c2C2A2A),
           ),
           content: Column(
@@ -36,28 +38,8 @@ class MyAccountScreen extends StatelessWidget {
             children: [
               ListTile(
                 leading: Icon(Icons.camera),
-                title: Text("Camera", style: w400_14p()),
-                /*  onTap: () async {
-                  Get.back();
-                  await drawerProfileController.imagePicker(
-                    source: ImageSource.camera,
-                  );
-                  if (drawerProfileController.imageFile.value != null) {
+                title: Text(StringConstant.kCamera.tr, style: w400_14p()),
 
-                    await drawerProfileController.uploadProfileImage();
-
-                    await Future.delayed(Duration(seconds: 1));
-                    await dashboardController.getWorkerDataById(
-                      dashboardController
-                              .getWorkerModel
-                              .value
-                              ?.data
-                              ?.first
-                              .id ??
-                          0,
-                    );
-                  }
-                },*/
                 onTap: () async {
                   try {
                     Get.back();
@@ -71,19 +53,16 @@ class MyAccountScreen extends StatelessWidget {
                     }
                   } catch (e, stackTrace) {
                     debugPrint("Camera capture error: $e\n$stackTrace");
-                    Get.snackbar(
-                      'Camera Error',
-                      'Something went wrong when capturing image.',
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                    );
+                appSnackBar(
+                  message: StringConstant.kSomethingWentWrong.tr
+                );
                   }
                 },
 
               ),
               ListTile(
                 leading: Icon(Icons.photo),
-                title: Text("Gallery", style: w400_14p()),
+                title: Text(StringConstant.kGallery.tr, style: w400_14p()),
                 onTap: () async {
                   Get.back();
                   await drawerProfileController.imagePicker(
@@ -121,7 +100,7 @@ class MyAccountScreen extends StatelessWidget {
     drawerProfileController.addressController.text = userData?.address ?? '';
 
     return AppHomeBg(
-      headingText: "My Account",
+      headingText: StringConstant.kMyAccount.tr,
       iconRight: SizedBox(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -252,7 +231,7 @@ class MyAccountScreen extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'Employee ID NO: ',
+                      text: StringConstant.kEmployeeIDNO.tr,
                       style: w400_12p(color: AppColor.c455A64),
                     ),
                     TextSpan(
@@ -272,11 +251,11 @@ class MyAccountScreen extends StatelessWidget {
                     RegExp(r"[a-zA-Z0-9 .,@#&/\-':()+=]"),
                   ),
                 ],
-                hintText: "Name",
-                labelText: "Name",
+                hintText: StringConstant.kName.tr,
+                labelText: StringConstant.kName.tr,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your name';
+                    return StringConstant.kPleaseEnterYourName.tr;
                   }
                   return null;
                 },
@@ -286,11 +265,11 @@ class MyAccountScreen extends StatelessWidget {
                 readOnly: true,
                 controller: drawerProfileController.emailController,
                 keyboardType: TextInputType.emailAddress,
-                hintText: "Email",
-                labelText: "Email",
+                hintText: StringConstant.kEmail.tr,
+                labelText: StringConstant.kEmail.tr,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your email';
+                    return StringConstant.kPleaseEnterYourEmail.tr;
                   }
                   return null;
                 },
@@ -310,8 +289,8 @@ class MyAccountScreen extends StatelessWidget {
                         ),
                         decoration: InputDecoration(
                           fillColor: AppColor.cF6F7FF,
-                          hintText: "Address",
-                          labelText: "Address",
+                          hintText: StringConstant.kAddress.tr,
+                          labelText: StringConstant.kAddress.tr,
                           filled: true,
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelStyle: w400_13a(color: AppColor.c455A64),
@@ -378,7 +357,7 @@ class MyAccountScreen extends StatelessWidget {
               Obx(() {
                 return HiWashButton(
                   isLoading: drawerProfileController.isLoading.value,
-                  text: 'Save',
+                  text: StringConstant.kSave.tr,
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
                       await drawerProfileController.uploadProfile(
@@ -397,12 +376,12 @@ class MyAccountScreen extends StatelessWidget {
                             0,
                       );
                     } else {
-                      Get.snackbar(
+                    /*  Get.snackbar(
                         'Invalid Input',
                         'Please fix the errors in the form',
                         backgroundColor: Colors.red,
                         colorText: Colors.white,
-                      );
+                      );*/
                     }
                   },
                 );

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hiwash_worker/featuers/dashboard/view/widget/second_drawer/second_drawer_controller/second_drawer_controller.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 
 import 'package:hiwash_worker/widgets/components/app_home_bg.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
@@ -26,7 +27,7 @@ class StepByStepGuideScreen extends StatelessWidget {
 
     return AppHomeBg(
         padding: EdgeInsets.zero,
-        headingText: "Step-by-Step Guide",
+        headingText: StringConstant.kStepByStepGuide.tr,
         iconRight: SizedBox(),
         child: Column(
           children: [
@@ -77,7 +78,7 @@ class StepByStepGuideScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              Text(title, style: w500_14p(color: AppColor.c2C2A2A),),
+              Text(title.tr, style: w500_14p(color: AppColor.c2C2A2A),),
               ImageView(
 
                 path: Assets.iconsBlackForwardArrow,
