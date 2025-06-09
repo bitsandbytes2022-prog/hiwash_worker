@@ -5,17 +5,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 
 import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
 import '../../../route/route_strings.dart';
-import '../../../styling/app_color.dart';
+import '../../../widgets/components/app_snack_bar.dart';
 import '../model/get_token_model.dart';
 import '../model/send_otp_model.dart';
 import '../model/sign_up_model.dart';
 
 class AuthController extends GetxController {
   var isLoggedIn = false.obs;
+
+  var isLoading = false.obs;
+  var enteredOtp = ''.obs;
+  var secondsRemaining = 30.obs;
+  Timer? _timer;
 
   @override
   void onInit() {
@@ -41,7 +47,6 @@ class AuthController extends GetxController {
 
   /// Welcome screen
   final PageController pageController = PageController();
-
   var currentPage = 0.obs;
 
   void onPageChanged(int index) {
@@ -61,19 +66,15 @@ class AuthController extends GetxController {
     if (value != null && value.isNotEmpty) {
       value = value.trim();
       if (!RegExp(r'^\d{8,15}$').hasMatch(value)) {
-        return "Please Enter Valid Phone Number";
+        return StringConstant.kPLeaseEnterValid.tr;
       }
     } else {
-      return "Phone number cannot be empty";
+      return StringConstant.kPhoneNumberCannotBeEmpty.tr;
     }
     return null;
   }
 
 
-  var isLoading = false.obs;
-  var enteredOtp = ''.obs;
-  var secondsRemaining = 30.obs;
-  Timer? _timer;
 
   void startTimer() {
     secondsRemaining.value = 30;
@@ -90,11 +91,6 @@ class AuthController extends GetxController {
   void resetTimer() {
     startTimer();
   }
-  @override
-  void onClose() {
-    _timer?.cancel();
-    super.onClose();
-  }
 
   void checkLoginStatus() {
     String? token = LocalStorage().getToken();
@@ -106,7 +102,7 @@ class AuthController extends GetxController {
       print("User not logged in ");
     }
   }
-  SendOtpModel? sendOtpModel;
+  Rx<SendOtpModel> sendOtpModel = SendOtpModel().obs;
   Future<SendOtpModel?> sendOtp(String phoneNumber) async {
     Map<String, dynamic> requestBody = {
       "mobileNumber": phoneNumber,
@@ -119,21 +115,21 @@ class AuthController extends GetxController {
       final result = await Repository().sendOtpRepo(requestBody);
 
       if (result != null) {
-        sendOtpModel = result;
+        sendOtpModel.value = result;
         enteredOtp.value = '';
 
-        Get.snackbar(
-          'Success',
-          " TEST OTP: ${sendOtpModel?.data?.otp.toString()}",
-          snackPosition: SnackPosition.TOP,
+        appSnackBar(
+          title: StringConstant.kSuccess,
+          message:
+          "${StringConstant.kTestOTP.tr} ${sendOtpModel?.value.data?.otp}",
           backgroundColor: Colors.green,
-          colorText: AppColor.white,
         );
 
-        print("OTP received: ${sendOtpModel?.data?.otp}");
+
+        print("OTP received: ${sendOtpModel.value.data?.otp}");
       }
 
-      return sendOtpModel;
+      return sendOtpModel.value;
     } catch (e) {
       print("Error in sendOtp: $e");
       return null;
@@ -225,6 +221,11 @@ class AuthController extends GetxController {
     await LocalStorage().removeToken();
     isLoggedIn.value = false;
     Get.offAllNamed(RouteStrings.welcomeScreen);
+  }
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 
 }

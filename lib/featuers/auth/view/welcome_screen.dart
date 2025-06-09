@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/styling/app_font_poppins.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -50,20 +51,21 @@ class WelcomeScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Elite car wash service",
+                                     StringConstant.kEliteCarWash.tr,
                                       style: w700_22a(color: AppColor.c2C2A2A),
                                     ),
                                     15.heightSizeBox,
 
 
                                     Text(
-                                      "Earn more, get rewards, and enjoy\nexclusive worker benefits!",
+                                      StringConstant.kEarnMoreGetRewardsAndEnjoyExclusiveWorkerBenefits.tr,
                                       textAlign: TextAlign.center,
                                       style: w400_16p(color: AppColor.c455A64),
                                     ),
                                   ],
                                 );
-                              } /*else if (index == 1) {
+                              }
+                              /*else if (index == 1) {
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +87,8 @@ class WelcomeScreen extends StatelessWidget {
                                     ),
                                   ],
                                 );
-                              }*/ else {
+                              }*/
+                              else {
                                 return Container();
                               }
                             },
@@ -108,14 +111,14 @@ class WelcomeScreen extends StatelessWidget {
 
                         GetStartButton(
                           width: 193,
-                          text: "kGetStarted".tr,
+                          text: StringConstant.kGetStarted.tr,
                           onTap: () {
                             Get.toNamed(RouteStrings.loginScreen);
                           },
                         ),
                         15.heightSizeBox,
                         Text(
-                          "kTermsAndConditions".tr,
+                          StringConstant.kTermsAndCondition.tr,
                           style: w500_14a(color: AppColor.red),
                         ),
                         60.heightSizeBox,

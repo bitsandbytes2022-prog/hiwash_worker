@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:pinput/pinput.dart';
 
@@ -8,17 +9,17 @@ import '../../../styling/app_color.dart';
 import '../../../styling/app_font_anybody.dart';
 import '../../../styling/app_font_poppins.dart';
 import '../../../widgets/components/app_bg.dart';
+import '../../../widgets/components/app_snack_bar.dart';
 import '../../../widgets/components/hi_wash_button.dart';
 import '../auth_controller/auth_controller.dart';
-
 
 class LoginOtpScreen extends StatelessWidget {
   LoginOtpScreen({super.key});
 
   final AuthController controller =
-  Get.isRegistered<AuthController>()
-      ? Get.find<AuthController>()
-      : Get.put(AuthController());
+      Get.isRegistered<AuthController>()
+          ? Get.find<AuthController>()
+          : Get.put(AuthController());
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -46,18 +47,18 @@ class LoginOtpScreen extends StatelessWidget {
 
     return Scaffold(
       body: AppBg(
-        headingText: "kAuthentication".tr,
-        subText: "kOTP".tr,
+        headingText: StringConstant.kAuthentication.tr,
+        subText: StringConstant.kOTP.tr,
         child: Column(
           children: [
             110.heightSizeBox,
-            Text("kVerifyPhone".tr, style: w700_22a(color: AppColor.c2C2A2A)),
+            Text(StringConstant.kVerifyPhone.tr, style: w700_22a(color: AppColor.c2C2A2A)),
             14.heightSizeBox,
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: "kCodeHasBeenSentTo".tr,
+                    text: StringConstant.kCodeHasBeenSentTo.tr,
                     style: w400_12p(color: AppColor.c455A64),
                   ),
                   TextSpan(
@@ -96,7 +97,7 @@ class LoginOtpScreen extends StatelessWidget {
               return Text(formatted, style: w400_12p(color: AppColor.red));
             }),
             52.heightSizeBox,
-            Text("kDidGetOTPCode".tr, style: w400_12p(color: AppColor.c455A64)),
+            Text(StringConstant.kDidGetOTPCode.tr, style: w400_12p(color: AppColor.c455A64)),
             5.heightSizeBox,
 
             Obx(() {
@@ -104,14 +105,15 @@ class LoginOtpScreen extends StatelessWidget {
               final isActive = seconds == 0;
 
               return GestureDetector(
-                onTap: isActive
-                    ? () {
-                  controller.sendOtp(phoneNumber);
-                  controller.resetTimer();
-                }
-                    : null,
+                onTap:
+                    isActive
+                        ? () {
+                          controller.sendOtp(phoneNumber);
+                          controller.resetTimer();
+                        }
+                        : null,
                 child: Text(
-                  "resendCode".tr,
+                  StringConstant.kResendCode.tr,
                   style: w400_12p(
                     color: isActive ? AppColor.red : AppColor.c5C6B72,
                   ),
@@ -120,115 +122,38 @@ class LoginOtpScreen extends StatelessWidget {
             }),
             26.heightSizeBox,
             Obx(
-                  () => HiWashButton(
-                    isLoading: controller.isLoading.value,
-                    text: "kVerify".tr,
-                    onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        final enteredOtp = controller.enteredOtp.value.trim();
-                        final serverOtp = controller.sendOtpModel?.data?.otp?.toString();
-
-                        // Debug logs
-                        print("Entered OTP: $enteredOtp (${enteredOtp.runtimeType})");
-                        print("Server OTP: $serverOtp (${serverOtp.runtimeType})");
-
-                        if (enteredOtp == serverOtp) {
-                          controller.getToken(phoneNumber).then((value) {
-                            if (value != null) {
-                              Get.offAllNamed(RouteStrings.dashboardScreen);
-                            }
-                          });
-                        } else {
-                          Get.snackbar(
-                            "Invalid OTP",
-                            "Please enter the correct OTP",
-                            backgroundColor: Colors.red.withOpacity(0.9),
-                            colorText: Colors.white,
-                            snackPosition: SnackPosition.TOP,
-                            margin: const EdgeInsets.all(16),
-                            borderRadius: 10,
-                          );
-                        }
-                      }
-                    },
-                  )
-
-              /*HiWashButton(
+              () => HiWashButton(
                 isLoading: controller.isLoading.value,
-                text: "kVerify".tr,
+                text: StringConstant.kVerify.tr,
                 onTap: () {
                   if (formKey.currentState!.validate()) {
-                    if (controller.enteredOtp.value.trim() == controller.sendOtpModel?.data?.otp.toString()) {
-                      print("otp---->${controller.enteredOtp.value}---${controller.sendOtpModel?.data?.otp}");
+                    final enteredOtp = controller.enteredOtp.value.trim();
+                    final serverOtp =
+                        controller.sendOtpModel.value.data?.otp?.toString();
 
+                    // Debug logs
+                    print(
+                      "Entered OTP: $enteredOtp (${enteredOtp.runtimeType})",
+                    );
+                    print("Server OTP: $serverOtp (${serverOtp.runtimeType})");
+
+                    if (enteredOtp == serverOtp) {
                       controller.getToken(phoneNumber).then((value) {
                         if (value != null) {
-                          Get.offAllNamed(
-                            RouteStrings.dashboardScreen,
-                          );
+                          Get.offAllNamed(RouteStrings.dashboardScreen);
                         }
                       });
                     } else {
-                      print("Else_otp---->${controller.enteredOtp.value}---${controller.sendOtpModel?.data?.otp}");
-                      Get.snackbar(
-                        "Invalid OTP",
-                        "Please enter the correct OTP",
-                        backgroundColor: Colors.red.withOpacity(0.9),
-                        colorText: Colors.white,
-                        snackPosition: SnackPosition.TOP,
-                        margin: const EdgeInsets.all(16),
-                        borderRadius: 10,
+                      appSnackBar(
+                        title: StringConstant.kInvalidOTP.tr,
+                        message: StringConstant.kPleaseEnterTheCorrectOTP.tr,
                       );
                     }
                   }
                 },
-              ),*/
-            ),
-           /* Obx(
-                  () => HiWashButton(
-                  isLoading: controller.isLoading.value,
-                  text: "kVerify".tr,
-                  onTap: () {
-                    if (formKey.currentState!.validate()) {
-                      if (controller.enteredOtp.value != controller.sendOtpModel?.data?.otp) {
-                        print("otp---->${controller.enteredOtp.value}---${controller.sendOtpModel?.data?.otp}");
-                        Get.snackbar(
-                          "Invalid OTP",
-                          "Please enter the correct OTP",
-                          backgroundColor: Colors.red.withOpacity(0.9),
-                          colorText: Colors.white,
-                          snackPosition: SnackPosition.TOP,
-                          margin: const EdgeInsets.all(16),
-                          borderRadius: 10,
-                        );
-                        return;
-                      }
-                      controller.getToken(phoneNumber).then((value) {
-                        if (value != null) {
-                          Get.offAllNamed(
-                            RouteStrings.dashboardScreen,
-                            *//*  arguments: controller.getTokenModel?.data?.id,*//*
-                          );
-                        }
-                      });
-                    }
-                  }
-
-                *//* onTap: () {
-                  if (formKey.currentState!.validate()) {
-                    controller.getToken(phoneNumber).then((value) {
-                      if (value != null) {
-                        Get.offNamed(
-                          RouteStrings.dashboardScreen,
-                          arguments: controller.getTokenModel?.data?.id,
-                        );
-                      }
-                    });
-                  }
-                },*//*
               ),
             ),
-*/
+
             30.heightSizeBox,
           ],
         ),
@@ -236,5 +161,3 @@ class LoginOtpScreen extends StatelessWidget {
     );
   }
 }
-
-

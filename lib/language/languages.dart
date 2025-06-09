@@ -5,21 +5,21 @@ class Languages extends Translations {
   // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
     'en_US': {
-"kDemoText":"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       "kWelcomeToThe": "Welcome to the",
       "kHiWASH":"HI WASH",
       "kWeComeToYouTo":"We come to you to\nwash your car...!!",
 
       ///  welcome screen
-      "kEcoCleanWalletGreen": "Eco Clean, Wallet Green!",
-      "kExclusiveDealsWithEvery":
-          "Exclusive Deals with Every Shine Free\nCoupons, BOGO Offers, Discounts & Special Perks!",
+      "kEliteCarWash":  "Elite car wash service",
+      "kEarnMoreGetRewardsAndEnjoyExclusiveWorkerBenefits":"Earn more, get rewards, and enjoy\nexclusive worker benefits!",
       "kGetStarted": "Get Started",
       "kSkip": "Skip",
       "kTermsAndConditions": "Terms & Conditions",
       "kWashWin": "Wash & Win!",
       "kGetYourCarWashed":
           "Get your car washed weekly at 100+ locations with exclusive offers.Missed washes still deducted.",
+      "kMissedWashesStillDeducted": "Missed washes still deducted.",
+      "kLetMakeEvery":"Let's Make Every Car Shine!",
 
       ///  Login screen
       "kLogin": "Log In!",
@@ -31,6 +31,10 @@ class Languages extends Translations {
       "kDontAaveAccount": "Don’t have account? ",
       "SIGNUP": "SIGN UP",
       "kOR": "OR",
+      "kPLeaseEnterValid":"Please Enter A Valid Email",
+      "kPhoneNumberCannotBeEmpty":"Phone number cannot be empty",
+
+
 
       /// SIgn up screen
       "kHello": "Hello,",

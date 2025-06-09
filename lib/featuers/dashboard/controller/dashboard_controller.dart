@@ -16,7 +16,6 @@ class DashboardController extends GetxController {
 
   final String? userId = LocalStorage().getUserId();
 
-  //final String?customerId=LocalStorage().getCustomerId();
 
   @override
   void onInit() {
@@ -49,30 +48,5 @@ class DashboardController extends GetxController {
 
   var isLoading = false.obs;
 
-  /*
-  Future<ApiResponse?> getRating(
-    String rating,
-    String workerId,
-    String locationId,
-    String comment,
-  ) async {
-    Map params = {
-      "rating": rating,
-      "workerId": workerId,
-      "locationId": locationId,
-      "comment": comment,
-    };
-    try {
-      print("Rating body--->: $params");
-      //  loading.value = true;
-      apiResponse.value = await Repository().rating(params);
-      return apiResponse.value;
-    } catch (e) {
-      print("Error in controller: $e");
-      return null;
-    } finally {
-      // loading.value = false;
-    }
 
-  }*/
 }

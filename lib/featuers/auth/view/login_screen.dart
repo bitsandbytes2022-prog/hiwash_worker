@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
@@ -27,8 +28,8 @@ class LoginScreen extends StatelessWidget {
     final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: AppBg(
-        headingText: "kWelcomeBack".tr,
-        subText: "kLogin".tr,
+        headingText: StringConstant.kWelcomeBack.tr,
+        subText: StringConstant.kLogin.tr,
 
         showBackButton: true,
         child: Form(
@@ -43,33 +44,19 @@ class LoginScreen extends StatelessWidget {
                 controller: controller.loginPhoneController,
                 keyboardType: TextInputType.phone,
 
-                hintText: "Phone".tr,
-                labelText: "Phone".tr,
+                hintText: StringConstant.kPhone.tr,
+                labelText: StringConstant.kPhone.tr,
 
                 validator: (value) {
                   return controller.validatePhoneNumberLogin(value);
                 },
               ),
-              /*     12.heightSizeBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(RouteStrings.forgotPasswordScreen);
-                    },
-                    child: Text(
-                      "kForgotPassword".tr,
-                      style: w500_14a(color: AppColor.red),
-                    ),
-                  ),
-                ],
-              ),*/
+
               104.heightSizeBox,
               Obx(() {
                 return HiWashButton(
                   isLoading: controller.isLoading.value,
-                  text: "kLogIn".tr,
+                  text: StringConstant.kLogIn.tr,
                   onTap: () async {
                     if (formKey.currentState?.validate() ?? false) {
                       String phoneNumber = controller.loginPhoneController.text.trim();

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
 import '../../../generated/assets.dart';
@@ -106,11 +107,11 @@ class _SplashScreenState extends State<SplashScreen> {
                         child: Column(
                           children: [
                             Text(
-                              "kWelcomeToThe".tr,
+                              StringConstant.kWelcomeToThe.tr,
                               style: w400_22a(color: AppColor.c2C2A2A),
                             ),
                             Text(
-                              "kHiWASH".tr,
+                              StringConstant.kHiWASH.tr,
                               style: w900_24a(color: AppColor.c2C2A2A),
                             ),
                           ],
@@ -123,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
               Padding(
                 padding:  EdgeInsets.only(bottom: 60),
-                child: Text("Let's Make Every Car Shine!",style: w500_16a(color: AppColor.white.withOpacity(0.4)),textAlign: TextAlign.center,),
+                child: Text(StringConstant.kLetMakeEvery.tr,style: w500_16a(color: AppColor.white.withOpacity(0.4)),textAlign: TextAlign.center,),
               ),
 
             ],
