@@ -51,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     NotificationScreen(),
   ];
 
-  final List<String> _headings = ["", StringConstant.kRewardedCustomers.tr,StringConstant.kNotification.tr];
+   List<String> get _headings => ["", StringConstant.kRewardedCustomers.tr,StringConstant.kNotification.tr];
 
   void _onItemTapped(int index) {
     if (index == 3) {

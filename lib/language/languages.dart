@@ -171,7 +171,7 @@ class Languages extends Translations {
       "kYear": "/ Year",
       "kRenewalNotAvailable": "Renewal Not Available",
       "kNoPlanSelected.": "No plan selected.",
-      'kEmployeeIDNO: ': 'Employee ID NO: ',
+      'kEmployeeIDNO':'Employee ID NO: ',
       "kAddress": "Address",
       "kPermissionDenied": "Permission Denied",
       "kCameraPermissionRequired":
@@ -395,7 +395,7 @@ class Languages extends Translations {
       "kYear": "/ السنة",
       "kRenewalNotAvailable": "التجديد غير متاح",
       "kNoPlanSelected.": "لم يتم اختيار خطة.",
-      'kEmployeeIDNO: ': 'رقم هوية الموظف: ',
+      'kEmployeeIDNO': 'رقم هوية الموظف: ',
       "kAddress": "العنوان",
       "kPermissionDenied": "تم رفض الإذن",
       "kCameraPermissionRequired":

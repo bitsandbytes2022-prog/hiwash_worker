@@ -55,178 +55,176 @@ class DrawerScreen extends StatelessWidget {
 
   /// **Main Drawer**
   Widget mainDrawerUI() {
-    return Obx(() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          48.heightSizeBox,
-          GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 7),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: ImageView(
-                  path: Assets.iconsIcClose,
-                  height: 28,
-                  width: 32,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        48.heightSizeBox,
+        GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(right: 7),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: ImageView(
+                path: Assets.iconsIcClose,
+                height: 28,
+                width: 32,
               ),
             ),
           ),
+        ),
 
-          Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                padding: EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppColor.blue.withOpacity(0.2)),
-                ),
-                child: Obx(() {
-                  final profilePicUrl =
-                      dashboardController
-                          .getWorkerModel
-                          .value
-                          ?.data
-                          ?.first
-                          .profilePicUrl ??
-                      '';
-                  final hasImage = profilePicUrl.isNotEmpty;
-                  return CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        hasImage
-                            ? CachedNetworkImageProvider(
-                              profilePicUrl,
-                              headers: {'Cache-Control': 'no-cache'},
-                            )
-                            : AssetImage(Assets.imagesDemoProfile),
-                  );
-                }),
+        Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(color: AppColor.blue.withOpacity(0.2)),
               ),
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppColor.cE8E9F4),
-                ),
-                child: ImageView(
-                  path: Assets.iconsIcCrown,
-                  height: 17,
-                  width: 17,
-                ),
+              child: Obx(() {
+                final profilePicUrl =
+                    dashboardController
+                        .getWorkerModel
+                        .value
+                        ?.data
+                        ?.first
+                        .profilePicUrl ??
+                        '';
+                final hasImage = profilePicUrl.isNotEmpty;
+                return CircleAvatar(
+                  radius: 50,
+                  backgroundImage:
+                  hasImage
+                      ? CachedNetworkImageProvider(
+                    profilePicUrl,
+                    headers: {'Cache-Control': 'no-cache'},
+                  )
+                      : AssetImage(Assets.imagesDemoProfile),
+                );
+              }),
+            ),
+            Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(color: AppColor.cE8E9F4),
+              ),
+              child: ImageView(
+                path: Assets.iconsIcCrown,
+                height: 17,
+                width: 17,
+              ),
+            ),
+          ],
+        ),
+
+        10.heightSizeBox,
+        Obx(() {
+          return Text(
+            dashboardController.getWorkerModel.value?.data?.first.fullName ??
+                '',
+            style: w700_16a(color: AppColor.c2C2A2A),
+            textAlign: TextAlign.center,
+          );
+        }),
+        4.heightSizeBox,
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: StringConstant.kEmployeeIDNO.tr,
+                style: w400_12p(color: AppColor.c455A64),
+              ),
+              TextSpan(
+                text:
+                dashboardController
+                    .getWorkerModel
+                    .value
+                    ?.data
+                    ?.first
+                    .employeeId
+                    .toString(),
+                style: w700_12p(color: AppColor.c2C2A2A),
               ),
             ],
           ),
+        ),
+        39.heightSizeBox,
 
-          10.heightSizeBox,
-          Obx(() {
-            return Text(
-              dashboardController.getWorkerModel.value?.data?.first.fullName ??
-                  '',
-              style: w700_16a(color: AppColor.c2C2A2A),
-              textAlign: TextAlign.center,
-            );
-          }),
-          4.heightSizeBox,
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
+        /// **Drawer Options**
+        drawerRowWidget(
+          onTap: () => Get.to(MyAccountScreen()),
+          title: StringConstant.kMyAccount.tr,
+          image: Assets.iconsIcAccount,
+        ),
+
+        Obx(
+              () => drawerRowForTheme(
+            title: StringConstant.kTheme.tr,
+            image: Assets.iconsIcTheme,
+            switchValue: drawerController.isSwitchOn.value,
+            onSwitchChanged: (bool value) {
+              drawerController.isSwitchOn.value = value;
+
+              // Optional: toggle theme
+              // Get.changeTheme(value ? ThemeData.dark() : ThemeData.light());
+            },
+          ),
+        ),
+        drawerRowWidget(
+          padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+          onTap: () => Get.toNamed(RouteStrings.languageScreen),
+          title: StringConstant.kLanguage.tr,
+          image: Assets.iconsIcLanguage,
+        ),
+        drawerRowWidget(
+          onTap: () => Get.toNamed(RouteStrings.privacySettingScreen),
+          title: StringConstant.kPrivacySettings.tr,
+          image: Assets.iconsIcPrivacy,
+        ),
+        drawerRowWidget(
+          onTap: () => Get.to(TermsAndConditionScreen()),
+          title: StringConstant.kTermsAndConditions.tr,
+          image: Assets.iconsIcTermscondition,
+        ),
+        Spacer(),
+
+        //60.heightSizeBox,
+        GestureDetector(
+          onTap: () async {
+            await LocalStorage().removeToken();
+            final deviceLocale = Get.deviceLocale ?? const Locale('en', 'US');
+            Get.updateLocale(deviceLocale);
+            Get.offAllNamed(RouteStrings.welcomeScreen);            },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 31, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColor.cF6F7FF,
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(color: AppColor.cD83030),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                TextSpan(
-                  text: StringConstant.kEmployeeIDNO.tr,
-                  style: w400_12p(color: AppColor.c455A64),
-                ),
-                TextSpan(
-                  text:
-                      dashboardController
-                          .getWorkerModel
-                          .value
-                          ?.data
-                          ?.first
-                          .employeeId
-                          .toString(),
-                  style: w700_12p(color: AppColor.c2C2A2A),
+                ImageView(path: Assets.iconsIcLogout, height: 20, width: 20),
+                Text(
+                  StringConstant.kLogout.tr,
+                  style: w500_14a(color: AppColor.c142293),
                 ),
               ],
             ),
           ),
-          39.heightSizeBox,
-
-          /// **Drawer Options**
-          drawerRowWidget(
-            onTap: () => Get.to(MyAccountScreen()),
-            title: StringConstant.kMyAccount.tr,
-            image: Assets.iconsIcAccount,
-          ),
-
-          Obx(
-            () => drawerRowForTheme(
-              title: StringConstant.kTheme.tr,
-              image: Assets.iconsIcTheme,
-              switchValue: drawerController.isSwitchOn.value,
-              onSwitchChanged: (bool value) {
-                drawerController.isSwitchOn.value = value;
-
-                // Optional: toggle theme
-                // Get.changeTheme(value ? ThemeData.dark() : ThemeData.light());
-              },
-            ),
-          ),
-          drawerRowWidget(
-            padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-            onTap: () => Get.toNamed(RouteStrings.languageScreen),
-            title: StringConstant.kLanguage.tr,
-            image: Assets.iconsIcLanguage,
-          ),
-          drawerRowWidget(
-            onTap: () => Get.toNamed(RouteStrings.privacySettingScreen),
-            title: StringConstant.kPrivacySettings.tr,
-            image: Assets.iconsIcPrivacy,
-          ),
-          drawerRowWidget(
-            onTap: () => Get.to(TermsAndConditionScreen()),
-            title: StringConstant.kTermsAndConditions.tr,
-            image: Assets.iconsIcTermscondition,
-          ),
-          Spacer(),
-
-          //60.heightSizeBox,
-          GestureDetector(
-            onTap: () async {
-              await LocalStorage().removeToken();
-              final deviceLocale = Get.deviceLocale ?? const Locale('en', 'US');
-              Get.updateLocale(deviceLocale);
-              Get.offAllNamed(RouteStrings.welcomeScreen);            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 31, vertical: 10),
-              decoration: BoxDecoration(
-                color: AppColor.cF6F7FF,
-                borderRadius: BorderRadius.circular(100),
-                border: Border.all(color: AppColor.cD83030),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ImageView(path: Assets.iconsIcLogout, height: 20, width: 20),
-                  Text(
-                    StringConstant.kLogout.tr,
-                    style: w500_14a(color: AppColor.c142293),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          20.heightSizeBox,
-        ],
-      );
-    });
+        ),
+        20.heightSizeBox,
+      ],
+    );
   }
 
   /// **Reusable Row Widget**
