@@ -161,7 +161,7 @@ class Languages extends Translations {
       'kPackName': 'Pack Name ',
 
       "kRemainingWash": "Remaining wash",
-      "kRemaining": "kRemaining",
+      "kRemaining": "Remaining",
       'kExpiryDate': 'Expiry date ',
       "kUpgradeYourPlanNow": "upgrade your Plan now",
       "kNoPlansAvailable": "No plans available",
@@ -171,7 +171,7 @@ class Languages extends Translations {
       "kYear": "/ Year",
       "kRenewalNotAvailable": "Renewal Not Available",
       "kNoPlanSelected.": "No plan selected.",
-      'kEmployeeIDNO':'Employee ID NO: ',
+      'kEmployeeIDNO': 'Employee ID NO: ',
       "kAddress": "Address",
       "kPermissionDenied": "Permission Denied",
       "kCameraPermissionRequired":
@@ -195,7 +195,7 @@ class Languages extends Translations {
       "kShareYourFeedback": "Share your feedback and\nrate the Customer.",
       "kEnterYourCommentHere": "Enter your comment here...",
       "kSubmit": "Submit",
-      "kTodayWashes": "kTodayWashes",
+      "kTodayWashes": "Today Washes",
       "kComplete": "Complete",
 
       /// app component
@@ -236,14 +236,14 @@ class Languages extends Translations {
       ///  welcome screen
       "kEliteCarWash": "خدمة غسيل السيارات المتميزة",
       "kEarnMoreGetRewardsAndEnjoyExclusiveWorkerBenefits":
-      "اكسب أكثر، احصل على مكافآت، واستمتع\nبمزايا حصرية للعاملين!",
+          "اكسب أكثر، احصل على مكافآت، واستمتع\nبمزايا حصرية للعاملين!",
       "kGetStarted": "ابدأ الآن",
       "kSkip": "تخطي",
       "kTermsAndConditions": "الأحكام والشروط",
       "kTermsAndCondition": "الأحكام والشروط",
       "kWashWin": "اغسل واربح!",
       "kGetYourCarWashed":
-      "اغسل سيارتك أسبوعياً في أكثر من 100 موقع مع عروض حصرية. الغسلات المفقودة تُخصم أيضاً.",
+          "اغسل سيارتك أسبوعياً في أكثر من 100 موقع مع عروض حصرية. الغسلات المفقودة تُخصم أيضاً.",
       "kMissedWashesStillDeducted": "الغسلات المفقودة تُخصم أيضاً.",
       "kLetMakeEvery": "دعونا نجعل كل سيارة تتألق!",
 
@@ -274,8 +274,7 @@ class Languages extends Translations {
       /// forgot password screen
       "kForgot": "نسيت",
       "kEnterRegisteredPhone": "أدخل الهاتف المسجل",
-      "kEnterThePhoneNumber":
-      "أدخل رقم الهاتف\nالمرتبط بحسابك",
+      "kEnterThePhoneNumber": "أدخل رقم الهاتف\nالمرتبط بحسابك",
       "kEnterYourPhoneNumber": "أدخل رقم هاتفك",
       "kRecoverPassword": "استرداد كلمة المرور",
 
@@ -300,7 +299,7 @@ class Languages extends Translations {
       "kReset": "إعادة تعيين",
       "kCreateNewPassword": "إنشاء كلمة مرور جديدة",
       "kYourNewPasswordMust":
-      "كلمة المرور الجديدة يجب أن تكون مختلفة\nعن كلمة المرور المستخدمة سابقاً",
+          "كلمة المرور الجديدة يجب أن تكون مختلفة\nعن كلمة المرور المستخدمة سابقاً",
       "kSave": "حفظ",
 
       ///Reward screen
@@ -353,8 +352,7 @@ class Languages extends Translations {
 
       /// Notification screen
       "kProvisionalPermissionGranted": "تم منح إذن مؤقت",
-      "kYouWillReceive":
-      "ستتلقى إشعارات، لكنها قد تكون محدودة.",
+      "kYouWillReceive": "ستتلقى إشعارات، لكنها قد تكون محدودة.",
       "kNotificationPermissionDenied": "تم رفض إذن الإشعارات",
       "kPleaseAllow": "يرجى السماح بالإشعارات لتلقي التحديثات.",
       "kFailedToRequest": "فشل في طلب إذن الإشعارات.",
@@ -390,7 +388,7 @@ class Languages extends Translations {
       "kUpgradeYourPlanNow": "قم بترقية خطتك الآن",
       "kNoPlansAvailable": "لا توجد خطط متاحة",
       "kYouCanRenewYourSubscriptionOnlyWithin7DaysOfExpiry":
-      "يمكنك تجديد اشتراكك فقط خلال 7 أيام من انتهاء الصلاحية.",
+          "يمكنك تجديد اشتراكك فقط خلال 7 أيام من انتهاء الصلاحية.",
       "kRenewNow": "جدد الآن",
       "kYear": "/ السنة",
       "kRenewalNotAvailable": "التجديد غير متاح",
@@ -399,7 +397,7 @@ class Languages extends Translations {
       "kAddress": "العنوان",
       "kPermissionDenied": "تم رفض الإذن",
       "kCameraPermissionRequired":
-      "إذن الكاميرا مطلوب لمسح رموز الاستجابة السريعة.",
+          "إذن الكاميرا مطلوب لمسح رموز الاستجابة السريعة.",
 
       /// QR screen
       "kClear": "مسح",
@@ -436,7 +434,7 @@ class Languages extends Translations {
       "kSuccesss": "نجح!",
       "kPlanIsNowActivated": " تم تفعيل الخطة الآن.",
       "kScanToUnlockWeekly":
-      "امسح لإلغاء قفل الغسلات الأسبوعية،\nالعروض الحصرية، والصفقات المذهلة!",
+          "امسح لإلغاء قفل الغسلات الأسبوعية،\nالعروض الحصرية، والصفقات المذهلة!",
       "kYourPaymentIsComplete": "تمت عملية الدفع، و\n",
       "kJan": "يناير",
       "kFev": "فبراير",

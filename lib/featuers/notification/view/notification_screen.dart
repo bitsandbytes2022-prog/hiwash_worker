@@ -65,7 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           },
         );
       } else {
-        return  Center(child: Text(StringConstant.kNoNotificationFound.tr));
+        return  Center(child: Text(StringConstant.kNoNotificationFound.tr,style: w500_14p(color: AppColor.c2C2A2A),));
       }
     });
   }
