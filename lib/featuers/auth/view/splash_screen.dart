@@ -14,6 +14,9 @@ import '../../../styling/app_font_anybody.dart';
 import '../../../widgets/components/doted_horizontal_line.dart';
 import '../../../widgets/components/image_view.dart';
 
+
+String bearerToken = "";
+
 class SplashScreen extends StatefulWidget {
   SplashScreen({super.key});
 
@@ -37,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print("Token retrieved: $token");
 
     if (token != null && token.isNotEmpty) {
+    //  bearerToken = token;
      await authController.refreshToken();
       Get.offNamed(RouteStrings.dashboardScreen);
     } else {

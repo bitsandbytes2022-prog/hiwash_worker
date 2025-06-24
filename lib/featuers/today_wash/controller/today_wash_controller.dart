@@ -143,7 +143,7 @@ class TodayWashController extends GetxController {
       // hideLoader();
       return getCustomerData.value;
     } catch (error) {
-      print("Error fetching customer data: $error");
+      print("Error fetching hfffcustomer data: $error");
       return null;
     }
   }

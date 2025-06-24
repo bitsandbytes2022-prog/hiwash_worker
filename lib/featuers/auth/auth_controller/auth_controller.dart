@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
+import 'package:hiwash_worker/network_manager/utils/print_value.dart';
 
 import '../../../network_manager/local_storage.dart';
 import '../../../network_manager/repository.dart';
@@ -14,6 +15,7 @@ import '../../../widgets/components/app_snack_bar.dart';
 import '../model/get_token_model.dart';
 import '../model/send_otp_model.dart';
 import '../model/sign_up_model.dart';
+import '../view/splash_screen.dart';
 
 class AuthController extends GetxController {
   var isLoggedIn = false.obs;
@@ -164,6 +166,39 @@ class AuthController extends GetxController {
   }
 
   Future<GetTokenModel?> refreshToken() async {
+    var storedRefreshToken = LocalStorage().getRefreshToken();
+
+    if (storedRefreshToken == null || storedRefreshToken.isEmpty) {
+      await LocalStorage().removeToken();
+      Get.offAllNamed(RouteStrings.welcomeScreen);
+      return null;
+    }
+
+    final Map<String, dynamic> requestBody = {
+      "refreshToken": storedRefreshToken,
+    };
+
+    try {
+      var response = await Repository().refreshToken(requestBody);
+
+      if (response.success == true &&
+          response.data?.token != null &&
+          response.data!.token!.isNotEmpty) {
+       /* printValue(tag: "OLD API TOKEN:", bearerToken);
+        bearerToken = response.data!.token!;
+        printValue(tag: "NEW API TOKEN:", bearerToken);*/
+        await LocalStorage().saveToken(response.data!.token!);
+        await LocalStorage().saveRefreshToken(response.data!.refreshToken!);
+        return response;
+      }
+
+      return null;
+    } catch (e) {
+      print("Error refreshing token: $e");
+      return null;
+    }
+  }
+/*  Future<GetTokenModel?> refreshToken() async {
     final storedRefreshToken = LocalStorage().getRefreshToken();
 
     if (storedRefreshToken == null || storedRefreshToken.isEmpty) {
@@ -182,6 +217,9 @@ class AuthController extends GetxController {
       print("Refresh token response: $response");
 
       if (response.data?.token != null && response.data!.token!.isNotEmpty) {
+        printValue(tag: "OLD API TOKEN:", bearerToken);
+        bearerToken = response.data!.token!;
+        printValue(tag: "NEW API TOKEN:", bearerToken);
         await LocalStorage().saveToken(response.data!.token!);
       }
 
@@ -200,7 +238,7 @@ class AuthController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  }
+  }*/
 
   Future<void> logout() async {
     await LocalStorage().removeToken();

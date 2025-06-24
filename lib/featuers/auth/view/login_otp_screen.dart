@@ -84,7 +84,7 @@ class LoginOtpScreen extends StatelessWidget {
                 onCompleted: (pin) => controller.enteredOtp.value = pin,
                 validator: (value) {
                   if (value == null || value.length != 4) {
-                    return 'Enter valid OTP';
+                    return StringConstant.kEnterValidOTP.tr;
                   }
                   return null;
                 },
@@ -137,11 +137,7 @@ class LoginOtpScreen extends StatelessWidget {
                     final serverOtp =
                         controller.sendOtpModel.value.data?.otp?.toString();
 
-                    // Debug logs
-                    print(
-                      "Entered OTP: $enteredOtp (${enteredOtp.runtimeType})",
-                    );
-                    print("Server OTP: $serverOtp (${serverOtp.runtimeType})");
+
 
                     if (enteredOtp == serverOtp) {
                       controller.getToken(phoneNumber).then((value) {

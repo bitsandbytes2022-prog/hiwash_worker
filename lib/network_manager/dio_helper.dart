@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../featuers/auth/view/splash_screen.dart';
 import 'injection.dart';
 import 'local_storage.dart';
 
@@ -12,7 +13,11 @@ class DioHelper {
     print( "------>${token}");
     if (isAuthRequired && token != null) {
       return {
+
+        //'Authorization': 'Bearer $bearerToken',
         'Authorization': 'Bearer $token',
+
+
        // 'Content-Type': 'application/json',
       };
     } else {

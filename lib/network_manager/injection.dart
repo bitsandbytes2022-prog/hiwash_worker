@@ -63,7 +63,8 @@ Dio getDio() {
           );
         } else if (e.response?.statusCode == 401) {
           /// Todo Part of discussion
-          /* AuthController   authController=Get.find();
+        /*   AuthController  authController=Get.isRegistered<AuthController>()?Get.find<AuthController>():Get.put(AuthController());;
+
           print("Refresh Token api");
           authController.refreshToken();*/
         } else if (e.response?.statusCode == 404) {
