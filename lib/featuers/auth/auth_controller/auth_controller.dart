@@ -20,7 +20,7 @@ class AuthController extends GetxController {
 
   var isLoading = false.obs;
   var enteredOtp = ''.obs;
-  var secondsRemaining = 30.obs;
+  var secondsRemaining = 60.obs;
   Timer? _timer;
   GetTokenModel? getTokenModel;
 
@@ -69,7 +69,7 @@ class AuthController extends GetxController {
   }
 
   void startTimer() {
-    secondsRemaining.value = 30;
+    secondsRemaining.value = 60;
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
