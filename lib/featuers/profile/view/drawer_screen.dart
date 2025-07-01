@@ -10,6 +10,7 @@ import 'package:hiwash_worker/featuers/profile/view/widget/custome_switch.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/network_manager/local_storage.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../generated/assets.dart';
 import '../../../route/route_strings.dart';
 import '../../../styling/app_color.dart';
@@ -189,11 +190,25 @@ class DrawerScreen extends StatelessWidget {
           title: StringConstant.kPrivacySettings.tr,
           image: Assets.iconsIcPrivacy,
         ),
-        drawerRowWidget(
+        drawerRowWidget (
+          onTap: ()async{
+            String url="https://loyaltyapistaging.pipelinedns.com/api/content/customerterms.html";
+
+            if(! await launchUrl(Uri.parse(url))){
+
+              throw Exception('${StringConstant.kCouldNotLaunch.tr} $url');
+            };
+
+          },
+          //onTap: () => Get.to(TermsAndConditionScreen()),
+          title: StringConstant.kTermsAndCondition.tr,
+          image: Assets.iconsIcTermscondition,
+        ),
+    /*    drawerRowWidget(
           onTap: () => Get.to(TermsAndConditionScreen()),
           title: StringConstant.kTermsAndConditions.tr,
           image: Assets.iconsIcTermscondition,
-        ),
+        ),*/
         Spacer(),
 
         //60.heightSizeBox,
