@@ -148,7 +148,7 @@ class Languages extends Translations {
       "kSubscriptionPlan": 'Subscription Plan',
       "kTheme": 'Theme',
       "kLanguage": 'Language',
-      "kPrivacySettings": 'Privacy Settings',
+      "kPrivacySettings": 'Privacy Policy',
       "kLogout": "Logout",
       "kArabic": "Arabic",
       "kEnglish": "English",
@@ -370,7 +370,8 @@ class Languages extends Translations {
       "kSubscriptionPlan": 'خطة الاشتراك',
       "kTheme": 'المظهر',
       "kLanguage": 'اللغة',
-      "kPrivacySettings": 'إعدادات الخصوصية',
+
+      "kPrivacySettings": 'سياسة الخصوصية',
       "kLogout": "تسجيل الخروج",
       "kArabic": "العربية",
       "kEnglish": "الإنجليزية",

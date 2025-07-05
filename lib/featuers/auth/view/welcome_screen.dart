@@ -4,6 +4,7 @@ import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/styling/app_font_poppins.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../generated/assets.dart';
 import '../../../route/route_strings.dart';
@@ -117,9 +118,21 @@ class WelcomeScreen extends StatelessWidget {
                           },
                         ),
                         15.heightSizeBox,
-                        Text(
-                          StringConstant.kTermsAndConditions.tr,
-                          style: w500_14a(color: AppColor.red),
+                        GestureDetector(
+
+                          onTap: ()async{
+                            String url="https://loyaltyapistaging.pipelinedns.com/api/content/workerterms.html";
+
+                            if(! await launchUrl(Uri.parse(url))){
+
+                              throw Exception('${StringConstant.kCouldNotLaunch.tr} $url');
+                            };
+
+                          },
+                          child: Text(
+                            StringConstant.kTermsAndConditions.tr,
+                            style: w500_14a(color: AppColor.red),
+                          ),
                         ),
                         60.heightSizeBox,
                       ],

@@ -53,7 +53,7 @@ class ProfileImageView extends StatelessWidget {
                     (context, url) => SizedBox(
                   height: 20,
                   width: 20,
-                  child: CircularProgressIndicator(strokeWidth: 4),
+                  child: CircularProgressIndicator(strokeWidth: 2,color: Colors.blue,),
                 ),
                 errorWidget:
                     (context, url, error) =>

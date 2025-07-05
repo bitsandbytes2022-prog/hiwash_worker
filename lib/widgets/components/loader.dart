@@ -5,7 +5,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 void showLoader() {
   Get.dialog(
-    const Center(child: CircularProgressIndicator()),
+    const Center(child: CircularProgressIndicator(
+      strokeWidth: 2,
+      color: Colors.blue,
+    )),
     barrierDismissible: false, );
 }
 hideLoader() {

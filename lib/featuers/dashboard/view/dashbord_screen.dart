@@ -58,6 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _openDrawer('first');
     } else {
       setState(() {
+        controller.isWashSelected.value = true;
         _currentIndex = index;
       });
     }
