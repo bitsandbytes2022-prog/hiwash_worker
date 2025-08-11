@@ -55,12 +55,16 @@ Dio getDio() {
           tag: 'ERROR DATA :--onError ERROR DATA--->',
           e.response?.data ?? "",
         );
+        final skipSnackbar = e.requestOptions.extra['skipErrorSnackbar'] == true;
         if (e.response?.statusCode == 400) {
-          appSnackBar(
-            message:
-                e.response?.data["error"]["message"] ??
-                StringConstant.kSomethingWentWrong.tr.toString(),
-          );
+          if(!skipSnackbar){
+            appSnackBar(
+              message:
+              e.response?.data["error"]["message"] ??
+                  StringConstant.kSomethingWentWrong.tr.toString(),
+            );
+          }
+
         } else if (e.response?.statusCode == 401) {
           /// Todo Part of discussion
         /*   AuthController  authController=Get.isRegistered<AuthController>()?Get.find<AuthController>():Get.put(AuthController());;

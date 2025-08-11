@@ -48,7 +48,7 @@ class SecondDrawerController extends GetxController {
   }
 
   Future<GuidesResponseModel?> getGuides() async {
-    int entityType = 0;
+    int entityType = 1;
 
     guidesResponseModel.value = await Repository().getGuides(entityType);
     return guidesResponseModel.value;

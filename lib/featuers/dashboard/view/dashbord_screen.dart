@@ -5,20 +5,26 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:hiwash_worker/featuers/dashboard/view/widget/second_drawer/second_drawer.dart';
+import 'package:hiwash_worker/featuers/dashboard/view/widget/second_drawer/step_by_step_guide_screen.dart';
 import 'package:hiwash_worker/featuers/profile/view/drawer_screen.dart';
 import 'package:hiwash_worker/featuers/qr_scanner/view/qr_scanner.dart';
+import 'package:hiwash_worker/featuers/rewads/controller/rewarded_customer_controller.dart';
+import 'package:hiwash_worker/featuers/rewads/view/rewarded_customers_screen.dart';
 import 'package:hiwash_worker/featuers/today_wash/controller/today_wash_controller.dart';
 import 'package:hiwash_worker/featuers/today_wash/view/today_wash_screen.dart';
 import 'package:hiwash_worker/generated/assets.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
+import 'package:hiwash_worker/route/route_strings.dart';
 import 'package:hiwash_worker/styling/app_color.dart';
 import 'package:hiwash_worker/styling/app_font_anybody.dart';
+import 'package:hiwash_worker/widgets/components/hi_wash_button.dart';
 import 'package:hiwash_worker/widgets/components/image_view.dart';
 import 'package:hiwash_worker/widgets/components/profile_image_container.dart';
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 
 import '../../../styling/app_font_poppins.dart';
 import '../../notification/view/notification_screen.dart';
+import '../../rewads/controller/reward_controller.dart';
 import '../../rewads/view/reward_screen.dart';
 
 import '../../../widgets/components/app_home_bg.dart';
@@ -41,24 +47,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ? Get.find()
           : Get.put(TodayWashController());
 
+  final RewardController rewardController =Get.isRegistered()?Get.find():Get.put(RewardController());
+  RewardedCustomerController rewardedCustomerController =Get.isRegistered<RewardedCustomerController>()?Get.find<RewardedCustomerController>():Get.put(RewardedCustomerController());
+
   DashboardController dashboardController =
       Get.isRegistered<DashboardController>()
           ? Get.find()
           : Get.put(DashboardController());
   final List<Widget> _pages = [
     TodayWashScreen(),
-    RewardScreen(),
-    NotificationScreen(),
+    RewardedCustomersScreen(),
+    StepByStepGuideScreen(showAppHomeBg: false,)
+    //NotificationScreen(),
   ];
 
-   List<String> get _headings => ["", StringConstant.kRewardedCustomers.tr,StringConstant.kNotification.tr];
+   List<String> get _headings => ["", StringConstant.kRewardedCustomers.tr,StringConstant.kStepByStep.tr];
 
   void _onItemTapped(int index) {
     if (index == 3) {
       _openDrawer('first');
     } else {
       setState(() {
+        rewardedCustomerController.clearDateFilter();
         controller.isWashSelected.value = true;
+        rewardController.isSelected.value=true;
         _currentIndex = index;
       });
     }
@@ -80,7 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final List<Widget> filledImages = [
       fillNavigationImage(image: Assets.iconsIcHomeFill),
       fillNavigationImage(image: Assets.iconsIcRewardFill),
-      fillNavigationImage(image: Assets.iconsIcNotificationFill),
+      fillNavigationImage(image: Assets.iconsIcGuideBook),
       Container(
         padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -114,7 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final List<Widget> outlineImages = [
       ImageView(path: Assets.iconsIcHome, height: 23, width: 23),
       ImageView(path: Assets.iconsTrophy, height: 23, width: 23),
-      ImageView(path: Assets.iconsIcNotification, height: 23, width: 23),
+      ImageView(path: Assets.iconsIcGuideBook, height: 23, width: 23),
       Container(
         padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -162,14 +174,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           body: AppHomeBg(
             buttonPadding:
                 _currentIndex == 0
-                    ? EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 30)
-                    : EdgeInsets.only(left: 16, right: 16, top: 40),
+                    ? EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 30): EdgeInsets.only(left: 16, right: 16, top: 40),
             iconLeft: SizedBox(),
             headingText: _headings[_currentIndex],
-            padding:
-                _currentIndex == 2
-                    ? EdgeInsets.zero
-                    : EdgeInsets.symmetric(horizontal: 16),
+
             childAppBar:
                 _currentIndex == 0
                     ? Obx(
@@ -245,22 +253,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ],
                         ),
                       ),
-                    )
-                    : SizedBox(),
-      
-            iconRight: GestureDetector(
+                    ):
+
+                     SizedBox(),
+            iconRight: _currentIndex == 2
+                ? SizedBox()
+                : GestureDetector(
               onTap: () {
                 setState(() {
-                  _currentDrawer = 'second';
+                  controller.isWashSelected.value = true;
+                  Get.toNamed(
+                    RouteStrings.stepByStepGuideScreen,
+                    arguments: {'showAppHomeBg': true},
+                  );
                 });
-                _openDrawer('second');
               },
               child: ImageView(
                 height: 23,
                 width: 23,
-                path: Assets.iconsIcMessage,
+                path: Assets.iconsIcGuideBook,
+                color: Colors.white,
               ),
             ),
+            floatingActionButton: _currentIndex == 1
+                ? GestureDetector(
+              onTap: () {
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return RewardScreen();
+                  },
+                );
+              },
+              child: Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: AppColor.cC31848,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.cC31848.withOpacity(0.60),
+                      spreadRadius: 0,
+                      blurRadius: 30,
+                      offset: Offset(0, 15),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: ImageView(
+                    path: Assets.iconsIcQrScanner,
+                    height: 28,
+                    width: 28,
+                  ),
+                ),
+              ),
+            )
+                : null,
+
+
+
             child: _pages[_currentIndex],
           ),
           bottomNavigationBar: AnimatedBottomNavigationBar.builder(

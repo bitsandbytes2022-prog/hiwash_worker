@@ -30,6 +30,7 @@ class TodayWashController extends GetxController {
   Rxn<TodayWashSummaryModel> todayWashSummaryModel = Rxn();
   Rxn<WashLogModel> washLogModel = Rxn();
   Rxn<GetCustomerData> getCustomerData = Rxn();
+  RxString commentText = ''.obs;
 
   final TextEditingController commentController = TextEditingController();
   int userRating = 0;
@@ -53,6 +54,9 @@ class TodayWashController extends GetxController {
 
   @override
   void onInit() {
+    commentController.addListener(() {
+      commentText.value = commentController.text.trim();
+    });
     super.onInit();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -78,6 +82,7 @@ class TodayWashController extends GetxController {
       // Get.snackbar('Error', 'Failed to pick image: $e');
     }
   }
+
 
   Future<void> onRangeSelected(
     DateTime? start,
@@ -129,6 +134,7 @@ class TodayWashController extends GetxController {
       return null;
     }
   }
+
 
   Future<GetCustomerData?> getCustomerDataById(int id) async {
     try {
@@ -192,11 +198,15 @@ class TodayWashController extends GetxController {
     String washId,
     String comment,
   ) async {
+    showLoader();
     Map params = {"rating": rating, "washId": washId, "comment": comment};
     try {
       apiResponse.value = await Repository().rating(params);
+      hideLoader();
       return apiResponse.value;
+
     } catch (e) {
+      hideLoader();
       print("Error in controller: $e");
       return null;
     }

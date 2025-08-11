@@ -14,11 +14,7 @@ class DioHelper {
     if (isAuthRequired && token != null) {
       return {
 
-        //'Authorization': 'Bearer $bearerToken',
         'Authorization': 'Bearer $token',
-
-
-       // 'Content-Type': 'application/json',
       };
     } else {
       return {
@@ -100,6 +96,28 @@ class DioHelper {
         response = await dio.delete(url, options: await options(isAuthRequired));
       } else {
         response = await dio.delete(url, data: requestBody, options: await options(isAuthRequired));
+      }
+      return response.data;
+    } catch (error) {
+      return null;
+    }
+  }
+  Future<dynamic> postVerify({
+    required String url,
+    Object? requestBody,
+    bool isAuthRequired = false,
+    bool skipErrorSnackbar = false,
+  }) async {
+    try {
+      final opt = await options(isAuthRequired);
+      opt.extra ??= {};
+      opt.extra!.addAll({'skipErrorSnackbar': skipErrorSnackbar});
+
+      Response response;
+      if (requestBody == null) {
+        response = await dio.post(url, options: opt);
+      } else {
+        response = await dio.post(url, data: requestBody, options: opt);
       }
       return response.data;
     } catch (error) {

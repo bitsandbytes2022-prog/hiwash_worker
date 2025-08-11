@@ -13,6 +13,7 @@ import '../featuers/dashboard/view/widget/second_drawer/model/guides_response_mo
 import '../featuers/notification/model/notification.dart';
 import '../featuers/profile/model/terms_and_conditions_response_model.dart';
 import '../featuers/qr_scanner/model/get_offers_by_id_model.dart';
+import '../featuers/rewads/model/get_rewarded_customers_model.dart';
 import '../featuers/today_wash/model/wash_log_model.dart';
 import 'api_constant.dart';
 import 'dio_helper.dart';
@@ -143,10 +144,11 @@ class Repository {
 
   Future<dynamic> validateWashQrRepo(Object requestBody) async {
     try {
-      final response = await dioHelper.post(
+      final response = await dioHelper.postVerify(
         url: ApiConstant.validateWashQr,
         requestBody: requestBody,
         isAuthRequired: true,
+        skipErrorSnackbar: true
       );
       print("validateWashQr success: $response");
       return response;
@@ -235,6 +237,16 @@ class Repository {
     );
 
     return response;
+  }
+  Future<GetRewardedCustomersModel> GetRewardedCustomersRepo(Object requestBody
+      ) async {
+    Map<String, dynamic> response = await dioHelper.post(
+      url: ApiConstant.rewardedCustomer,
+      isAuthRequired: true,
+      requestBody: requestBody,
+    );
+    print("---->GetRewardedCustomersRepo${response.toString()}");
+    return GetRewardedCustomersModel.fromJson(response);
   }
 
 }

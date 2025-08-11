@@ -226,9 +226,10 @@ class Languages extends Translations {
       "kAct": "Oct",
       "kNov": "Nov",
       "kDec": "Dec",
+      "kOk": "Ok",
     },
 
-    'ar_SA': {
+  /*  'ar_SA': {
       "kWelcomeToThe": "مرحباً بكم في",
       "kHiWASH": "هاي واش",
       "kWeComeToYouTo": "نأتي إليكم لنقوم\nبغسل سيارتكم...!!",
@@ -449,6 +450,6 @@ class Languages extends Translations {
       "kAct": "أكتوبر",
       "kNov": "نوفمبر",
       "kDec": "ديسمبر",
-    },
+    },*/
   };
 }

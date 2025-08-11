@@ -43,22 +43,27 @@ class MyAccountScreen extends StatelessWidget {
                 onTap: () async {
                   try {
                     Get.back();
-                    await drawerProfileController.imagePicker(source: ImageSource.camera);
+                    await drawerProfileController.imagePicker(
+                      source: ImageSource.camera,
+                    );
                     if (drawerProfileController.imageFile.value != null) {
                       await drawerProfileController.uploadProfileImage();
                       await Future.delayed(Duration(seconds: 1));
                       await dashboardController.getWorkerDataById(
-                        dashboardController.getWorkerModel.value?.data?.first.id ?? 0,
+                        dashboardController
+                                .getWorkerModel
+                                .value
+                                ?.data
+                                ?.first
+                                .id ??
+                            0,
                       );
                     }
                   } catch (e, stackTrace) {
                     debugPrint("Camera capture error: $e\n$stackTrace");
-                appSnackBar(
-                  message: StringConstant.kSomethingWentWrong.tr
-                );
+                    appSnackBar(message: StringConstant.kSomethingWentWrong.tr);
                   }
                 },
-
               ),
               ListTile(
                 leading: Icon(Icons.photo),
@@ -74,11 +79,11 @@ class MyAccountScreen extends StatelessWidget {
 
                     await dashboardController.getWorkerDataById(
                       dashboardController
-                          .getWorkerModel
-                          .value
-                          ?.data
-                          ?.first
-                          .id ??
+                              .getWorkerModel
+                              .value
+                              ?.data
+                              ?.first
+                              .id ??
                           0,
                     );
                   }
@@ -94,9 +99,9 @@ class MyAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userData = dashboardController.getWorkerModel.value?.data?.first;
-
     drawerProfileController.nameController.text = userData?.fullName ?? '';
     drawerProfileController.emailController.text = userData?.email ?? '';
+    drawerProfileController.phoneController.text = userData?.mobileNumber ?? '';
     drawerProfileController.addressController.text = userData?.address ?? '';
 
     return AppHomeBg(
@@ -121,51 +126,67 @@ class MyAccountScreen extends StatelessWidget {
                           padding: EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
-                            border: Border.all(color: AppColor.blue.withOpacity(0.2)),
+                            border: Border.all(
+                              color: AppColor.blue.withOpacity(0.2),
+                            ),
                           ),
                           child: CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.white,
-                            child: drawerProfileController.imageFile.value != null
-                                ? ClipOval(
-                              child: Image.file(
-                                drawerProfileController.imageFile.value!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                                : (userData?.profilePicUrl != null &&
-                                userData!.profilePicUrl!.trim().isNotEmpty &&
-                                Uri.tryParse(userData.profilePicUrl!)?.hasAbsolutePath == true)
-                                ? ClipOval(
-                              child: Image.network(
-                                userData.profilePicUrl!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    Assets.imagesDemoProfile,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              ),
-                            )
-                                : ClipOval(
-                              child: Image.asset(
-                                Assets.imagesDemoProfile,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                            child:
+                                drawerProfileController.imageFile.value != null
+                                    ? ClipOval(
+                                      child: Image.file(
+                                        drawerProfileController
+                                            .imageFile
+                                            .value!,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                    : (userData?.profilePicUrl != null &&
+                                        userData!.profilePicUrl!
+                                            .trim()
+                                            .isNotEmpty &&
+                                        Uri.tryParse(
+                                              userData.profilePicUrl!,
+                                            )?.hasAbsolutePath ==
+                                            true)
+                                    ? ClipOval(
+                                      child: Image.network(
+                                        userData.profilePicUrl!,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (
+                                          context,
+                                          error,
+                                          stackTrace,
+                                        ) {
+                                          return Image.asset(
+                                            Assets.imagesDemoProfile,
+                                            width: 100,
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                    : ClipOval(
+                                      child: Image.asset(
+                                        Assets.imagesDemoProfile,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                           ),
                         ),
 
-                        if (drawerProfileController.isUploadingProfileImage.value)
+                        if (drawerProfileController
+                            .isUploadingProfileImage
+                            .value)
                           Container(
                             width: 112,
                             height: 112,
@@ -217,14 +238,18 @@ class MyAccountScreen extends StatelessWidget {
                 ],
               ),
               11.heightSizeBox,
-              Obx(
-                      () {
-                    return Text(
-                      dashboardController.getWorkerModel.value?.data?.first.fullName ?? '',
-                      style: w700_16a(color: AppColor.c2C2A2A),
-                    );
-                  }
-              ),
+              Obx(() {
+                return Text(
+                  dashboardController
+                          .getWorkerModel
+                          .value
+                          ?.data
+                          ?.first
+                          .fullName ??
+                      '',
+                  style: w700_16a(color: AppColor.c2C2A2A),
+                );
+              }),
               4.heightSizeBox,
               RichText(
                 textAlign: TextAlign.center,
@@ -244,6 +269,8 @@ class MyAccountScreen extends StatelessWidget {
 
               31.heightSizeBox,
               HiWashTextField(
+                fillColor: AppColor.c6B6B6B.withOpacity(0.1),
+                readOnly: true,
                 controller: drawerProfileController.nameController,
                 keyboardType: TextInputType.name,
                 inputFormatters: [
@@ -262,6 +289,8 @@ class MyAccountScreen extends StatelessWidget {
               ),
               20.heightSizeBox,
               HiWashTextField(
+                fillColor: AppColor.c6B6B6B.withOpacity(0.1),
+
                 readOnly: true,
                 controller: drawerProfileController.emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -275,6 +304,24 @@ class MyAccountScreen extends StatelessWidget {
                 },
               ),
 
+              20.heightSizeBox,
+              HiWashTextField(
+                fillColor: AppColor.c6B6B6B.withOpacity(0.1),
+
+                readOnly: true,
+                controller: drawerProfileController.phoneController,
+                keyboardType: TextInputType.phone,
+                hintText: StringConstant.kPhone.tr,
+                labelText: StringConstant.kPhone.tr,
+                /*  validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return StringConstant.kPleaseEnterYourEmail.tr;
+                  }
+                  return null;
+                },*/
+              ),
+
+              20.heightSizeBox,
               20.heightSizeBox,
 
               Column(
@@ -340,7 +387,7 @@ class MyAccountScreen extends StatelessWidget {
                         ),
                       ),
 
-                      Positioned(
+                      /* Positioned(
                         top: 9,
                         right: 8,
                         child: ImageView(
@@ -348,7 +395,7 @@ class MyAccountScreen extends StatelessWidget {
                           height: 18,
                           width: 18,
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ],
@@ -368,17 +415,17 @@ class MyAccountScreen extends StatelessWidget {
 
                       await dashboardController.getWorkerDataById(
                         dashboardController
-                            .getWorkerModel
-                            .value
-                            ?.data
-                            ?.first
-                            .id ??
+                                .getWorkerModel
+                                .value
+                                ?.data
+                                ?.first
+                                .id ??
                             0,
                       );
                     } else {
-                    appSnackBar(
-                      message: StringConstant.kSomethingWentWrong.tr
-                    );
+                      appSnackBar(
+                        message: StringConstant.kSomethingWentWrong.tr,
+                      );
                     }
                   },
                 );

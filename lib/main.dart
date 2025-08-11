@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? localeCode = LocalStorage().getSavedLocale();
+  /*  final String? localeCode = LocalStorage().getSavedLocale();
 
     Locale initialLocale;
     if (localeCode == 'ar') {
@@ -49,14 +49,15 @@ class MyApp extends StatelessWidget {
       initialLocale = const Locale('en', 'US');
     } else {
       initialLocale = Get.deviceLocale ?? const Locale('en', 'US');
-    }
+    }*/
     return ScreenUtilInit(
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
-          locale: initialLocale,
+          //locale: initialLocale,
           translations: Languages(),
+          locale: const Locale('en', 'US'),
           fallbackLocale: const Locale('en', 'US'),
           debugShowCheckedModeBanner: false,
           title: 'Hiwash worker',

@@ -23,6 +23,8 @@ static const validateOfferQr="$baseUrl/offer/validate-offer-qr";
 static const rating="$baseUrl/worker/rating";
 static const String notification = "$baseUrl/notification/0";
 static const notificationUrl="$baseUrl/notification";
+static const rewardedCustomer ="$baseUrl/offer/rewarded-customers";
+
 
 
 

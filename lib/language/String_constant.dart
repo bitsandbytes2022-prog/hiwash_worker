@@ -217,4 +217,5 @@ class StringConstant {
   static const kAct = "kAct";
   static const kNov = "kNov";
   static const kDec = "kDec";
+  static const kOk = "kOk";
 }

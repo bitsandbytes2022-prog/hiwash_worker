@@ -23,11 +23,11 @@ class LanguageScreen extends StatelessWidget {
       child: Column(
         children: [
           15.heightSizeBox,
-          countryRow(
+        /*  countryRow(
             title: '🇸🇦 ${"العربية"}',
             languageCode: 'ar',
             countryCode: 'SA',
-          ),
+          ),*/
           countryRow(
             title: '🇬🇧 English',
             languageCode: 'en',

@@ -25,6 +25,7 @@ class Assets {
   static const String iconsIcChat = 'assets/icons/ic_chat.png';
   static const String iconsIcCheck = 'assets/icons/ic_check.png';
   static const String iconsIcClose = 'assets/icons/ic_close.png';
+  static const String iconsIcCongrat = 'assets/icons/ic_congrat.png';
   static const String iconsIcCrown = 'assets/icons/ic_crown.png';
   static const String iconsIcDropDown = 'assets/icons/ic_drop_down.png';
   static const String iconsIcEdit = 'assets/icons/ic_edit.png';
