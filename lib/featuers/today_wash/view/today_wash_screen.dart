@@ -444,253 +444,232 @@ class TodayWashScreen extends StatelessWidget {
     required String offerTitle,
     Data? getCustomer,
   }) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Container(
-          padding: EdgeInsets.only(bottom: 0),
-          color: Colors.transparent,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                //color: Colors.red,
-                padding: const EdgeInsets.only(bottom: 1),
+    return WillPopScope(
+      onWillPop: ()async{
+        controller.userRating = 0;
+        controller.commentController.clear();
+        controller.commentText.value = "";
+        controller.update();
+        return true;
 
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      decoration: BoxDecoration(
-                        color: AppColor.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
+      },
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Container(
+            padding: EdgeInsets.only(bottom: 0),
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  //color: Colors.red,
+                  padding: const EdgeInsets.only(bottom: 1),
+      
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 16, right: 16),
+                        decoration: BoxDecoration(
+                          color: AppColor.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
                         ),
-                      ),
-
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          30.heightSizeBox,
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: ImageView(
-                              path: Assets.iconsIcCongrat,
-
-                              fit: BoxFit.cover,
-                              height: 100,
-                              width: 100,
-                            ),
-                          ),
-                          21.heightSizeBox,
-                          Text(
-                            StringConstant.kWashComplete.tr,
-                            style: w700_22a(color: AppColor.c2C2A2A),
-                          ),
-                          Text(
-                            StringConstant.kShareYourFeedback.tr,
-                            textAlign: TextAlign.center,
-                            style: w400_16p(),
-                          ),
-                          9.heightSizeBox,
-                          GetBuilder<TodayWashController>(
-                            builder: (controller) {
-                              return RatingStars(
-                                value: controller.userRating.toDouble(),
-                                onValueChanged: (v) {
-                                  controller.userRating= v.toInt();
-                                  controller.update();
-                                },
-                                starBuilder:
-                                    (index, color) => Icon(
-                                      Icons.star,
-                                      color: color,
-                                      size: 28,
-                                    ),
-                                starCount: 5,
-                                starSize: 28,
-                                valueLabelVisibility: false,
-                                starColor: AppColor.cFFC200,
-                                starOffColor: Colors.grey,
-
-                                animationDuration: Duration(milliseconds: 200),
-                                starSpacing: 2,
-                              );
-                            },
-                          ),
-                          15.heightSizeBox,
-                          TextFormField(
-                            controller: controller.commentController,
-                            maxLines: 3,
-                            style: w400_14p(
-                              color: AppColor.c2C2A2A.withOpacity(0.9),
-                            ),
-                            decoration: InputDecoration(
-                              fillColor: AppColor.white,
-                              hintText: StringConstant.kEnterYourCommentHere.tr,
-                              filled: true,
-                              labelStyle: w400_13a(color: AppColor.c455A64),
-                              hintStyle: w400_14p(
-                                color: AppColor.c2C2A2A.withOpacity(0.40),
+      
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            30.heightSizeBox,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: ImageView(
+                                path: Assets.iconsIcCongrat,
+      
+                                fit: BoxFit.cover,
+                                height: 100,
+                                width: 100,
                               ),
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 12,
-                              ),
-
                             ),
-                          ),
-                          15.heightSizeBox,
-                          Obx(() {
-                            final comment = controller.commentText.value;
-                            final rating = controller.userRating;
-                            final isButtonEnabled = comment.isNotEmpty && rating > 0;
-
-                            return HiWashButton(
-                              width: 100,
-                              text: StringConstant.kSubmit.tr,
-                              onTap: isButtonEnabled
-                                  ? () {
-                                controller
-                                    .getRating(
-                                  rating.toString(),
-                                  washDetail.id.toString(),
-                                  comment,
-                                )
-                                    .then((value) {
-                                  if (value != null) {
-                                    Get.back();
-                                    controller.getTodayWashSummary();
-                                    controller.userRating = 0;
-                                    controller.commentController.clear();
-                                  }
-                                });
-                              }
-                                  : null, // disables the button when not valid
-                            );
-                          }),
-
-                          /*  HiWashButton(
-                            width: 100,
-                            text: StringConstant.kSubmit.tr,
-
-                            onTap: () {
-                              final comment =
-                                  controller.commentController.text.trim();
-                              final ratingString =
-                                  controller.userRating.toString();
-                              controller
-                                  .getRating(
-                                    ratingString,
+                            21.heightSizeBox,
+                            Text(
+                              StringConstant.kWashComplete.tr,
+                              style: w700_22a(color: AppColor.c2C2A2A),
+                            ),
+                            Text(
+                              StringConstant.kShareYourFeedback.tr,
+                              textAlign: TextAlign.center,
+                              style: w400_16p(),
+                            ),
+                            9.heightSizeBox,
+                            GetBuilder<TodayWashController>(
+                              builder: (controller) {
+                                return RatingStars(
+                                  value: controller.userRating.toDouble(),
+                                  onValueChanged: (v) {
+                                    controller.userRating= v.toInt();
+                                    controller.update();
+                                  },
+                                  starBuilder:
+                                      (index, color) => Icon(
+                                        Icons.star,
+                                        color: color,
+                                        size: 28,
+                                      ),
+                                  starCount: 5,
+                                  starSize: 28,
+                                  valueLabelVisibility: false,
+                                  starColor: AppColor.cFFC200,
+                                  starOffColor: Colors.grey,
+      
+                                  animationDuration: Duration(milliseconds: 200),
+                                  starSpacing: 2,
+                                );
+                              },
+                            ),
+                            15.heightSizeBox,
+                            TextFormField(
+                              controller: controller.commentController,
+                              maxLines: 3,
+                              style: w400_14p(
+                                color: AppColor.c2C2A2A.withOpacity(0.9),
+                              ),
+                              decoration: InputDecoration(
+                                fillColor: AppColor.white,
+                                hintText: StringConstant.kEnterYourCommentHere.tr,
+                                filled: true,
+                                labelStyle: w400_13a(color: AppColor.c455A64),
+                                hintStyle: w400_14p(
+                                  color: AppColor.c2C2A2A.withOpacity(0.40),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+      
+                              ),
+                            ),
+                            15.heightSizeBox,
+                            Obx(() {
+                              final comment = controller.commentText.value;
+                              final rating = controller.userRating;
+                              final isButtonEnabled = comment.isNotEmpty && rating > 0;
+      
+                              return HiWashButton(
+                                isLoading:controller.isLoading.value ,
+                                width: 100,
+                                text: StringConstant.kSubmit.tr,
+                                onTap: isButtonEnabled
+                                    ? () {
+                                  controller
+                                      .getRating(
+                                    rating.toString(),
                                     washDetail.id.toString(),
                                     comment,
                                   )
-                                  .then((value) {
+                                      .then((value) {
                                     if (value != null) {
                                       Get.back();
                                       controller.getTodayWashSummary();
                                       controller.userRating = 0;
                                       controller.commentController.clear();
-                                      controller.update();
                                     }
                                   });
-                            },
-                          ),*/
-
-
-                          18.heightSizeBox,
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 1),
-
-                      padding: EdgeInsets.only(bottom: 2),
-                      decoration: BoxDecoration(
-                        color: AppColor.cF6F7FF,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
+                                }
+                                    : null,
+                              );
+                            }),
+      
+                            /*  HiWashButton(
+                              width: 100,
+                              text: StringConstant.kSubmit.tr,
+      
+                              onTap: () {
+                                final comment =
+                                    controller.commentController.text.trim();
+                                final ratingString =
+                                    controller.userRating.toString();
+                                controller
+                                    .getRating(
+                                      ratingString,
+                                      washDetail.id.toString(),
+                                      comment,
+                                    )
+                                    .then((value) {
+                                      if (value != null) {
+                                        Get.back();
+                                        controller.getTodayWashSummary();
+                                        controller.userRating = 0;
+                                        controller.commentController.clear();
+                                        controller.update();
+                                      }
+                                    });
+                              },
+                            ),*/
+      
+      
+                            18.heightSizeBox,
+                          ],
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          DotedHorizontalLine(),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 23,
-                              left: 19,
-                              bottom: 23,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                ProfileImageView(
-                                  radius: 20,
-                                  radiusStack: 4,
-
-                                  isVisibleStack:
-                                      (controller
-                                                  .getCustomerData
-                                                  .value
-                                                  ?.data
-                                                  ?.subscriptionDetails!
-                                                  .isPremium ??
-                                              false)
-                                          ? true
-                                          : false,
-                                  imagePath: washDetail.profilePicUrl,
-                                ),
-                                9.widthSizeBox,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      controller
-                                              .getCustomerData
-                                              .value
-                                              ?.data
-                                              ?.customerDetails
-                                              ?.fullName ??
-                                          '',
-                                      style: w600_14a(color: AppColor.c2C2A2A),
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        IsSelectButton(),
-                                        5.widthSizeBox,
-                                        Text(
-                                          formatDate(
-                                            controller
+                      Container(
+                        margin: EdgeInsets.only(bottom: 1),
+      
+                        padding: EdgeInsets.only(bottom: 2),
+                        decoration: BoxDecoration(
+                          color: AppColor.cF6F7FF,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            DotedHorizontalLine(),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 23,
+                                left: 19,
+                                bottom: 23,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  ProfileImageView(
+                                    radius: 20,
+                                    radiusStack: 4,
+      
+                                    isVisibleStack:
+                                        (controller
                                                     .getCustomerData
                                                     .value
                                                     ?.data
-                                                    ?.subscriptionDetails
-                                                    ?.startDate ??
-                                                '',
-                                          ),
-                                          style: w400_12a(
-                                            color: AppColor.c455A64,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    if ((offerTitle ?? '').isNotEmpty) ...[
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 5),
-                                        child: DotedVerticalLine(height: 15),
+                                                    ?.subscriptionDetails!
+                                                    .isPremium ??
+                                                false)
+                                            ? true
+                                            : false,
+                                    imagePath: washDetail.profilePicUrl,
+                                  ),
+                                  9.widthSizeBox,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        controller
+                                                .getCustomerData
+                                                .value
+                                                ?.data
+                                                ?.customerDetails
+                                                ?.fullName ??
+                                            '',
+                                        style: w600_14a(color: AppColor.c2C2A2A),
                                       ),
-
                                       Row(
+                                        mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisAlignment:
@@ -699,71 +678,103 @@ class TodayWashScreen extends StatelessWidget {
                                           IsSelectButton(),
                                           5.widthSizeBox,
                                           Text(
-                                            offerTitle ?? '',
+                                            formatDate(
+                                              controller
+                                                      .getCustomerData
+                                                      .value
+                                                      ?.data
+                                                      ?.subscriptionDetails
+                                                      ?.startDate ??
+                                                  '',
+                                            ),
                                             style: w400_12a(
                                               color: AppColor.c455A64,
                                             ),
                                           ),
                                         ],
                                       ),
+      
+                                      if ((offerTitle ?? '').isNotEmpty) ...[
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 5),
+                                          child: DotedVerticalLine(height: 15),
+                                        ),
+      
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            IsSelectButton(),
+                                            5.widthSizeBox,
+                                            Text(
+                                              offerTitle ?? '',
+                                              style: w400_12a(
+                                                color: AppColor.c455A64,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ],
-                                  ],
-                                ),
-                              ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-
-        controller
-                    .getCustomerData
-                    .value
-                    ?.data
-                    ?.subscriptionDetails
-                    ?.subscriptionId ==
-                1
-            ? Positioned(
-              bottom: 0,
-              left: 20,
-              right: 20,
-              child: Container(
-                padding: EdgeInsets.only(top: 20),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(Assets.imagesDialogBottom),
-                    RichText(
-                      text: TextSpan(
-                        text: StringConstant.kRemainingWash.tr,
-                        style: w500_14p(color: AppColor.c2C2A2A),
-                        children: [
-                          TextSpan(
-                            text:
-                                controller
-                                    .getCustomerData
-                                    .value
-                                    ?.data
-                                    ?.subscriptionDetails
-                                    ?.remainingWashes
-                                    .toString(),
-                            style: w400_16p(color: AppColor.cC31848),
-                          ),
-                        ],
+      
+          controller
+                      .getCustomerData
+                      .value
+                      ?.data
+                      ?.subscriptionDetails
+                      ?.subscriptionId ==
+                  1
+              ? Positioned(
+                bottom: 0,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(Assets.imagesDialogBottom),
+                      RichText(
+                        text: TextSpan(
+                          text: StringConstant.kRemainingWash.tr,
+                          style: w500_14p(color: AppColor.c2C2A2A),
+                          children: [
+                            TextSpan(
+                              text:
+                                  controller
+                                      .getCustomerData
+                                      .value
+                                      ?.data
+                                      ?.subscriptionDetails
+                                      ?.remainingWashes
+                                      .toString(),
+                              style: w400_16p(color: AppColor.cC31848),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            )
-            : SizedBox(),
-      ],
+              )
+              : SizedBox(),
+        ],
+      ),
     );
   }
 

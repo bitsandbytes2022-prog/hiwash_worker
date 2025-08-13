@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:hiwash_worker/featuers/qr_scanner/view/reward_qr.dart';
 import 'package:hiwash_worker/featuers/rewads/view/rewarded_customers_screen.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
 import 'package:hiwash_worker/widgets/components/qr_not_generated.dart';
@@ -21,7 +22,10 @@ class RewardScreen extends StatelessWidget {
         return Column(
           children: [
             rewardController.isSelected.value
-                ?  Container(
+                ? RewardQrScreen()
+
+
+            /*Container(
               padding: EdgeInsets.only(top: Get.height * 0.2),
                 alignment: Alignment.center,
                 child: QrNotGenerated(
@@ -30,7 +34,7 @@ class RewardScreen extends StatelessWidget {
                   onTap: (){
                     Get.toNamed(RouteStrings.qrScreen);
                   },
-                ))
+                ))*/
                 : RewardedCustomersScreen()
           ],
         );

@@ -8,6 +8,7 @@ import 'package:hiwash_worker/featuers/dashboard/view/widget/second_drawer/secon
 import 'package:hiwash_worker/featuers/dashboard/view/widget/second_drawer/step_by_step_guide_screen.dart';
 import 'package:hiwash_worker/featuers/profile/view/drawer_screen.dart';
 import 'package:hiwash_worker/featuers/qr_scanner/view/qr_scanner.dart';
+import 'package:hiwash_worker/featuers/qr_scanner/view/reward_qr.dart';
 import 'package:hiwash_worker/featuers/rewads/controller/rewarded_customer_controller.dart';
 import 'package:hiwash_worker/featuers/rewads/view/rewarded_customers_screen.dart';
 import 'package:hiwash_worker/featuers/today_wash/controller/today_wash_controller.dart';
@@ -282,11 +283,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   barrierDismissible: false,
                   context: context,
                   builder: (BuildContext context) {
-                    return RewardScreen();
+                    return RewardQrScreen();
                   },
                 );
               },
               child: Container(
+                alignment: Alignment.center,
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
@@ -301,13 +303,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ],
                 ),
-                child: Center(
-                  child: ImageView(
-                    path: Assets.iconsIcQrScanner,
-                    height: 28,
-                    width: 28,
-                  ),
-                ),
+                child: Center(child: Text("Scan\noffer",style: w700_10a(color: AppColor.white),))
               ),
             )
                 : null,

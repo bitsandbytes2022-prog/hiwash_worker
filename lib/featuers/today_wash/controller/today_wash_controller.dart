@@ -146,7 +146,6 @@ class TodayWashController extends GetxController {
         print("Customer ID: $customerId");
       }
 
-      // hideLoader();
       return getCustomerData.value;
     } catch (error) {
       print("Error fetching hfffcustomer data: $error");
@@ -192,23 +191,48 @@ class TodayWashController extends GetxController {
       rethrow;
     }
   }
+  RxBool isLoading = false.obs;
 
   Future<ApiResponse?> getRating(
+      String rating,
+      String washId,
+      String comment,
+      ) async {
+    Map<String, String> params = {
+      "rating": rating,
+      "washId": washId,
+      "comment": comment
+    };
+
+    try {
+      isLoading.value = true; // Start loading
+      apiResponse.value = await Repository().rating(params);
+      return apiResponse.value;
+    } catch (e) {
+      print("Error in controller: $e");
+      return null;
+    } finally {
+      isLoading.value = false; // Stop loading
+    }
+  }
+
+/*  Future<ApiResponse?> getRating(
     String rating,
     String washId,
     String comment,
   ) async {
-    showLoader();
+
     Map params = {"rating": rating, "washId": washId, "comment": comment};
     try {
+
       apiResponse.value = await Repository().rating(params);
-      hideLoader();
+
       return apiResponse.value;
 
     } catch (e) {
-      hideLoader();
+
       print("Error in controller: $e");
       return null;
     }
-  }
+  }*/
 }
