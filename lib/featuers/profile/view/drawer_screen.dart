@@ -184,7 +184,7 @@ class DrawerScreen extends StatelessWidget {
           //padding: EdgeInsets.only(left: 15, right: 15, top: 15),
           onTap: () => Get.toNamed(RouteStrings.languageScreen),
           title: StringConstant.kLanguage.tr,
-          image: Assets.iconsIcLanguage,
+          image: Assets.iconsIcLanguageNew,
         ),
         drawerRowWidget(
           onTap: ()async{
@@ -197,7 +197,7 @@ class DrawerScreen extends StatelessWidget {
 
           },
           title: StringConstant.kPrivacySettings.tr,
-          image: Assets.iconsIcPrivacy,
+          image: Assets.iconsIcPrivacyNew,
         ),
    /*     drawerRowWidget(
           onTap: () => Get.toNamed(RouteStrings.privacySettingScreen),
@@ -216,7 +216,7 @@ class DrawerScreen extends StatelessWidget {
           },
           //onTap: () => Get.to(TermsAndConditionScreen()),
           title: StringConstant.kTermsAndCondition.tr,
-          image: Assets.iconsIcTermscondition,
+          image: Assets.iconsIcTermsconditionNew,
         ),
     /*    drawerRowWidget(
           onTap: () => Get.to(TermsAndConditionScreen()),

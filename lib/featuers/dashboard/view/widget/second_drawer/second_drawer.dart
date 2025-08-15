@@ -45,7 +45,7 @@ class SecondDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ImageView(path: Assets.imagesHelpSupport, height: 180),
+          ImageView(path: Assets.imagesHelpSupportNew, height: 180),
           31.heightSizeBox,
           Text(StringConstant.kGetHelp.tr, style: w700_22a()),
           40.heightSizeBox,
@@ -60,7 +60,7 @@ class SecondDrawer extends StatelessWidget {
               }
             },
             title: StringConstant.kChatWithSupport.tr,
-            image: Assets.iconsIcChat,
+            image: Assets.iconsIcChatNew,
           ),
 
        /*   drawerRowWidget(
@@ -74,7 +74,7 @@ class SecondDrawer extends StatelessWidget {
               Get.toNamed(RouteStrings.faqScreen);
             },
             title: StringConstant.kFAQ.tr,
-            image: Assets.iconsIcFaq,
+            image: Assets.iconsIcFaqNew,
           ),
 
           drawerRowWidget(
@@ -83,7 +83,7 @@ class SecondDrawer extends StatelessWidget {
             },
             title: StringConstant.kStepByStepGuide.tr,
             dashedLineWidget: false,
-            image: Assets.iconsIcGuideBook,
+            image: Assets.iconsIcGuideBookNew,
           ),
 
           Spacer(),
@@ -119,7 +119,7 @@ class SecondDrawer extends StatelessWidget {
                         ImageView(
                           height: 23,
                           width: 23,
-                          path: Assets.iconsPhone,
+                          path: Assets.iconsPhoneNew,
                         ),
                         Text("+974 7048 7070", style: w500_12a()),
                       ],
@@ -149,7 +149,7 @@ class SecondDrawer extends StatelessWidget {
                         ImageView(
                           height: 23,
                           width: 23,
-                          path: Assets.iconsIcAtSign,
+                          path: Assets.iconsIcAtSignNew,
                         ),
                         Text("info@hiwash.com", style: w500_12a()),
                       ],

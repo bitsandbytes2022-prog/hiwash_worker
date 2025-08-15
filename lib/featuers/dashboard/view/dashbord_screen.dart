@@ -93,7 +93,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final List<Widget> filledImages = [
       fillNavigationImage(image: Assets.iconsIcHomeFill),
       fillNavigationImage(image: Assets.iconsIcRewardFill),
-      fillNavigationImage(image: Assets.iconsIcGuideBook),
+      fillNavigationImage(image: Assets.iconsIcGuideBookNew),
       Container(
         padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -127,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final List<Widget> outlineImages = [
       ImageView(path: Assets.iconsIcHome, height: 23, width: 23),
       ImageView(path: Assets.iconsTrophy, height: 23, width: 23),
-      ImageView(path: Assets.iconsIcGuideBook, height: 23, width: 23),
+      ImageView(path: Assets.iconsIcGuideBookNew, height: 23, width: 23),
       Container(
         padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
@@ -272,7 +272,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: ImageView(
                 height: 23,
                 width: 23,
-                path: Assets.iconsIcGuideBook,
+                path: Assets.iconsIcGuideBookNew,
                 color: Colors.white,
               ),
             ),
