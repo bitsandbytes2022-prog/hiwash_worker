@@ -66,29 +66,7 @@ class WelcomeScreen extends StatelessWidget {
                                   ],
                                 );
                               }
-                              /*else if (index == 1) {
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Wash & Win!",
-                                      style: w700_22a(color: AppColor.c2C2A2A),
-                                    ),
-                                    15.heightSizeBox,
-                                    Text(
-                                      "Get your car washed weekly at 100+\nlocations with exclusive offers.",
-                                      textAlign: TextAlign.center,
-                                      style: w400_16p(color: AppColor.c455A64),
-                                    ),
-                                    Text(
-                                      "Missed washes still deducted.",
-                                      textAlign: TextAlign.center,
-                                      style: w400_16p(color: AppColor.c2C2A2A),
-                                    ),
-                                  ],
-                                );
-                              }*/
+
                               else {
                                 return Container();
                               }
@@ -146,3 +124,28 @@ class WelcomeScreen extends StatelessWidget {
       ),
     );
   }}
+
+
+/*else if (index == 1) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Wash & Win!",
+                                      style: w700_22a(color: AppColor.c2C2A2A),
+                                    ),
+                                    15.heightSizeBox,
+                                    Text(
+                                      "Get your car washed weekly at 100+\nlocations with exclusive offers.",
+                                      textAlign: TextAlign.center,
+                                      style: w400_16p(color: AppColor.c455A64),
+                                    ),
+                                    Text(
+                                      "Missed washes still deducted.",
+                                      textAlign: TextAlign.center,
+                                      style: w400_16p(color: AppColor.c2C2A2A),
+                                    ),
+                                  ],
+                                );
+                              }*/

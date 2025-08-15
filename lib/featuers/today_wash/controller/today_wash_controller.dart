@@ -138,7 +138,6 @@ class TodayWashController extends GetxController {
 
   Future<GetCustomerData?> getCustomerDataById(int id) async {
     try {
-      // showLoader();
       getCustomerData.value = await Repository().getCustomerData(id);
 
       if (getCustomerData.value?.data != null) {
@@ -148,15 +147,15 @@ class TodayWashController extends GetxController {
 
       return getCustomerData.value;
     } catch (error) {
-      print("Error fetching hfffcustomer data: $error");
+      print("Error fetching  sscustomer data: $error");
       return null;
     }
   }
 
   Future<void> completeWash(String? washId, {bool? requireImage}) async {
     try {
+      isLoading.value=true;
       dio.FormData formData;
-
       if (requireImage ?? false) {
         if (pickedImage.value == null) {
           appSnackBar(message: StringConstant.kPleaseCaptureAnImage.tr);
@@ -177,20 +176,22 @@ class TodayWashController extends GetxController {
       } else {
         formData = dio.FormData.fromMap({"WashId": washId});
       }
-      showLoader();
+
 
       final response = await Repository().completeWashRepo(formData);
-      hideLoader();
-      print("Upload success");
+
+      print("Upload success${response.toString()}");
       return response;
     } catch (e) {
-      hideLoader();
       appSnackBar(message: "${e}");
-      Get.snackbar("Error", "$e.");
 
       rethrow;
+    }finally{
+      isLoading.value=false;
     }
   }
+
+
   RxBool isLoading = false.obs;
 
   Future<ApiResponse?> getRating(
@@ -205,14 +206,14 @@ class TodayWashController extends GetxController {
     };
 
     try {
-      isLoading.value = true; // Start loading
+      isLoading.value = true;
       apiResponse.value = await Repository().rating(params);
       return apiResponse.value;
     } catch (e) {
       print("Error in controller: $e");
       return null;
     } finally {
-      isLoading.value = false; // Stop loading
+      isLoading.value = false;
     }
   }
 

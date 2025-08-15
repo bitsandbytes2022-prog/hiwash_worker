@@ -10,7 +10,9 @@
       colorScheme: ColorScheme.fromSeed(seedColor: AppColor.cEAE8E8),
       useMaterial3: true,
       fontFamily: GoogleFonts.anybody().fontFamily,
+
       inputDecorationTheme: InputDecorationTheme(
+
 
         fillColor: AppColor.cF6F7FF,
         filled: true,
@@ -27,7 +29,7 @@
           borderRadius: BorderRadius.circular(28),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColor.c5C6B72.withOpacity(0.5)),
+          borderSide: BorderSide(color: AppColor.blue,),
           borderRadius: BorderRadius.circular(28),
         ),
         enabledBorder: OutlineInputBorder(

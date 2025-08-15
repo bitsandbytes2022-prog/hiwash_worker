@@ -167,7 +167,7 @@ class Repository {
   }
 
 
-  Future<void> completeWashRepo(requestBody) async {
+  Future<dynamic> completeWashRepo(requestBody) async {
     try {
       final response = await dioHelper.post(
         url: ApiConstant.completeWash,
@@ -175,10 +175,10 @@ class Repository {
         isAuthRequired: true,
       );
       print("Upload response: ${response.toString()}");
+      return response;
     } catch (e) {
       print("Upload complete success: $e");
     } catch (e) {
-      print("Upload complete failed: $e");
     }
   }
   Future<WashLogModel> washLogRepo(Object requestBody) async {

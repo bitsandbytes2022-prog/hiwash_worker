@@ -89,6 +89,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       }
     }
   }
+
   void onQRViewCreatedOffer(QRViewController controller) {
     qrController = controller;
     controller.scannedDataStream.listen((scanData) async {
@@ -120,38 +121,33 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
                 subHeeding: "You have won",
                 color: Colors.green,
               );
-
             } else {
-
               qRConfirmationDialog(
-                heading: "Fail",
+                heading: "Error",
                 subHeeding: "You have not won",
                 color: Colors.red,
               );
-
             }
           } catch (e) {
             print("QR decode error: $e");
             qRConfirmationDialog(
-              heading: "Fail",
+              heading: "Error",
               subHeeding: "Invalid QR Code",
               color: Colors.red,
             );
-
           }
         } else {
           qRConfirmationDialog(
-            heading: "Fail",
-            subHeeding: "Invalid QR Format",
+            heading: "Error",
+            subHeeding: "Invalid QR Code",
             color: Colors.red,
           );
-
         }
       }
     });
   }
 
-/*
+  /*
   void onQRViewCreatedOffer(QRViewController controller) {
     qrController = controller;
     controller.scannedDataStream.listen((scanData) async {
@@ -197,7 +193,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
   }
 */
 
-
   void onQRViewCreated(QRViewController controller) {
     qrController = controller;
     controller.scannedDataStream.listen((scanData) async {
@@ -225,8 +220,13 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
               await washStatusController.getCustomerDataById(int.parse(id));
 
-              bool isPremium = washStatusController
-                  .getCustomerData.value?.data?.subscriptionDetails?.isPremium ==
+              bool isPremium =
+                  washStatusController
+                      .getCustomerData
+                      .value
+                      ?.data
+                      ?.subscriptionDetails
+                      ?.isPremium ==
                   true;
 
               if (isPremium) {
@@ -237,12 +237,19 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
                 );
               } else {
                 try {
+                  Get.back();
                   await todayWashController.completeWash(
                     washId.toString(),
                     requireImage: false,
-                  );
-                  appSnackBar(message: "Wash completed successfully");
-                  Get.back(); // close scanner
+                  ).then((value){
+                    Get.back();
+                    qRConfirmationDialog(
+                      heading: "Success",
+                      subHeeding: "Wash Completed Successfully",
+                      color: Colors.green,
+                    );
+                  });
+
                 } catch (e) {
                   appSnackBar(message: "Error completing wash: $e");
                 }
@@ -253,7 +260,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
                 color: Colors.red,
                 heading: "Oops!",
                 subHeeding:
-                response?['error']?['message'] ??
+                    response?['error']?['message'] ??
                     "It looks like you're out of washes. Visit us again next week",
               );
             }
@@ -270,20 +277,18 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
             clearScan();
           }
         } else {
-          print("Invalid QR scanned: Not JWT format");
+          print("Invalid QR scanned");
           Get.back();
           qRConfirmationDialog(
             color: Colors.red,
             heading: "Error",
-            subHeeding: "Invalid QR scanned: Not JWT format",
+            subHeeding: "Invalid QR scanned",
           );
           clearScan();
         }
       }
     });
   }
-
-
 
   void clearScan() {
     scanUrl.value = '';
@@ -379,7 +384,6 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
       context: Get.context!,
       builder: (BuildContext context) {
         return AlertDialog(
-
           backgroundColor: color ?? Colors.green,
           title: Text(heading ?? "", style: w500_18p(color: AppColor.white)),
           content: Text(subHeeding ?? '', style: w400_16p(color: Colors.white)),
@@ -424,13 +428,19 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
 
                     if (todayWashController.pickedImage.value != null) {
                       try {
-                        await todayWashController.completeWash(
-                          washData,
-                          requireImage: true,
-                        );
+                        await todayWashController
+                            .completeWash(washData, requireImage: true)
+                            .then((value) {
+                              Get.back();
+                              qRConfirmationDialog(
+                                heading: "Success",
+                                subHeeding: "Wash Completed Successfully",
+                                color: Colors.green,
+                              );
+                            });
                         todayWashController.getTodayWashSummary();
                         todayWashController.pickedImage.value = null;
-                        Get.back(); // Dialog close
+                        //Get.back();
                       } catch (e) {
                         hideLoader();
                         appSnackBar(

@@ -269,7 +269,7 @@ class MyAccountScreen extends StatelessWidget {
 
               31.heightSizeBox,
               HiWashTextField(
-                fillColor: AppColor.c6B6B6B.withOpacity(0.1),
+               // fillColor: AppColor.c6B6B6B.withOpacity(0.1),
                 readOnly: true,
                 controller: drawerProfileController.nameController,
                 keyboardType: TextInputType.name,
@@ -289,7 +289,7 @@ class MyAccountScreen extends StatelessWidget {
               ),
               20.heightSizeBox,
               HiWashTextField(
-                fillColor: AppColor.c6B6B6B.withOpacity(0.1),
+              //  fillColor: AppColor.c6B6B6B.withOpacity(0.1),
 
                 readOnly: true,
                 controller: drawerProfileController.emailController,
@@ -306,7 +306,7 @@ class MyAccountScreen extends StatelessWidget {
 
               20.heightSizeBox,
               HiWashTextField(
-                fillColor: AppColor.c6B6B6B.withOpacity(0.1),
+                //fillColor: AppColor.c6B6B6B.withOpacity(0.1),
 
                 readOnly: true,
                 controller: drawerProfileController.phoneController,
@@ -329,6 +329,7 @@ class MyAccountScreen extends StatelessWidget {
                   Stack(
                     children: [
                       TextFormField(
+                        cursorColor: AppColor.blue,
                         maxLines: 3,
                         controller: drawerProfileController.addressController,
                         style: w400_14p(
@@ -348,9 +349,10 @@ class MyAccountScreen extends StatelessWidget {
                             horizontal: 20,
                             vertical: 12,
                           ),
+
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: AppColor.cEAE8E8.withOpacity(0.5),
+                              color: AppColor.blue,
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
