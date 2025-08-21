@@ -31,7 +31,7 @@ class Assets {
   static const String iconsIcEdit = 'assets/icons/ic_edit.png';
   static const String iconsIcFaqNew = 'assets/icons/ic_faq_new.png';
   static const String iconsIcForward = 'assets/icons/ic_forward.png';
-  static const String iconsIcGuideBookNew = 'assets/icons/ic_guide_book_new.png';
+  static const String iconsIcGuideBook = 'assets/icons/ic_guide_book.png';
   static const String iconsIcHome = 'assets/icons/ic_home.png';
   static const String iconsIcHomeFill = 'assets/icons/ic_home_fill.png';
   static const String iconsIcInfo = 'assets/icons/ic_info.png';
