@@ -118,13 +118,13 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
               await getOffersById(int.parse(offerId));
               qRConfirmationDialog(
                 heading: "Success",
-                subHeeding: "You have won",
+                subHeeding: "Offer redeemed successfully",
                 color: Colors.green,
               );
             } else {
               qRConfirmationDialog(
                 heading: "Error",
-                subHeeding: "You have not won",
+                subHeeding: "Something went wrong please try again",
                 color: Colors.red,
               );
             }

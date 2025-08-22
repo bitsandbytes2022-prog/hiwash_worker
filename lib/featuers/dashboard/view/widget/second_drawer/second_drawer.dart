@@ -83,7 +83,7 @@ class SecondDrawer extends StatelessWidget {
             },
             title: StringConstant.kStepByStepGuide.tr,
             dashedLineWidget: false,
-            image: Assets.iconsIcGuideBookNew,
+            image: Assets.iconsIcGuideBook,
           ),
 
           Spacer(),
