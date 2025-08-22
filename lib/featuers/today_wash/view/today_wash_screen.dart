@@ -1,7 +1,5 @@
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:get/get.dart';
@@ -11,26 +9,21 @@ import 'package:hiwash_worker/featuers/today_wash/controller/today_wash_controll
 import 'package:hiwash_worker/featuers/today_wash/model/today_wash_summary_model.dart';
 import 'package:hiwash_worker/featuers/today_wash/model/wash_log_model.dart';
 import 'package:hiwash_worker/language/String_constant.dart';
-import 'package:hiwash_worker/route/route_strings.dart';
-import 'package:hiwash_worker/widgets/components/app_snack_bar.dart';
 import 'package:hiwash_worker/widgets/components/doted_vertical_line.dart';
 import 'package:hiwash_worker/widgets/components/hi_wash_button.dart';
-import 'package:hiwash_worker/widgets/components/hi_wash_text_field.dart';
-
 import 'package:hiwash_worker/widgets/sized_box_extension.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../../../generated/assets.dart';
 import '../../../styling/app_color.dart';
 import '../../../styling/app_font_anybody.dart';
 import '../../../styling/app_font_poppins.dart';
 import '../../../widgets/components/app_dialog.dart';
-import '../../../widgets/components/custom_swipe_button.dart';
 import '../../../widgets/components/data_formet.dart';
 import '../../../widgets/components/doted_horizontal_line.dart';
 import '../../../widgets/components/image_view.dart';
 import '../../../widgets/components/is_select_button.dart';
-import '../../../widgets/components/loader.dart';
 import '../../../widgets/components/profile_image_container.dart';
 import '../../qr_scanner/controller/qr_controller.dart';
 
@@ -495,7 +488,7 @@ class TodayWashScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(15),
                                 child: ImageView(
                                   path: Assets.iconsIcCongrat,
-                          
+
                                   fit: BoxFit.cover,
                                   height: 100,
                                   width: 100,
@@ -531,7 +524,7 @@ class TodayWashScreen extends StatelessWidget {
                                     valueLabelVisibility: false,
                                     starColor: AppColor.cFFC200,
                                     starOffColor: Colors.grey,
-                          
+
                                     animationDuration: Duration(
                                       milliseconds: 200,
                                     ),
@@ -544,13 +537,14 @@ class TodayWashScreen extends StatelessWidget {
                                 cursorColor: AppColor.blue,
                                 controller: controller.commentController,
                                 maxLines: 3,
-                               // fillColor: AppColor.white,
-                                 style: w400_14p(
+                                // fillColor: AppColor.white,
+                                style: w400_14p(
                                   color: AppColor.c2C2A2A.withOpacity(0.9),
                                 ),
-                                    decoration: InputDecoration(
+                                decoration: InputDecoration(
                                   fillColor: AppColor.white,
-                                  hintText: StringConstant.kEnterYourCommentHere.tr,
+                                  hintText:
+                                      StringConstant.kEnterYourCommentHere.tr,
                                   filled: true,
                                   labelStyle: w400_13a(color: AppColor.c455A64),
                                   hintStyle: w400_14p(
@@ -560,43 +554,42 @@ class TodayWashScreen extends StatelessWidget {
                                     horizontal: 20,
                                     vertical: 12,
                                   ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: AppColor.blue,
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: AppColor.c5C6B72.withOpacity(0.5),
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: AppColor.c5C6B72.withOpacity(0.5),
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: AppColor.c5C6B72.withOpacity(0.5),
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: AppColor.c5C6B72.withOpacity(0.5),
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: AppColor.c5C6B72.withOpacity(0.5),
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                          
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: AppColor.blue,
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: AppColor.c5C6B72.withOpacity(0.5),
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: AppColor.c5C6B72.withOpacity(0.5),
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: AppColor.c5C6B72.withOpacity(0.5),
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: AppColor.c5C6B72.withOpacity(0.5),
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: AppColor.c5C6B72.withOpacity(0.5),
+                                    ),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                 ),
                               ),
                               15.heightSizeBox,
@@ -605,7 +598,7 @@ class TodayWashScreen extends StatelessWidget {
                                 final rating = controller.userRating;
                                 final isButtonEnabled =
                                     comment.isNotEmpty && rating > 0;
-                          
+
                                 return HiWashButton(
                                   isLoading: controller.isLoading.value,
                                   width: 100,
@@ -633,8 +626,7 @@ class TodayWashScreen extends StatelessWidget {
                                           : null,
                                 );
                               }),
-                          
-                          
+
                               60.heightSizeBox,
                             ],
                           ),
@@ -809,8 +801,7 @@ class TodayWashScreen extends StatelessWidget {
             top: 3,
             right: 8,
             child: GestureDetector(
-              onTap: (){
-
+              onTap: () {
                 controller.userRating = 0;
                 controller.commentController.clear();
                 controller.commentText.value = "";
@@ -983,7 +974,10 @@ class TodayWashScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(bottom: 15),
                       child: Text(
-                        "Complete Washes",
+                        completedWashText == null ||
+                                int.parse(completedWashText) == 0
+                            ? "Completed Wash"
+                            : "Completed Washes",
                         /* StringConstant.kTodayWashes.tr*/
                         style: w500_16p(color: AppColor.white.withOpacity(0.7)),
                       ),

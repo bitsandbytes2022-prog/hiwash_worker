@@ -324,85 +324,85 @@ class MyAccountScreen extends StatelessWidget {
               20.heightSizeBox,
               20.heightSizeBox,
 
-              Column(
-                children: [
-                  Stack(
-                    children: [
-                      TextFormField(
-                        cursorColor: AppColor.blue,
-                        maxLines: 3,
-                        controller: drawerProfileController.addressController,
-                        style: w400_14p(
-                          color: AppColor.c2C2A2A.withOpacity(0.9),
-                        ),
-                        decoration: InputDecoration(
-                          fillColor: AppColor.cF6F7FF,
-                          hintText: StringConstant.kAddress.tr,
-                          labelText: StringConstant.kAddress.tr,
-                          filled: true,
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelStyle: w400_13a(color: AppColor.c455A64),
-                          hintStyle: w400_14p(
-                            color: AppColor.c2C2A2A.withOpacity(0.40),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 12,
-                          ),
-
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColor.blue,
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColor.c5C6B72.withOpacity(0.5),
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColor.c5C6B72.withOpacity(0.5),
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColor.c5C6B72.withOpacity(0.5),
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColor.c5C6B72.withOpacity(0.5),
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColor.c5C6B72.withOpacity(0.5),
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                      ),
-
-                      /* Positioned(
-                        top: 9,
-                        right: 8,
-                        child: ImageView(
-                          path: Assets.iconsMyLocation,
-                          height: 18,
-                          width: 18,
-                        ),
-                      ),*/
-                    ],
-                  ),
-                ],
-              ),
-              60.heightSizeBox,
+              // Column(
+              //   children: [
+              //     Stack(
+              //       children: [
+              //         TextFormField(
+              //           cursorColor: AppColor.blue,
+              //           maxLines: 3,
+              //           controller: drawerProfileController.addressController,
+              //           style: w400_14p(
+              //             color: AppColor.c2C2A2A.withOpacity(0.9),
+              //           ),
+              //           decoration: InputDecoration(
+              //             fillColor: AppColor.cF6F7FF,
+              //             hintText: StringConstant.kAddress.tr,
+              //             labelText: StringConstant.kAddress.tr,
+              //             filled: true,
+              //             floatingLabelBehavior: FloatingLabelBehavior.always,
+              //             labelStyle: w400_13a(color: AppColor.c455A64),
+              //             hintStyle: w400_14p(
+              //               color: AppColor.c2C2A2A.withOpacity(0.40),
+              //             ),
+              //             contentPadding: EdgeInsets.symmetric(
+              //               horizontal: 20,
+              //               vertical: 12,
+              //             ),
+              //
+              //             focusedBorder: OutlineInputBorder(
+              //               borderSide: BorderSide(
+              //                 color: AppColor.blue,
+              //               ),
+              //               borderRadius: BorderRadius.circular(15),
+              //             ),
+              //             errorBorder: OutlineInputBorder(
+              //               borderSide: BorderSide(
+              //                 color: AppColor.c5C6B72.withOpacity(0.5),
+              //               ),
+              //               borderRadius: BorderRadius.circular(15),
+              //             ),
+              //             focusedErrorBorder: OutlineInputBorder(
+              //               borderSide: BorderSide(
+              //                 color: AppColor.c5C6B72.withOpacity(0.5),
+              //               ),
+              //               borderRadius: BorderRadius.circular(15),
+              //             ),
+              //             enabledBorder: OutlineInputBorder(
+              //               borderSide: BorderSide(
+              //                 color: AppColor.c5C6B72.withOpacity(0.5),
+              //               ),
+              //               borderRadius: BorderRadius.circular(15),
+              //             ),
+              //             disabledBorder: OutlineInputBorder(
+              //               borderSide: BorderSide(
+              //                 color: AppColor.c5C6B72.withOpacity(0.5),
+              //               ),
+              //               borderRadius: BorderRadius.circular(15),
+              //             ),
+              //             border: OutlineInputBorder(
+              //               borderSide: BorderSide(
+              //                 color: AppColor.c5C6B72.withOpacity(0.5),
+              //               ),
+              //               borderRadius: BorderRadius.circular(15),
+              //             ),
+              //           ),
+              //         ),
+              //
+              //         /* Positioned(
+              //           top: 9,
+              //           right: 8,
+              //           child: ImageView(
+              //             path: Assets.iconsMyLocation,
+              //             height: 18,
+              //             width: 18,
+              //           ),
+              //         ),*/
+              //       ],
+              //     ),
+              //   ],
+              // ),
+              // 60.heightSizeBox,
               Obx(() {
                 return HiWashButton(
                   isLoading: drawerProfileController.isLoading.value,

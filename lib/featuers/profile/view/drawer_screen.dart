@@ -180,12 +180,12 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
         ),*/
-        drawerRowWidget(
-          //padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-          onTap: () => Get.toNamed(RouteStrings.languageScreen),
-          title: StringConstant.kLanguage.tr,
-          image: Assets.iconsIcLanguageNew,
-        ),
+        // drawerRowWidget(
+        //   //padding: EdgeInsets.only(left: 15, right: 15, top: 15),
+        //   onTap: () => Get.toNamed(RouteStrings.languageScreen),
+        //   title: StringConstant.kLanguage.tr,
+        //   image: Assets.iconsIcLanguageNew,
+        // ),
         drawerRowWidget(
           onTap: ()async{
             String url="https://loyaltyapistaging.pipelinedns.com/api/content/privacypolicy.html";
