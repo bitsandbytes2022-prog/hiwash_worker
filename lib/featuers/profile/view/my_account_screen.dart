@@ -287,22 +287,22 @@ class MyAccountScreen extends StatelessWidget {
                   return null;
                 },
               ),
-              20.heightSizeBox,
-              HiWashTextField(
-              //  fillColor: AppColor.c6B6B6B.withOpacity(0.1),
-
-                readOnly: true,
-                controller: drawerProfileController.emailController,
-                keyboardType: TextInputType.emailAddress,
-                hintText: StringConstant.kEmail.tr,
-                labelText: StringConstant.kEmail.tr,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return StringConstant.kPleaseEnterYourEmail.tr;
-                  }
-                  return null;
-                },
-              ),
+              // 20.heightSizeBox,
+              // HiWashTextField(
+              // //  fillColor: AppColor.c6B6B6B.withOpacity(0.1),
+              //
+              //   readOnly: true,
+              //   controller: drawerProfileController.emailController,
+              //   keyboardType: TextInputType.emailAddress,
+              //   hintText: StringConstant.kEmail.tr,
+              //   labelText: StringConstant.kEmail.tr,
+              //   validator: (value) {
+              //     if (value == null || value.trim().isEmpty) {
+              //       return StringConstant.kPleaseEnterYourEmail.tr;
+              //     }
+              //     return null;
+              //   },
+              // ),
 
               20.heightSizeBox,
               HiWashTextField(
@@ -403,35 +403,35 @@ class MyAccountScreen extends StatelessWidget {
               //   ],
               // ),
               // 60.heightSizeBox,
-              Obx(() {
-                return HiWashButton(
-                  isLoading: drawerProfileController.isLoading.value,
-                  text: StringConstant.kSave.tr,
-                  onTap: () async {
-                    if (_formKey.currentState!.validate()) {
-                      await drawerProfileController.uploadProfile(
-                        drawerProfileController.nameController.text,
-                        drawerProfileController.emailController.text,
-                        drawerProfileController.addressController.text,
-                      );
-
-                      await dashboardController.getWorkerDataById(
-                        dashboardController
-                                .getWorkerModel
-                                .value
-                                ?.data
-                                ?.first
-                                .id ??
-                            0,
-                      );
-                    } else {
-                      appSnackBar(
-                        message: StringConstant.kSomethingWentWrong.tr,
-                      );
-                    }
-                  },
-                );
-              }),
+              // Obx(() {
+              //   return HiWashButton(
+              //     isLoading: drawerProfileController.isLoading.value,
+              //     text: StringConstant.kSave.tr,
+              //     onTap: () async {
+              //       if (_formKey.currentState!.validate()) {
+              //         await drawerProfileController.uploadProfile(
+              //           drawerProfileController.nameController.text,
+              //           drawerProfileController.emailController.text,
+              //           drawerProfileController.addressController.text,
+              //         );
+              //
+              //         await dashboardController.getWorkerDataById(
+              //           dashboardController
+              //                   .getWorkerModel
+              //                   .value
+              //                   ?.data
+              //                   ?.first
+              //                   .id ??
+              //               0,
+              //         );
+              //       } else {
+              //         appSnackBar(
+              //           message: StringConstant.kSomethingWentWrong.tr,
+              //         );
+              //       }
+              //     },
+              //   );
+              // }),
 
               30.heightSizeBox,
             ],

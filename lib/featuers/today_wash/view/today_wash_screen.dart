@@ -469,7 +469,7 @@ class TodayWashScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        height: Get.height * 0.56,
+                        height: Get.height * 0.50,
                         padding: EdgeInsets.only(left: 16, right: 16),
                         decoration: BoxDecoration(
                           color: AppColor.white,
@@ -592,7 +592,7 @@ class TodayWashScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              15.heightSizeBox,
+                              30.heightSizeBox,
                               Obx(() {
                                 final comment = controller.commentText.value;
                                 final rating = controller.userRating;
@@ -627,7 +627,6 @@ class TodayWashScreen extends StatelessWidget {
                                 );
                               }),
 
-                              60.heightSizeBox,
                             ],
                           ),
                         ),
@@ -755,47 +754,47 @@ class TodayWashScreen extends StatelessWidget {
             ),
           ),
 
-          controller
-                      .getCustomerData
-                      .value
-                      ?.data
-                      ?.subscriptionDetails
-                      ?.subscriptionId ==
-                  1
-              ? Positioned(
-                bottom: 0,
-                left: 20,
-                right: 20,
-                child: Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(Assets.imagesDialogBottom),
-                      RichText(
-                        text: TextSpan(
-                          text: "${StringConstant.kRemainingWash.tr}: ",
-                          style: w500_14p(color: AppColor.c2C2A2A),
-                          children: [
-                            TextSpan(
-                              text:
-                                  controller
-                                      .getCustomerData
-                                      .value
-                                      ?.data
-                                      ?.subscriptionDetails
-                                      ?.remainingWashes
-                                      .toString(),
-                              style: w400_16p(color: AppColor.cC31848),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-              : SizedBox(),
+          // controller
+          //             .getCustomerData
+          //             .value
+          //             ?.data
+          //             ?.subscriptionDetails
+          //             ?.subscriptionId ==
+          //         1
+          //     ? Positioned(
+          //       bottom: 0,
+          //       left: 20,
+          //       right: 20,
+          //       child: Container(
+          //         padding: EdgeInsets.only(top: 20),
+          //         child: Stack(
+          //           alignment: Alignment.center,
+          //           children: [
+          //             Image.asset(Assets.imagesDialogBottom),
+          //             RichText(
+          //               text: TextSpan(
+          //                 text: "${StringConstant.kRemainingWash.tr}: ",
+          //                 style: w500_14p(color: AppColor.c2C2A2A),
+          //                 children: [
+          //                   TextSpan(
+          //                     text:
+          //                         controller
+          //                             .getCustomerData
+          //                             .value
+          //                             ?.data
+          //                             ?.subscriptionDetails
+          //                             ?.remainingWashes
+          //                             .toString(),
+          //                     style: w400_16p(color: AppColor.cC31848),
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     )
+          //     : SizedBox(),
 
           Positioned(
             top: 3,
