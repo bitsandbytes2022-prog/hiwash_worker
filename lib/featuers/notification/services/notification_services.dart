@@ -10,6 +10,7 @@ import 'dart:convert';
 
 import '../../../language/String_constant.dart';
 import '../../../styling/app_color.dart';
+import '../../today_wash/controller/today_wash_controller.dart';
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -26,6 +27,8 @@ class NotificationServices {
       RemoteNotification? notification = message.notification;
       print("Foreground Notification: ${notification?.title}");
       if (notification != null) {
+        TodayWashController controller =Get.isRegistered<TodayWashController>()?Get.find<TodayWashController>():TodayWashController();
+       controller.getTodayWashSummary();
         showNotification(message);
       }
     });
