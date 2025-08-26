@@ -375,6 +375,7 @@ class QrController extends GetxController with GetTickerProviderStateMixin {
     super.onClose();
   }
 
+
       qRConfirmationDialog({
         String? heading,
         String? subHeeding,
